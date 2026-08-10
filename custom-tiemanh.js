@@ -3511,8 +3511,16 @@
             .join(' ');
     }
 
-    // Hàm trích xuất Tag CHUẨN (Chỉ dùng đúng 9 Tag cho phép, không dùng Ngoại Cảnh, giữ 1 tag nếu hợp 1 tag)
+    // Hàm trích xuất Tag CHUẨN (Hỗ trợ nạp trực tiếp danh sách phân tách bởi dấu phẩy từ Sheet, hoặc tự động bóc tách từ khóa nếu trống)
     function extractMultiTagsSmart(rawTheme, rawTitle, rawDesc) {
+        // Nếu có rawTheme (chủ đề do người dùng nhập từ Sheet), phân tách bằng dấu phẩy và trả về trực tiếp
+        if (rawTheme && String(rawTheme).trim().length > 0) {
+            return String(rawTheme)
+                .split(",")
+                .map(t => t.trim())
+                .filter(Boolean);
+        }
+
         const fullText = `${rawTheme || ''} ${rawTitle || ''} ${rawDesc || ''}`
             .normalize("NFD")
             .replace(/[\u0300-\u036f]/g, "")
@@ -3628,6 +3636,72 @@
         return raw || "Concept";
     }
 
+    // Phân tích dòng dữ liệu từ Google Sheets sang Object Concept chuẩn
+    function parseSheetsRow(obj, rowIdx) {
+        // Kiểm tra hộp kiểm Ẩn/Hiện (status/Ẩn === TRUE -> Ẩn concept khỏi web)
+        const isHidden = (
+            String(obj.status || obj['Ẩn'] || '').toUpperCase() === 'TRUE' ||
+            String(obj.status || '').toUpperCase() === 'AN' ||
+            String(obj.status || '') === '0' ||
+            String(obj.active || '').toUpperCase() === 'FALSE'
+        );
+
+        // Trích xuất Tag chủ đề đa tag từ cột Chủ đề/theme
+        const cleanedThemes = extractMultiTagsSmart(obj.theme || obj['Chủ đề'], obj.title || obj['Tên concept'] || obj.concept, obj.description || obj['Mô tả']);
+        const primaryTheme = cleanedThemes[0] || "Nàng Thơ";
+        const themeInfo = getThemeInfo(primaryTheme);
+
+        const cleanedBranch = normalizeBranchName(obj.tag || obj.branch || obj.category || obj['Chi nhánh'], obj.category);
+        const cleanedTitle = obj['Tên concept'] || obj.title || primaryTheme;
+
+        // Tập hợp các ảnh thật từ img1 -> img12 từ Google Sheets (mới hỗ trợ 12 ảnh)
+        let realImages = [];
+        for (let n = 1; n <= 12; n++) {
+            const imgVal = driveToDirectUrl(obj[`img${n}`]);
+            if (imgVal) realImages.push(imgVal);
+        }
+
+        const hasRealImages = realImages.length > 0;
+        let images = [...realImages];
+
+        // Nếu concept chưa có ảnh trên Drive thì mới dự phòng ảnh placeholder
+        if (images.length === 0) {
+            const titleNorm = cleanTextForMatching(cleanedTitle);
+            let fallbackKey = "GENERAL";
+            for (const key in DEFAULT_PLACEHOLDERS) {
+                if (titleNorm.includes(key)) {
+                    fallbackKey = key;
+                    break;
+                }
+            }
+            images = DEFAULT_PLACEHOLDERS[fallbackKey];
+        }
+
+        const bgColor = obj.bgColor ? obj.bgColor.replace(/-/g, ",") : themeInfo.bg;
+        const iconColor = obj.iconColor || themeInfo.color;
+        const icon = obj.icon || themeInfo.icon;
+
+        const isBestSeller = String(obj['Best Seller'] || obj.bestseller || '').toUpperCase() === 'TRUE';
+
+        return {
+            id: parseInt(obj.id || obj.concept_id || obj['STT']) || rowIdx + 1,
+            branch: obj.branch || obj['Chi nhánh'] || "",
+            theme: primaryTheme,
+            themes: cleanedThemes, // Danh sách tất cả các tag
+            title: cleanedTitle,
+            category: obj.category || "nutinh",
+            tag: cleanedBranch,
+            icon: icon,
+            iconColor: iconColor,
+            bgColor: bgColor,
+            description: obj.description || obj['Mô tả'] || "",
+            images: images,
+            hasRealImages: hasRealImages,
+            isHidden: isHidden,
+            isBestSeller: isBestSeller
+        };
+    }
+
     // Xử lý dữ liệu nhận được từ Google Sheets JSONP (Hỗ trợ Multi-tag đa chủ đề)
     function handleSheetsData(data) {
         try {
@@ -3643,65 +3717,9 @@
                     obj[colName] = cell ? String(cell.v ?? "").normalize("NFC").trim() : "";
                 });
 
-                // Kiểm tra hộp kiểm Ẩn/Hiện (status === FALSE -> Ẩn concept khỏi web)
-                const isHidden = (
-                    String(obj.status || '').toUpperCase() === 'FALSE' ||
-                    String(obj.status || '').toUpperCase() === 'AN' ||
-                    String(obj.status || '') === '0' ||
-                    String(obj.active || '').toUpperCase() === 'FALSE'
-                );
-                if (isHidden) return null;
-
-                // Trích xuất Tag chuẩn
-                const cleanedThemes = extractMultiTagsSmart(obj.theme, obj.title, obj.description);
-                const primaryTheme = cleanedThemes[0] || "Nàng Thơ";
-                const themeInfo = getThemeInfo(primaryTheme);
-
-                const cleanedBranch = normalizeBranchName(obj.tag || obj.branch || obj.category, obj.category);
-                const cleanedTitle = primaryTheme;
-
-                // Tập hợp các ảnh thật từ img1 -> img10 từ Google Sheets
-                let realImages = [];
-                for (let n = 1; n <= 10; n++) {
-                    const imgVal = driveToDirectUrl(obj[`img${n}`]);
-                    if (imgVal) realImages.push(imgVal);
-                }
-
-                const hasRealImages = realImages.length > 0;
-                let images = [...realImages];
-
-                // Nếu concept chưa có ảnh trên Drive thì mới dự phòng ảnh placeholder
-                if (images.length === 0) {
-                    const titleNorm = cleanTextForMatching(cleanedTitle);
-                    let fallbackKey = "GENERAL";
-                    for (const key in DEFAULT_PLACEHOLDERS) {
-                        if (titleNorm.includes(key)) {
-                            fallbackKey = key;
-                            break;
-                        }
-                    }
-                    images = DEFAULT_PLACEHOLDERS[fallbackKey];
-                }
-
-                const bgColor = obj.bgColor ? obj.bgColor.replace(/-/g, ",") : themeInfo.bg;
-                const iconColor = obj.iconColor || themeInfo.color;
-                const icon = obj.icon || themeInfo.icon;
-
-                return {
-                    id: parseInt(obj.id || obj.concept_id) || rowIdx + 1,
-                    branch: obj.branch || "",
-                    theme: primaryTheme,
-                    themes: cleanedThemes, // Danh sách tất cả các tag
-                    title: cleanedTitle,
-                    category: obj.category || "nutinh",
-                    tag: cleanedBranch,
-                    icon: icon,
-                    iconColor: iconColor,
-                    bgColor: bgColor,
-                    description: obj.description || "",
-                    images: images,
-                    hasRealImages: hasRealImages
-                };
+                const concept = parseSheetsRow(obj, rowIdx);
+                if (concept.isHidden) return null;
+                return concept;
             }).filter(Boolean);
 
             if (parsed.length > 0) {
@@ -4821,10 +4839,21 @@
         }
     }
 
-    // 10. Khởi chạy hệ thống sau khi DOM load
-    if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", init);
-    } else {
-        init();
+    // 10. Khởi chạy hệ thống sau khi DOM load (chỉ chạy trong môi trường trình duyệt, bỏ qua khi chạy test Node.js)
+    if (typeof window !== 'undefined' && typeof document !== 'undefined' && !(typeof global !== 'undefined' && global.IS_TEST_ENVIRONMENT)) {
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", init);
+        } else {
+            init();
+        }
+    }
+
+    // Export các hàm để chạy Unit Test bằng Node.js nếu ở môi trường test
+    if (typeof module !== 'undefined' && module.exports) {
+        module.exports = {
+            parseSheetsRow,
+            normalizeBranchName,
+            extractMultiTagsSmart
+        };
     }
 })();
