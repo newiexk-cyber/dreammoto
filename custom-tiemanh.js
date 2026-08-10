@@ -2819,45 +2819,48 @@
             text-transform: uppercase;
         }
 
-        /* --- CẤU HÌNH GIAO DIỆN HERO MỚI THEO THIẾT KẾ YÊU CẦU (TỐI ƯU CHO NỀN SÁNG) --- */
+        /* --- CẤU HÌNH TYPOGRAPHY BOLD HIỆN ĐẠI (SỬ DỤNG PHÔNG MẶC ĐỊNH, KHÔNG LO BỊ CHẶN FONT) --- */
         .tiemanh-hero-title-new {
-            font-size: 54px;
-            font-weight: 400;
-            line-height: 1.15;
-            color: #2e0813; /* Màu nâu đậm thương hiệu */
+            font-size: 56px;
+            font-weight: 800;
+            line-height: 1.05;
+            color: #2e0813;
             margin: 0 0 24px 0;
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 2px;
             align-items: flex-start;
+            font-family: 'Plus Jakarta Sans', 'Be Vietnam Pro', sans-serif;
         }
         .tiemanh-hero-title-new .title-serif {
-            font-family: 'Prata', serif;
-            font-size: 50px; /* Prata có nét chữ to hơn nên giảm nhẹ xuống 50px */
-            letter-spacing: -0.5px;
-            text-transform: none;
+            font-size: 52px;
+            font-weight: 800;
+            letter-spacing: -1.5px;
+            text-transform: uppercase;
             color: #2e0813;
+            font-family: inherit;
         }
         .tiemanh-hero-title-new .title-script {
-            font-family: 'Charm', cursive;
-            font-size: 88px; /* Charm có nét bút thanh mảnh tinh tế nên tăng lên 88px */
-            font-weight: 700;
+            font-size: 78px;
+            font-weight: 900;
             color: #d97706; /* Màu vàng hổ phách sẫm */
-            line-height: 0.75;
-            margin-left: 20px;
-            transform: rotate(-3deg);
+            line-height: 0.95;
+            margin-left: 0;
+            letter-spacing: -2.5px;
+            text-transform: uppercase;
+            text-shadow: 0 4px 15px rgba(217, 119, 6, 0.15);
+            font-family: inherit;
             display: inline-block;
-            text-shadow: 0 2px 10px rgba(217, 119, 6, 0.15);
-            text-transform: none;
         }
         .tiemanh-hero-title-new .title-serif-sub {
-            font-family: 'Prata', serif;
-            font-size: 46px;
+            font-size: 44px;
+            font-weight: 700;
             align-self: flex-start;
-            margin-left: 90px;
-            margin-top: -5px;
-            text-transform: none;
-            color: #2e0813;
+            margin-left: 60px;
+            text-transform: lowercase;
+            color: #5c3d46; /* Màu nâu nhạt hơn */
+            font-family: inherit;
+            letter-spacing: -1px;
         }
         .tiemanh-hero-desc {
             color: #5c3d46 !important; /* Đổi màu chữ mô tả sẫm dễ đọc */
