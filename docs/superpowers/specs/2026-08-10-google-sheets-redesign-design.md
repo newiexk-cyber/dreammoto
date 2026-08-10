@@ -83,24 +83,17 @@ function syncDriveToSheets() {
       return;
     }
     
-    // Tạo Map từ dữ liệu hiện tại để tra cứu nhanh bằng Folder ID
-    const sheetDataMap = new Map(); // Key: FolderID, Value: {rowNumber, themes, desc, hide, best}
+    // Tạo Map từ dữ liệu hiện tại để tra cứu nhanh bằng Folder ID (Lưu chỉ số index của hàng trong mảng values)
+    const sheetDataMap = new Map(); // Key: FolderID, Value: index (0-indexed)
     for (let r = 1; r < values.length; r++) {
       const fId = values[r][colIdx.folderId];
       if (fId) {
-        sheetDataMap.set(fId, {
-          rowNum: r + 1,
-          themes: values[r][colIdx.theme],
-          desc: values[r][colIdx.desc],
-          hide: values[r][colIdx.hide],
-          best: values[r][colIdx.best]
-        });
+        sheetDataMap.set(fId, r);
       }
     }
     
     let sttCounter = sheetDataMap.size;
     const processedFolderIds = new Set();
-    const rowsToInsert = [];
     
     // 2. Gọi đệ quy quét tất cả các thư mục chứa ảnh (Concept) bên dưới các Chi nhánh
     const conceptFoldersList = [];
@@ -109,6 +102,8 @@ function syncDriveToSheets() {
       const branchName = branchFolder.getName();
       findConceptFoldersRecursive(branchFolder, branchName, conceptFoldersList);
     }
+    
+    let newRowsCount = 0;
     
     // Duyệt qua toàn bộ danh sách concept đệ quy tìm thấy
     for (const concept of conceptFoldersList) {
@@ -126,21 +121,21 @@ function syncDriveToSheets() {
         }
       }
       
-      const existingRecord = sheetDataMap.get(conceptId);
-      
-      if (existingRecord) {
-        // A. Nếu đã tồn tại: Chỉ cập nhật các link ảnh và thông tin tự động, giữ nguyên phần người dùng nhập
-        const rowNum = existingRecord.rowNum;
-        sheet.getRange(rowNum, colIdx.branch + 1).setValue(concept.branchName);
-        sheet.getRange(rowNum, colIdx.title + 1).setValue(conceptName);
+      if (sheetDataMap.has(conceptId)) {
+        // A. Nếu đã tồn tại: Chỉ cập nhật các link ảnh và thông tin tự động trực tiếp trên mảng values (KHÔNG GỌI API GHI TRÊN TỪNG HÀNG)
+        const r = sheetDataMap.get(conceptId);
+        values[r][colIdx.branch] = concept.branchName;
+        values[r][colIdx.title] = conceptName;
         
         // Cập nhật 12 cột ảnh
-        sheet.getRange(rowNum, colIdx.imgStart + 1, 1, 12).setValues([imgUrls]);
+        for (let i = 0; i < 12; i++) {
+          values[r][colIdx.imgStart + i] = imgUrls[i];
+        }
       } else {
-        // B. Nếu chưa tồn tại (Concept mới): Chuẩn bị dòng mới để chèn vào
+        // B. Nếu chưa tồn tại (Concept mới): Chuẩn bị dòng mới và push trực tiếp vào mảng values
         sttCounter++;
-        const newRow = [];
-        newRow[colIdx.stt] = sttCounter;
+        const newRow = new Array(headers.length).fill("");
+        newRow[colIdx.stt] = values.length; // Lấy STT tiếp theo dựa trên số lượng dòng hiện tại
         newRow[colIdx.branch] = concept.branchName;
         newRow[colIdx.theme] = "";       // Nhập thủ công
         newRow[colIdx.title] = conceptName;
@@ -154,24 +149,22 @@ function syncDriveToSheets() {
         }
         newRow[colIdx.folderId] = conceptId;
         
-        rowsToInsert.push(newRow);
+        values.push(newRow);
+        newRowsCount++;
       }
     }
     
-    // Ghi các dòng mới vào Sheet
-    if (rowsToInsert.length > 0) {
-      sheet.getRange(sheet.getLastRow() + 1, 1, rowsToInsert.length, headers.length).setValues(rowsToInsert);
-    }
-    
-    // 3. Xử lý các Concept bị xóa trên Drive (Tự động tích Ẩn)
-    for (const [fId, record] of sheetDataMap.entries()) {
+    // 3. Xử lý các Concept bị xóa trên Drive: Tích chọn Ẩn (Cột F) trực tiếp trên mảng values
+    for (const [fId, r] of sheetDataMap.entries()) {
       if (!processedFolderIds.has(fId)) {
-        // Tích chọn Ẩn (Cột F)
-        sheet.getRange(record.rowNum, colIdx.hide + 1).setValue(true);
+        values[r][colIdx.hide] = true;
       }
     }
     
-    ui.alert("Đồng bộ hoàn tất", `Đồng bộ thành công!\n- Thêm mới: ${rowsToInsert.length} concept.\n- Cập nhật lại hình ảnh của các concept cũ.\n- Đã ẩn các concept bị xóa trên Drive.`, ui.ButtonSet.OK);
+    // 🔥 GHI TOÀN BỘ DỮ LIỆU ĐÃ CẬP NHẬT/THÊM MỚI XUỐNG SHEET CHỈ BẰNG MỘT LỆNH DUY NHẤT (Batch Write)
+    sheet.getRange(1, 1, values.length, headers.length).setValues(values);
+    
+    ui.alert("Đồng bộ hoàn tất", `Đồng bộ thành công bằng thuật toán tối ưu!\n- Tổng số concept trên Drive: ${conceptFoldersList.length}\n- Thêm mới: ${newRowsCount} concept.\n- Cập nhật lại hình ảnh của các concept cũ.\n- Đã tự động ẩn các concept bị xóa trên Drive.`, ui.ButtonSet.OK);
     
   } catch (error) {
     ui.alert("Lỗi đồng bộ", "Có lỗi xảy ra: " + error.toString(), ui.ButtonSet.OK);
