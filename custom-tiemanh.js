@@ -2311,6 +2311,7 @@
             }
             .tiemanh-pricing-grid {
                 display: flex;
+                align-items: stretch !important; /* Kéo giãn chiều cao cả 3 card bằng nhau 100% */
                 gap: 16px;
                 overflow-x: auto;
                 scroll-snap-type: x mandatory;
@@ -2327,6 +2328,7 @@
                 flex: 0 0 78%;
                 min-width: 280px;
                 scroll-snap-align: center;
+                height: auto !important; /* Đảm bảo flex stretch hoạt động kéo giãn chiều cao */
             }
             .tiemanh-pricing-nav-btn {
                 display: flex !important;
@@ -3911,6 +3913,7 @@
     let selectedTheme = "all";
     let currentPage = 1;
     const ITEMS_PER_PAGE = 6;
+    let activePricingScrollFn = null; // Lưu hàm cuộn bảng giá di động
 
     function setupGallery() {
         const grid = document.getElementById("conceptGrid");
@@ -4526,6 +4529,13 @@
                 const topPos = targetEl.offsetTop - navHeight - 10;
                 container.scrollTo({ top: Math.max(0, topPos), behavior: "smooth" });
             }
+
+            // GẮN CHẶT MOBILE CAROUSEL GÓI TOẢ SÁNG: Nếu cuộn tới bảng giá trên di động, tự động ghim gói Tỏa Sáng ở giữa
+            if (targetId === "banggiaSection" && window.innerWidth <= 991 && activePricingScrollFn) {
+                setTimeout(() => {
+                    activePricingScrollFn(1);
+                }, 300);
+            }
         }
 
         // Xử lý cuộn mượt cho toàn bộ Menu Header
@@ -4772,6 +4782,8 @@
         setTimeout(() => {
             scrollToPackage(1);
         }, 1000);
+
+        activePricingScrollFn = scrollToPackage; // Lưu lại tham chiếu hàm cuộn
     }
 
     // Hàm kích hoạt kéo chuột mượt mà (Drag to Scroll) cho PC và hỗ trợ cảm ứng Mobile
