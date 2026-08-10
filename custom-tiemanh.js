@@ -3607,31 +3607,34 @@
     function getThemeInfo(themeName) {
         const clean = cleanTextForMatching(themeName);
         if (clean.includes("NANGTHO") || clean.includes("THO") || clean.includes("TIENNU")) {
-            return { icon: "🍍", color: "#ff758f", bg: "rgba(255,117,143,0.12)" };
+            return { icon: "🌸", color: "#ff758f", bg: "rgba(255,117,143,0.12)" };
         }
         if (clean.includes("COTRANG") || clean.includes("HANPHUC") || clean.includes("KIMONO")) {
-            return { icon: "🍍", color: "#7209b7", bg: "rgba(114,9,183,0.12)" };
+            return { icon: "🏮", color: "#7209b7", bg: "rgba(114,9,183,0.12)" };
         }
         if (clean.includes("AODAI") || clean.includes("YEM")) {
-            return { icon: "🍍", color: "#d97706", bg: "rgba(217,119,6,0.12)" };
+            return { icon: "👗", color: "#d97706", bg: "rgba(217,119,6,0.12)" };
         }
         if (clean.includes("BEAUTY") || clean.includes("CHANDUNG") || clean.includes("PROFILE")) {
-            return { icon: "🍍", color: "#2563eb", bg: "rgba(37,99,235,0.12)" };
+            return { icon: "👤", color: "#2563eb", bg: "rgba(37,99,235,0.12)" };
         }
         if (clean.includes("SINHNHAT") || clean.includes("BIRTHDAY") || clean.includes("SN")) {
-            return { icon: "🍍", color: "#d97706", bg: "rgba(217,119,6,0.12)" };
+            return { icon: "🎂", color: "#d97706", bg: "rgba(217,119,6,0.12)" };
         }
-        if (clean.includes("CATINH") || clean.includes("SEXY") || clean.includes("BIEN") || clean.includes("STREET")) {
-            return { icon: "🍍", color: "#dc2626", bg: "rgba(220,38,38,0.12)" };
+        if (clean.includes("CATINH") || clean.includes("SEXY") || clean.includes("STREET")) {
+            return { icon: "🔥", color: "#dc2626", bg: "rgba(220,38,38,0.12)" };
+        }
+        if (clean.includes("BIEN") || clean.includes("OCEAN") || clean.includes("BEACH")) {
+            return { icon: "🌊", color: "#0284c7", bg: "rgba(2,132,199,0.12)" };
         }
         if (clean.includes("COUPLE") || clean.includes("DOI") || clean.includes("BANTHAN")) {
-            return { icon: "🍍", color: "#db2777", bg: "rgba(219,39,119,0.12)" };
+            return { icon: "💖", color: "#db2777", bg: "rgba(219,39,119,0.12)" };
         }
         if (clean.includes("NOEL") || clean.includes("GIANGSINH")) {
-            return { icon: "🍍", color: "#dc2626", bg: "rgba(220,38,38,0.12)" };
+            return { icon: "🎄", color: "#dc2626", bg: "rgba(220,38,38,0.12)" };
         }
         if (clean.includes("TET") || clean.includes("XUAN")) {
-            return { icon: "🍍", color: "#ea580c", bg: "rgba(234,88,12,0.12)" };
+            return { icon: "🧧", color: "#ea580c", bg: "rgba(234,88,12,0.12)" };
         }
         return { icon: "🍍", color: "#f59e0b", bg: "rgba(245,158,11,0.12)" };
     }
