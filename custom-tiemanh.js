@@ -3566,91 +3566,16 @@
     function extractMultiTagsSmart(rawTheme, rawTitle, rawDesc) {
         // Nếu có rawTheme (chủ đề do người dùng nhập từ Sheet), phân tách bằng dấu phẩy và trả về trực tiếp
         if (rawTheme && String(rawTheme).trim().length > 0) {
-            const rawParts = String(rawTheme).split(",").map(t => t.trim()).filter(Boolean);
-            // Ánh xạ tương thích ngược các tag/slug cũ sang tiếng Việt đẹp
-            return rawParts.map(t => {
-                const rawTrim = t.trim().toLowerCase();
-                if (rawTrim === "nutinh" || rawTrim === "nangtho") return "Nàng Thơ";
-                if (rawTrim === "catinh" || rawTrim === "sexy" || rawTrim === "street" || rawTrim === "streetstyle") return "Cá Tính & Sexy";
-                if (rawTrim === "couple" || rawTrim === "doi" || rawTrim === "banthan") return "Couple";
-                if (rawTrim === "giadinh") return "Gia Đình";
-                if (rawTrim === "kyyeu") return "Kỷ Yếu";
-                if (rawTrim === "profile" || rawTrim === "chandung" || rawTrim === "beauty") return "Beauty";
-                if (rawTrim === "cotrang") return "Cổ Trang";
-                if (rawTrim === "aodai") return "Áo Dài";
-                if (rawTrim === "noel") return "Noel";
-                if (rawTrim === "tet") return "Tết";
-                if (rawTrim === "sinhnhat") return "Sinh Nhật";
-                return t; // Giữ nguyên nếu là chủ đề tự nhập mới
-            });
+            return String(rawTheme)
+                .split(",")
+                .map(t => t.trim())
+                .filter(Boolean);
         }
 
-        const fullText = `${rawTheme || ''} ${rawTitle || ''} ${rawDesc || ''}`
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .replace(/Đ/g, "D")
-            .replace(/đ/g, "d")
-            .toUpperCase();
-
-        const tags = [];
-        const seen = new Set();
-
-        function addTag(tagName) {
-            const key = tagName.toUpperCase();
-            if (!seen.has(key)) {
-                seen.add(key);
-                tags.push(tagName);
-            }
-        }
-
-        // 1. Áo Dài
-        if (fullText.includes("AO DAI") || fullText.includes("AODAI") || fullText.includes("YEM")) {
-            addTag("Áo Dài");
-        }
-        // 2. Cổ Trang
-        if (fullText.includes("CO TRANG") || fullText.includes("COTRANG") || fullText.includes("HAN PHUC") || fullText.includes("KIMONO")) {
-            addTag("Cổ Trang");
-        }
-        // 3. Noel
-        if (fullText.includes("NOEL") || fullText.includes("GIANG SINH")) {
-            addTag("Noel");
-        }
-        // 4. Tết
-        if (fullText.includes("TET") || fullText.includes("XUAN")) {
-            addTag("Tết");
-        }
-        // 5. Sinh Nhật
-        if (fullText.includes("SINH NHAT") || fullText.includes("SINHNHAT") || fullText.includes("SN") || fullText.includes("BIRTHDAY") || fullText.includes("PARTY")) {
-            addTag("Sinh Nhật");
-        }
-        // 6. Beauty
-        if (fullText.includes("BEAUTY") || fullText.includes("CHAN DUNG") || fullText.includes("CHANDUNG") || fullText.includes("PROFILE") || fullText.includes("LOOKBOOK")) {
-            addTag("Beauty");
-        }
-        // 7. Cá Tính & Sexy (Lọc chính xác từ khóa, không nhận nhầm Biên Hòa hay Biển)
-        const isSexyOrEdgy = (
-            /\b(SEXY|QUYEN\s*RU|GOI\s*CAM|LINGERIE|BIKINI)\b/i.test(fullText) ||
-            /\b(CA\s*TINH|CATINH|STREET\s*STYLE|STREETSTYLE|EDGY|PUNK|BIEN\s*HINH)\b/i.test(fullText)
-        );
-        if (isSexyOrEdgy) {
-            addTag("Cá Tính & Sexy");
-        }
-        // 8. Couple
-        if (fullText.includes("COUPLE") || fullText.includes("DOI") || fullText.includes("BAN THAN") || fullText.includes("TINH YEU")) {
-            addTag("Couple");
-        }
-        // 9. Nàng Thơ (Chỉ gán nếu có từ khóa Nàng Thơ hoặc chưa có tag nào)
-        if (fullText.includes("NANG THO") || fullText.includes("NANGTHO") || fullText.includes("THO") || fullText.includes("TIEN NU") || fullText.includes("MAO LUONG")) {
-            addTag("Nàng Thơ");
-        }
-
-        // Nếu hoàn toàn không khớp tag nào, mặc định là Nàng Thơ
-        if (tags.length === 0) {
-            tags.push("Nàng Thơ");
-        }
-
-        return tags;
+        // Nếu hoàn toàn không có chủ đề, mặc định là "Concept"
+        return ["Concept"];
     }
+
 
     // Hàm lấy Icon và Màu sắc chủ đạo tương ứng với 9 Chủ Đề Chuẩn
     function getThemeInfo(themeName) {
