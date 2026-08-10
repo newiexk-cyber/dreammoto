@@ -887,21 +887,7 @@
         }
         .tiemanh-filter-scroll-wrap::before,
         .tiemanh-filter-scroll-wrap::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 40px;
-            pointer-events: none;
-            z-index: 2;
-        }
-        .tiemanh-filter-scroll-wrap::before {
-            left: 0;
-            background: linear-gradient(to right, var(--tiemanh-bg) 0%, transparent 100%);
-        }
-        .tiemanh-filter-scroll-wrap::after {
-            right: 0;
-            background: linear-gradient(to left, var(--tiemanh-bg) 0%, transparent 100%);
+            display: none !important;
         }
 
         .tiemanh-filter-bar {
