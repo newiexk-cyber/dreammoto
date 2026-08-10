@@ -2638,7 +2638,7 @@
 
         @media (max-width: 768px) {
             /* Khoảng cách & cỡ chữ thanh thoát, không bị ngợp */
-            .tiemanh-section-title { font-size: 26px; }
+            .tiemanh-sec-title, .tiemanh-section-title { font-size: 24px; }
             .tiemanh-section-subtitle { font-size: 12px; letter-spacing: 1.5px; }
             .tiemanh-section-desc { font-size: 13.5px; margin-bottom: 22px; line-height: 1.5; }
             .tiemanh-section-container { padding: 25px 14px; }
