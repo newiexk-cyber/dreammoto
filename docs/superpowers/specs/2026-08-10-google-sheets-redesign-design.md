@@ -185,21 +185,18 @@ function findConceptFoldersRecursive(folder, branchName, conceptFoldersList) {
     }
   }
   
-  // Nếu thư mục này chứa ảnh trực tiếp
-  if (images.length > 0) {
-    if (images.length >= 1 && images.length <= 12) {
-      images.sort();
-      conceptFoldersList.push({
-        folderId: folder.getId(),
-        conceptName: folder.getName(),
-        branchName: branchName,
-        images: images
-      });
-    }
-    return;
+  // Nếu thư mục này chứa ảnh trực tiếp (chỉ cần có từ 1 ảnh trở lên, không giới hạn tối đa 12 ảnh nữa)
+  if (images.length >= 1) {
+    images.sort();
+    conceptFoldersList.push({
+      folderId: folder.getId(),
+      conceptName: folder.getName(),
+      branchName: branchName,
+      images: images
+    });
   }
   
-  // Nếu không chứa ảnh trực tiếp, duyệt sâu xuống các thư mục con
+  // Luôn đi đến tận cùng - duyệt đệ quy qua toàn bộ các thư mục con bên dưới
   const subFolders = folder.getFolders();
   while (subFolders.hasNext()) {
     const subFolder = subFolders.next();
