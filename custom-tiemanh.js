@@ -2963,7 +2963,7 @@
                                 <li>01 trang phục</li>
                                 <li>05 ảnh chỉnh sửa</li>
                                 <li>Thời gian chụp 30-45 phút</li>
-                                <li>Nhận full ảnh gốc trong 24h</li>
+                                <li>Nhận full ảnh gốc trong 25h</li>
                             </ul>
                             <div class="price-desc-highlight">⏰ Khách hàng <strong>chụp trải nghiệm nhanh</strong></div>
                             <div class="price-desc-fit">⭐ <strong>Phù hợp:</strong> Chụp kỷ niệm, sinh nhật.</div>
@@ -4740,8 +4740,8 @@
         // Kiểm tra URL xem khách có vào bằng link concept riêng không
         checkUrlAndOpenConcept();
 
-        // Kích hoạt Bảng giá (tải tự động từ Sheets hoặc dùng mặc định)
-        fetchPricingFromSheets();
+        // Kích hoạt Bảng giá (sử dụng bảng giá tĩnh định nghĩa trực tiếp trong file HTML bên trên)
+        setupPricingCarousel();
 
         // Xử lý cuộn mượt cho các liên kết ở Footer
         const footerLinks = document.querySelectorAll(".tiemanh-footer-links a");
