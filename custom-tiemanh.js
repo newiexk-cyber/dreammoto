@@ -3300,7 +3300,7 @@
                         </div>
                         <h4>Chi Nhánh Quận 1 – TP. HCM</h4>
                         <p>🏠 214/19/21 Nguyễn Văn Nguyễn, Phường Tân Định, Quận 1, TP. Hồ Chí Minh</p>
-                        <p class="hotline">📞 0908 447 308 – 0866 723 499</p>
+                        <p class="hotline">📞 <a href="tel:0908447308" style="color:inherit;text-decoration:none;font-weight:700;">0908 447 308</a> – <a href="tel:0866723499" style="color:inherit;text-decoration:none;font-weight:700;">0866 723 499</a></p>
                         <a href="https://maps.google.com/?q=214/19/21+Nguy%E1%BB%85n+V%C4%83n+Nguy%E1%BB%85n,+Ph%C6%B0%E1%BB%9Dng+T%C3%A2n+%C4%90%E1%BB%8Bnh,+Qu%E1%BA%ADn+1,+TP.+H%E1%BB%93+Ch%C3%AD+Minh" target="_blank" rel="noopener" class="tiemanh-branch-map-btn" title="Xem vị trí và chỉ đường trên Google Maps">
                             <span>🗺️ Xem trên Google Maps</span>
                             <span class="arrow">➔</span>
@@ -3315,7 +3315,7 @@
                         </div>
                         <h4>Chi Nhánh Thủ Đức</h4>
                         <p>🏠 81 Chương Dương, Phường Linh Chiểu, TP. Thủ Đức, TP. Hồ Chí Minh</p>
-                        <p class="hotline">📞 0908 447 308 (Hotline Studio)</p>
+                        <p class="hotline">📞 <a href="tel:0908447308" style="color:inherit;text-decoration:none;font-weight:700;">0908 447 308</a> (Hotline Studio)</p>
                         <a href="https://maps.google.com/?q=81+Ch%C6%B0%C6%A1ng+D%C6%B0%C6%A1ng,+Ph%C6%B0%E1%BB%9Dng+Linh+Chi%E1%BB%83u,+Th%E1%BB%A7+%C4%90%E1%BB%A9c,+TP.+H%E1%BB%93+Ch%C3%AD+Minh" target="_blank" rel="noopener" class="tiemanh-branch-map-btn" title="Xem vị trí và chỉ đường trên Google Maps">
                             <span>🗺️ Xem trên Google Maps</span>
                             <span class="arrow">➔</span>
@@ -3330,7 +3330,7 @@
                         </div>
                         <h4>Chi Nhánh Đà Nẵng</h4>
                         <p>🏠 62 Nại Nam, Phường Hòa Cường Bắc, Quận Hải Châu, Đà Nẵng</p>
-                        <p class="hotline">📞 0337 733 455</p>
+                        <p class="hotline">📞 <a href="tel:0337733455" style="color:inherit;text-decoration:none;font-weight:700;">0337 733 455</a></p>
                         <a href="https://maps.google.com/?q=62+N%E1%BA%A1i+Nam,+Ph%C6%B0%E1%BB%9Dng+H%C3%B2a+C%C6%B0%E1%BB%9Dng+B%E1%BA%AFc,+H%E1%BA%A3i+Ch%C3%A2u,+%C4%90%C3%A0+N%E1%BA%B5ng" target="_blank" rel="noopener" class="tiemanh-branch-map-btn" title="Xem vị trí và chỉ đường trên Google Maps">
                             <span>🗺️ Xem trên Google Maps</span>
                             <span class="arrow">➔</span>
@@ -3345,7 +3345,7 @@
                         </div>
                         <h4>Chi Nhánh Biên Hòa – Đồng Nai</h4>
                         <p>🏠 Số 8, Đường N1 (song song đường Võ Thị Sáu), Phường Thống Nhất, Biên Hòa</p>
-                        <p class="hotline">📞 0366 444 426</p>
+                        <p class="hotline">📞 <a href="tel:0366444426" style="color:inherit;text-decoration:none;font-weight:700;">0366 444 426</a></p>
                         <a href="https://maps.google.com/?q=S%E1%BB%91+8,+%C4%90%C6%B0%E1%BB%9Dng+N1,+Ph%C6%B0%E1%BB%9Dng+Th%E1%BB%91ng+Nh%E1%BA%A5t,+Bi%C3%AAn+H%C3%B2a,+%C4%90%E1%BB%93ng+Nai" target="_blank" rel="noopener" class="tiemanh-branch-map-btn" title="Xem vị trí và chỉ đường trên Google Maps">
                             <span>🗺️ Xem trên Google Maps</span>
                             <span class="arrow">➔</span>
@@ -3360,7 +3360,7 @@
                         </div>
                         <h4>Chi Nhánh Cần Thơ</h4>
                         <p>🏠 A12 Đường Số 1, Khu Dân Cư Nam Long, Cần Thơ</p>
-                        <p class="hotline">📞 0949 533 251</p>
+                        <p class="hotline">📞 <a href="tel:0949533251" style="color:inherit;text-decoration:none;font-weight:700;">0949 533 251</a></p>
                         <a href="https://maps.google.com/?q=A12+%C4%90%C6%B0%E1%BB%9Dng+S%E1%BB%91+1,+Khu+D%C3%A2n+C%C6%B0+Nam+Long,+C%E1%BA%A7n+Th%C6%A1" target="_blank" rel="noopener" class="tiemanh-branch-map-btn" title="Xem vị trí và chỉ đường trên Google Maps">
                             <span>🗺️ Xem trên Google Maps</span>
                             <span class="arrow">➔</span>
@@ -3375,7 +3375,7 @@
                         </div>
                         <h4>Chi Nhánh Bình Dương</h4>
                         <p>🏠 6 Đường Số 3, Phường Phú Hòa, TP. Thủ Dầu Một, Bình Dương</p>
-                        <p class="hotline">📞 0367 416 058</p>
+                        <p class="hotline">📞 <a href="tel:0367416058" style="color:inherit;text-decoration:none;font-weight:700;">0367 416 058</a></p>
                         <a href="https://maps.google.com/?q=6+%C4%90%C6%B0%E1%BB%9Dng+S%E1%BB%91+3,+Ph%C6%B0%E1%BB%9Dng+Ph%C3%BA+H%C3%B2a,+Th%E1%BB%A7+D%E1%BA%A7u+M%E1%BB%99t,+B%C3%ACnh+D%C6%B0%C6%A1ng" target="_blank" rel="noopener" class="tiemanh-branch-map-btn" title="Xem vị trí và chỉ đường trên Google Maps">
                             <span>🗺️ Xem trên Google Maps</span>
                             <span class="arrow">➔</span>
@@ -3419,7 +3419,7 @@
                     <div class="tiemanh-footer-col">
                         <h4 class="tiemanh-footer-title">Liên Hệ & Chi Nhánh</h4>
                         <ul class="tiemanh-footer-contacts">
-                            <li><span class="icon">📞</span> <span>Hotline: 0908 447 308</span></li>
+                            <li><span class="icon">📞</span> <span>Hotline: <a href="tel:0908447308" style="color:var(--tiemanh-primary);text-decoration:none;font-weight:700;">0908 447 308</a></span></li>
                             <li><span class="icon">💬</span> <span>Zalo: <a href="https://zalo.me/3453208760470152361" target="_blank" style="color:var(--tiemanh-primary);text-decoration:none;font-weight:700;">Nhắn tin qua Zalo OA</a></span></li>
                             <li><span class="icon">✉️</span> <span>Email: tiemanhtraithom@gmail.com</span></li>
                             <li class="address-line"><span class="icon">📍</span> <span>CS Quận 1: 214/19/21 Nguyễn Văn Nguyễn, P. Tân Định, Q.1</span></li>
