@@ -3901,6 +3901,125 @@
         }, 3000);
     }
 
+    // 4c. Tải dữ liệu bảng giá tự động từ tab "cấu hình gói giá" của Google Sheets
+    async function fetchPricingFromSheets() {
+        if (!CONFIG.sheetId) {
+            setupPricingCarousel();
+            return;
+        }
+        // Gọi export dạng CSV để bypass hoàn toàn CORS và lấy dữ liệu nhanh nhất
+        const url = `https://docs.google.com/spreadsheets/d/${CONFIG.sheetId}/export?format=csv&sheet=${encodeURIComponent("cấu hình gói giá")}`;
+        try {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error("Không thể tải cấu hình gói giá");
+            const csvText = await response.text();
+            const packages = parsePricingCSV(csvText);
+            if (packages && packages.length > 0) {
+                renderPricingCards(packages);
+            }
+        } catch (error) {
+            console.warn("[TiệmẢnh] Không thể tải bảng giá từ Sheets (Tab 'cấu hình gói giá' chưa tồn tại hoặc bị lỗi). Đang dùng bảng giá mặc định.");
+        } finally {
+            // Luôn luôn khởi tạo Carousel để các nút bấm hoạt động bình thường
+            setupPricingCarousel();
+        }
+    }
+
+    // Phân tích cú pháp CSV nâng cao (hỗ trợ các chuỗi có dấu nháy kép, dấu xuống dòng)
+    function parsePricingCSV(text) {
+        const lines = [];
+        let row = [""];
+        let inQuotes = false;
+
+        for (let i = 0; i < text.length; i++) {
+            const c = text[i];
+            const next = text[i + 1];
+            if (c === '"') {
+                if (inQuotes && next === '"') {
+                    row[row.length - 1] += '"';
+                    i++;
+                } else {
+                    inQuotes = !inQuotes;
+                }
+            } else if (c === ',' && !inQuotes) {
+                row.push('');
+            } else if ((c === '\r' || c === '\n') && !inQuotes) {
+                if (c === '\r' && next === '\n') i++;
+                lines.push(row);
+                row = [''];
+            } else {
+                row[row.length - 1] += c;
+            }
+        }
+        if (row.length > 1 || row[0] !== '') {
+            lines.push(row);
+        }
+
+        if (lines.length < 2) return [];
+
+        const packages = [];
+        for (let i = 1; i < lines.length; i++) {
+            const cells = lines[i];
+            if (cells.length < 2 || !cells[0]) continue; // Bỏ qua dòng trống
+
+            const pkg = {
+                name: cells[0]?.trim() || "",
+                price: cells[1]?.trim() || "",
+                features: cells[2]?.trim() || "",
+                highlight: cells[3]?.trim() || "",
+                fit: cells[4]?.trim() || "",
+                ribbon: cells[5]?.trim() || "",
+                bestSeller: cells[6]?.trim() || "",
+                featured: (cells[7]?.trim() || "").toLowerCase() === "true" || (cells[7]?.trim() || "").toLowerCase() === "có"
+            };
+            packages.push(pkg);
+        }
+        return packages;
+    }
+
+    // Vẽ giao diện các price card từ mảng dữ liệu lấy được
+    function renderPricingCards(packages) {
+        const slider = document.getElementById("pricingSlider");
+        if (!slider) return;
+
+        let html = "";
+        packages.forEach((pkg, index) => {
+            const isFeatured = pkg.featured ? "featured" : "";
+            const featureList = pkg.features.split(/[|\n]/)
+                .map(f => f.trim())
+                .filter(f => f.length > 0)
+                .map(f => `<li>${f}</li>`)
+                .join("");
+
+            html += `
+                <!-- Gói ${pkg.name} -->
+                <div class="tiemanh-price-card ${isFeatured}" data-pkg="${index}">
+                    ${pkg.ribbon ? `<div class="tiemanh-price-badge">${pkg.ribbon}</div>` : ""}
+                    <h3>${pkg.name}</h3>
+                    <div class="tiemanh-price-tag">${pkg.price} <span>đ</span></div>
+                    <ul class="tiemanh-price-features">
+                        ${featureList}
+                    </ul>
+                    ${pkg.highlight ? `<div class="price-desc-highlight">${pkg.highlight}</div>` : ""}
+                    ${pkg.fit ? `<div class="price-desc-fit">${pkg.fit}</div>` : ""}
+                    ${pkg.bestSeller ? `<div class="price-best-seller">${pkg.bestSeller}</div>` : ""}
+                </div>
+            `;
+        });
+        slider.innerHTML = html;
+
+        // Cập nhật lại dots phân trang ở dưới
+        const dotsContainer = document.getElementById("pricingDots");
+        if (dotsContainer) {
+            let dotsHtml = "";
+            packages.forEach((pkg, index) => {
+                const activeClass = index === 1 ? "active" : "";
+                dotsHtml += `<button class="tiemanh-pricing-dot ${activeClass}" data-index="${index}" title="${pkg.name}"></button>`;
+            });
+            dotsContainer.innerHTML = dotsHtml;
+        }
+    }
+
     // 5. Quản lý danh sách Concept, Phân trang và Bộ Lọc (Lọc kép)
     let currentFiltered = [...CONCEPTS];
     let selectedBranch = "all";
@@ -4630,8 +4749,8 @@
         // Kiểm tra URL xem khách có vào bằng link concept riêng không
         checkUrlAndOpenConcept();
 
-        // Kích hoạt Bảng giá Carousel kéo trượt & vòng lặp 3 gói
-        setupPricingCarousel();
+        // Kích hoạt Bảng giá (tải tự động từ Sheets hoặc dùng mặc định)
+        fetchPricingFromSheets();
 
         // Xử lý cuộn mượt cho các liên kết ở Footer
         const footerLinks = document.querySelectorAll(".tiemanh-footer-links a");
