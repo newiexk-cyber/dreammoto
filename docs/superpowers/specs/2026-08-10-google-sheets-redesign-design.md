@@ -28,13 +28,20 @@ Mã nguồn Apps Script dưới đây sẽ được tích hợp vào Google Shee
 ### Mã nguồn Google Apps Script:
 ```javascript
 // Cấu hình ID thư mục gốc chứa toàn bộ chi nhánh trên Google Drive của bạn
-const ROOT_FOLDER_ID = "YOUR_GOOGLE_DRIVE_FOLDER_ID_HERE"; 
+const ROOT_FOLDER_ID = "1NPnZ-KHeJb4HY3pumreapPrwbs2UXzvn"; 
 
 function onOpen() {
   const ui = SpreadsheetApp.getUi();
   ui.createMenu("🍇 Đồng bộ Tiệm Ảnh")
     .addItem("🔄 Đồng bộ dữ liệu từ Drive", "syncDriveToSheets")
+    .addItem("🛠️ Khởi tạo bảng trắng tinh", "runInitialization")
     .addToUi();
+}
+
+function runInitialization() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  initializeHeaders(sheet);
+  SpreadsheetApp.getUi().alert("Khởi tạo thành công", "Đã chèn hàng tiêu đề cột thành công. Bây giờ bạn có thể nhấn 'Đồng bộ dữ liệu từ Drive'!", SpreadsheetApp.getUi().ButtonSet.OK);
 }
 
 function syncDriveToSheets() {
@@ -95,81 +102,59 @@ function syncDriveToSheets() {
     const processedFolderIds = new Set();
     const rowsToInsert = [];
     
-    // 2. Duyệt qua từng Chi nhánh (Thư mục con cấp 1)
+    // 2. Gọi đệ quy quét tất cả các thư mục chứa ảnh (Concept) bên dưới các Chi nhánh
+    const conceptFoldersList = [];
     while (branchFolders.hasNext()) {
       const branchFolder = branchFolders.next();
       const branchName = branchFolder.getName();
-      const conceptFolders = branchFolder.getFolders();
+      findConceptFoldersRecursive(branchFolder, branchName, conceptFoldersList);
+    }
+    
+    // Duyệt qua toàn bộ danh sách concept đệ quy tìm thấy
+    for (const concept of conceptFoldersList) {
+      const conceptId = concept.folderId;
+      const conceptName = concept.conceptName;
+      processedFolderIds.add(conceptId);
       
-      // Duyệt qua từng Concept (Thư mục con cấp 2)
-      while (conceptFolders.hasNext()) {
-        const conceptFolder = conceptFolders.next();
-        const conceptName = conceptFolder.getName();
-        const conceptId = conceptFolder.getId();
-        processedFolderIds.add(conceptId);
-        
-        // Lấy tất cả tệp ảnh trong thư mục
-        const files = conceptFolder.getFiles();
-        const images = [];
-        const allowedExtensions = ["jpg", "jpeg", "png", "webp", "heic"];
-        
-        while (files.hasNext()) {
-          const file = files.next();
-          const ext = file.getName().split('.').pop().toLowerCase();
-          if (allowedExtensions.includes(ext)) {
-            images.push(file.getId());
-          }
-        }
-        
-        // 🚨 RÀNG BUỘC SỐ LƯỢNG ẢNH: tối thiểu 1 ảnh, tối đa 12 ảnh
-        if (images.length < 1 || images.length > 12) {
-          console.warn(`Bỏ qua concept "${conceptName}" vì có ${images.length} ảnh (Ràng buộc: 1 - 12 ảnh).`);
-          continue; 
-        }
-        
-        // Sắp xếp ảnh theo tên để giữ thứ tự ổn định
-        images.sort();
-        
-        // Chuẩn bị 12 cột ảnh (điền link trực tiếp, thiếu thì để trống)
-        const imgUrls = [];
-        for (let i = 0; i < 12; i++) {
-          if (i < images.length) {
-            imgUrls.push(`https://drive.google.com/file/d/${images[i]}/view`);
-          } else {
-            imgUrls.push("");
-          }
-        }
-        
-        const existingRecord = sheetDataMap.get(conceptId);
-        
-        if (existingRecord) {
-          // A. Nếu đã tồn tại: Chỉ cập nhật các link ảnh và thông tin tự động, giữ nguyên phần người dùng nhập
-          const rowNum = existingRecord.rowNum;
-          sheet.getRange(rowNum, colIdx.branch + 1).setValue(branchName);
-          sheet.getRange(rowNum, colIdx.title + 1).setValue(conceptName);
-          
-          // Cập nhật 12 cột ảnh
-          sheet.getRange(rowNum, colIdx.imgStart + 1, 1, 12).setValues([imgUrls]);
+      // Chuẩn bị 12 cột ảnh (điền link trực tiếp, thiếu thì để trống)
+      const imgUrls = [];
+      for (let i = 0; i < 12; i++) {
+        if (i < concept.images.length) {
+          imgUrls.push(`https://drive.google.com/file/d/${concept.images[i]}/view`);
         } else {
-          // B. Nếu chưa tồn tại (Concept mới): Chuẩn bị dòng mới để chèn vào
-          sttCounter++;
-          const newRow = [];
-          newRow[colIdx.stt] = sttCounter;
-          newRow[colIdx.branch] = branchName;
-          newRow[colIdx.theme] = "";       // Nhập thủ công
-          newRow[colIdx.title] = conceptName;
-          newRow[colIdx.desc] = "";        // Nhập thủ công
-          newRow[colIdx.hide] = false;     // Mặc định hiện
-          newRow[colIdx.best] = false;     // Mặc định không nổi bật
-          
-          // Điền link ảnh
-          for (let i = 0; i < 12; i++) {
-            newRow[colIdx.imgStart + i] = imgUrls[i];
-          }
-          newRow[colIdx.folderId] = conceptId;
-          
-          rowsToInsert.push(newRow);
+          imgUrls.push("");
         }
+      }
+      
+      const existingRecord = sheetDataMap.get(conceptId);
+      
+      if (existingRecord) {
+        // A. Nếu đã tồn tại: Chỉ cập nhật các link ảnh và thông tin tự động, giữ nguyên phần người dùng nhập
+        const rowNum = existingRecord.rowNum;
+        sheet.getRange(rowNum, colIdx.branch + 1).setValue(concept.branchName);
+        sheet.getRange(rowNum, colIdx.title + 1).setValue(conceptName);
+        
+        // Cập nhật 12 cột ảnh
+        sheet.getRange(rowNum, colIdx.imgStart + 1, 1, 12).setValues([imgUrls]);
+      } else {
+        // B. Nếu chưa tồn tại (Concept mới): Chuẩn bị dòng mới để chèn vào
+        sttCounter++;
+        const newRow = [];
+        newRow[colIdx.stt] = sttCounter;
+        newRow[colIdx.branch] = concept.branchName;
+        newRow[colIdx.theme] = "";       // Nhập thủ công
+        newRow[colIdx.title] = conceptName;
+        newRow[colIdx.desc] = "";        // Nhập thủ công
+        newRow[colIdx.hide] = false;     // Mặc định hiện
+        newRow[colIdx.best] = false;     // Mặc định không nổi bật
+        
+        // Điền link ảnh
+        for (let i = 0; i < 12; i++) {
+          newRow[colIdx.imgStart + i] = imgUrls[i];
+        }
+        newRow[colIdx.folderId] = conceptId;
+        
+        rowsToInsert.push(newRow);
       }
     }
     
@@ -190,6 +175,42 @@ function syncDriveToSheets() {
     
   } catch (error) {
     ui.alert("Lỗi đồng bộ", "Có lỗi xảy ra: " + error.toString(), ui.ButtonSet.OK);
+  }
+}
+
+// Hàm duyệt đệ quy từ thư mục chi nhánh xuống để tìm các thư mục chứa ảnh (Concept)
+function findConceptFoldersRecursive(folder, branchName, conceptFoldersList) {
+  const files = folder.getFiles();
+  const images = [];
+  const allowedExtensions = ["jpg", "jpeg", "png", "webp", "heic"];
+  
+  while (files.hasNext()) {
+    const file = files.next();
+    const ext = file.getName().split('.').pop().toLowerCase();
+    if (allowedExtensions.includes(ext)) {
+      images.push(file.getId());
+    }
+  }
+  
+  // Nếu thư mục này chứa ảnh trực tiếp
+  if (images.length > 0) {
+    if (images.length >= 1 && images.length <= 12) {
+      images.sort();
+      conceptFoldersList.push({
+        folderId: folder.getId(),
+        conceptName: folder.getName(),
+        branchName: branchName,
+        images: images
+      });
+    }
+    return;
+  }
+  
+  // Nếu không chứa ảnh trực tiếp, duyệt sâu xuống các thư mục con
+  const subFolders = folder.getFolders();
+  while (subFolders.hasNext()) {
+    const subFolder = subFolders.next();
+    findConceptFoldersRecursive(subFolder, branchName, conceptFoldersList);
   }
 }
 
