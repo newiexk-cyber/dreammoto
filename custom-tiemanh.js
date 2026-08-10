@@ -2818,6 +2818,189 @@
             box-shadow: 0 2px 6px rgba(239, 68, 68, 0.3);
             text-transform: uppercase;
         }
+
+        /* --- CẤU HÌNH GIAO DIỆN HERO MỚI THEO THIẾT KẾ YÊU CẦU --- */
+        .tiemanh-hero-title-new {
+            font-size: 54px;
+            font-weight: 400;
+            line-height: 1.15;
+            color: #ffffff;
+            margin: 0 0 24px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            align-items: flex-start;
+        }
+        .tiemanh-hero-title-new .title-serif {
+            font-family: 'Playfair Display', serif;
+            font-size: 52px;
+            letter-spacing: -0.5px;
+            text-transform: none;
+            color: #ffffff;
+        }
+        .tiemanh-hero-title-new .title-script {
+            font-family: 'Pinyon Script', cursive;
+            font-size: 78px;
+            color: #f59e0b; /* Vàng ánh kim */
+            line-height: 0.8;
+            margin-left: 20px;
+            transform: rotate(-3deg);
+            display: inline-block;
+            text-shadow: 0 0 20px rgba(245, 158, 11, 0.2);
+            text-transform: none;
+        }
+        .tiemanh-hero-title-new .title-serif-sub {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            align-self: flex-start;
+            margin-left: 90px;
+            margin-top: -5px;
+            text-transform: none;
+            color: #ffffff;
+        }
+
+        /* Khung thông số Stats */
+        .tiemanh-hero-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin: 28px 0;
+            width: 100%;
+            max-width: 480px;
+        }
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 10px 14px;
+            border-radius: 14px;
+            backdrop-filter: blur(8px);
+            transition: all 0.3s ease;
+        }
+        .stat-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(245, 158, 11, 0.2);
+            transform: translateY(-2px);
+        }
+        .stat-icon {
+            font-size: 16px;
+            background: rgba(245, 158, 11, 0.12);
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            color: #f59e0b;
+        }
+        .stat-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+        }
+        .stat-num {
+            font-size: 15px;
+            font-weight: 800;
+            color: #ffffff;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .stat-label {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.5);
+            font-family: 'Be Vietnam Pro', sans-serif;
+            text-transform: none;
+        }
+
+        /* Nút Hero mới */
+        .tiemanh-btn-primary-new {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            color: #2e0813 !important;
+            font-weight: 800;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 100px;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 10px 25px rgba(245, 158, 11, 0.25);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        .tiemanh-btn-primary-new:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(245, 158, 11, 0.4);
+            filter: brightness(1.05);
+        }
+        .tiemanh-btn-secondary-new {
+            background: transparent;
+            color: #ffffff !important;
+            font-weight: 700;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            padding: 12px 26px;
+            border-radius: 100px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+        }
+        .tiemanh-btn-secondary-new:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: #f59e0b;
+            color: #ffffff !important;
+            transform: translateY(-2px);
+        }
+
+        /* Phản hồi di động cho Hero mới */
+        @media (max-width: 991px) {
+            .tiemanh-hero-title-new {
+                font-size: 38px;
+                align-items: center;
+                text-align: center;
+                margin: 0 0 20px 0;
+            }
+            .tiemanh-hero-title-new .title-serif {
+                font-size: 36px;
+            }
+            .tiemanh-hero-title-new .title-script {
+                font-size: 58px;
+                margin-left: 0;
+            }
+            .tiemanh-hero-title-new .title-serif-sub {
+                font-size: 32px;
+                margin-left: 0;
+                align-self: center;
+            }
+            .tiemanh-hero-stats {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+                margin: 20px 0;
+                max-width: 100%;
+            }
+            .stat-item {
+                padding: 8px 10px;
+            }
+            .tiemanh-hero-btns {
+                flex-direction: column;
+                width: 100%;
+                gap: 10px;
+            }
+            .tiemanh-btn-primary-new, .tiemanh-btn-secondary-new {
+                width: 100%;
+                justify-content: center;
+                box-sizing: border-box;
+            }
+        }
     `;
 
     // 2. Chèn Google Fonts và CSS vào trang
@@ -2834,7 +3017,7 @@
 
     const fontLink = document.createElement('link');
     fontLink.rel = 'stylesheet';
-    fontLink.href = 'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600;1,700&family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&display=swap';
+    fontLink.href = 'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600;1,700&family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Pinyon+Script&display=swap';
     document.head.appendChild(fontLink);
 
     const styleTag = document.createElement("style");
@@ -2882,15 +3065,50 @@
             <!-- Hero Section với 3 ảnh Polaroid nổi bật từ Concept thực tế của Studio -->
             <section class="tiemanh-hero">
                 <div class="tiemanh-hero-left">
-                    <div class="tiemanh-hero-slogan-badge">✨ Lưu Giữ Thanh Xuân – Tỏa Sáng Nét Riêng</div>
-                    <h5 class="tiemanh-hero-subtitle">Bộ sưu tập Studio</h5>
-                    <h1 class="tiemanh-hero-title">Concept<br>Đa Dạng</h1>
+                    <h1 class="tiemanh-hero-title-new">
+                        <span class="title-serif">Chụp lại</span>
+                        <span class="title-script">giấc mơ</span>
+                        <span class="title-serif-sub">của bạn</span>
+                    </h1>
                     <p class="tiemanh-hero-desc">
-                        Hơn 100+ concept nghệ thuật được đầu tư trang phục, makeup và bối cảnh thiết kế bài bản, chỉn chu giúp bạn tự tin tỏa sáng theo phong cách rất riêng của chính mình.
+                        Tiệm ảnh Trái Thơm – Nơi lưu giữ những khoảnh khắc thanh xuân rực rỡ và cảm xúc nhất của bạn.
                     </p>
+                    
+                    <!-- Stats Section (Thông số) -->
+                    <div class="tiemanh-hero-stats">
+                        <div class="stat-item">
+                            <div class="stat-icon">📍</div>
+                            <div class="stat-info">
+                                <span class="stat-num">8+</span>
+                                <span class="stat-label">chi nhánh</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon">👥</div>
+                            <div class="stat-info">
+                                <span class="stat-num">30.000+</span>
+                                <span class="stat-label">khách hàng</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon">⭐</div>
+                            <div class="stat-info">
+                                <span class="stat-num">4.9★</span>
+                                <span class="stat-label">đánh giá</span>
+                            </div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon">📸</div>
+                            <div class="stat-info">
+                                <span class="stat-num">5 năm+</span>
+                                <span class="stat-label">kinh nghiệm</span>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="tiemanh-hero-btns">
-                        <button class="tiemanh-btn-primary" id="btnHeroBangGia">🍍 Xem Bảng Giá</button>
-                        <button class="tiemanh-btn-secondary" id="btnHeroExplore">🍍 Xem Thêm Concept</button>
+                        <button class="tiemanh-btn-primary-new" id="btnHeroDatLich">📅 ĐẶT LỊCH NGAY</button>
+                        <button class="tiemanh-btn-secondary-new" id="btnHeroExplore">XEM CONCEPT</button>
                     </div>
                 </div>
                 <div class="tiemanh-hero-right">
@@ -4577,11 +4795,11 @@
         });
 
         // Xử lý nút bấm trên Hero Section
-        const btnHeroBangGia = document.getElementById("btnHeroBangGia");
-        if (btnHeroBangGia) {
-            btnHeroBangGia.addEventListener("click", (e) => {
+        const btnHeroDatLich = document.getElementById("btnHeroDatLich");
+        if (btnHeroDatLich) {
+            btnHeroDatLich.addEventListener("click", (e) => {
                 e.preventDefault();
-                smoothScrollToSection("banggiaSection");
+                openZaloModal("Đặt Lịch Chụp Ảnh");
             });
         }
 
