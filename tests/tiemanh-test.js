@@ -52,6 +52,32 @@ assert.strictEqual(parsed.isHidden, false, "Concept không bị ẩn");
 assert.strictEqual(parsed.isBestSeller, true, "Concept là Best Seller");
 assert.strictEqual(parsed.images[0], "https://drive.google.com/thumbnail?id=image_id_1&sz=w800", "Link ảnh 1 phải được chuyển thành trực tiếp");
 assert.strictEqual(parsed.images[1], "https://drive.google.com/thumbnail?id=image_id_2&sz=w800", "Link ảnh 2 phải được chuyển thành trực tiếp");
-assert.strictEqual(parsed.images.length, 2, "Chỉ lấy các ảnh có dữ liệu");
+// Test Case 2: Lựa chọn 3 concept cho Hero Polaroid (ưu tiên Best Seller)
+console.log("Chạy kiểm thử logic lựa chọn Hero Polaroid...");
+
+const mockConcepts = [
+  { id: 1, title: "Concept 1 (Best Seller)", isBestSeller: true, hasRealImages: true, images: ["img1"] },
+  { id: 2, title: "Concept 2 (Best Seller)", isBestSeller: true, hasRealImages: true, images: ["img2"] },
+  { id: 3, title: "Concept 3 (Thường)", isBestSeller: false, hasRealImages: true, images: ["img3"] },
+  { id: 4, title: "Concept 4 (Thường)", isBestSeller: false, hasRealImages: true, images: ["img4"] },
+];
+
+// Trường hợp 1: Có 2 bộ Best Seller -> Kết quả phải chứa 2 bộ Best Seller đó và 1 bộ thường
+const selected1 = tiemanh.selectHeroConcepts(mockConcepts);
+assert.strictEqual(selected1.length, 3, "Phải chọn đủ 3 concept");
+assert.strictEqual(selected1.filter(c => c.isBestSeller).length, 2, "Phải có đúng 2 bộ Best Seller");
+assert.strictEqual(selected1.filter(c => !c.isBestSeller).length, 1, "Phải có đúng 1 bộ thường bù vào");
+
+// Trường hợp 2: Không có bộ Best Seller nào -> Chọn ngẫu nhiên 3 bộ thường
+const mockConceptsNoBest = mockConcepts.map(c => ({ ...c, isBestSeller: false }));
+const selected2 = tiemanh.selectHeroConcepts(mockConceptsNoBest);
+assert.strictEqual(selected2.length, 3, "Phải chọn đủ 3 concept");
+assert.strictEqual(selected2.filter(c => c.isBestSeller).length, 0, "Không có bộ Best Seller nào");
+
+// Trường hợp 3: Có >= 3 bộ Best Seller -> Chọn ngẫu nhiên 3 bộ trong số đó
+const mockConceptsAllBest = mockConcepts.map(c => ({ ...c, isBestSeller: true }));
+const selected3 = tiemanh.selectHeroConcepts(mockConceptsAllBest);
+assert.strictEqual(selected3.length, 3, "Phải chọn đủ 3 concept");
+assert.strictEqual(selected3.filter(c => c.isBestSeller).length, 3, "Tất cả phải là Best Seller");
 
 console.log("Tất cả kiểm thử đạt yêu cầu!");

@@ -2721,6 +2721,54 @@
             .hot-showcase-title { font-size: 13px; }
             .polaroid-caption { font-size: 9.5px; }
         }
+
+        /* Nhãn Best Seller lấp lánh sang trọng */
+        .tiemanh-card {
+            position: relative;
+        }
+        .concept-best-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: linear-gradient(135deg, #ef4444 0%, #f97316 100%);
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 5px 12px;
+            border-radius: 50px;
+            z-index: 10;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            animation: badgePulse 2s infinite alternate ease-in-out;
+        }
+
+        @keyframes badgePulse {
+            0% { transform: scale(1); box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4); }
+            100% { transform: scale(1.05); box-shadow: 0 6px 16px rgba(239, 68, 68, 0.6); }
+        }
+
+        /* Badge trên Polaroid card ở Hero banner */
+        .polaroid-card {
+            position: relative;
+        }
+        .polaroid-best-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #ef4444;
+            color: #ffffff;
+            font-size: 10px;
+            font-weight: 800;
+            padding: 3px 8px;
+            border-radius: 4px;
+            z-index: 5;
+            box-shadow: 0 2px 6px rgba(239, 68, 68, 0.3);
+            text-transform: uppercase;
+        }
     `;
 
     // 2. Chèn Google Fonts và CSS vào trang
@@ -3750,26 +3798,56 @@
     }
 
     // Hàm chọn 3 concept từ bộ dữ liệu thật của studio để đưa lên Hero banner
+    // Hàm lựa chọn 3 concept cho Hero Polaroid (Ưu tiên Best Seller)
+    function selectHeroConcepts(concepts) {
+        if (!concepts || concepts.length === 0) return [];
+        // Chỉ chọn các concept có ảnh thật từ Google Sheets của studio (tuyệt đối không lấy ảnh mẫu)
+        let realConcepts = concepts.filter(c => c.hasRealImages && c.images && c.images.length > 0 && !c.images[0].includes("unsplash"));
+        if (realConcepts.length === 0) {
+            realConcepts = concepts.filter(c => c.hasRealImages);
+        }
+        if (realConcepts.length === 0) {
+            realConcepts = concepts;
+        }
+
+        // Tách Best Seller và Concept thường
+        const bestSellers = realConcepts.filter(c => c.isBestSeller);
+        const normals = realConcepts.filter(c => !c.isBestSeller);
+
+        let selected = [];
+
+        // Trộn ngẫu nhiên Best Seller và lấy tối đa 3
+        const shuffledBest = [...bestSellers].sort(() => 0.5 - Math.random());
+        selected = shuffledBest.slice(0, 3);
+
+        // Nếu thiếu thì bù đắp bằng các bộ thường trộn ngẫu nhiên
+        if (selected.length < 3) {
+            const shuffledNormal = [...normals].sort(() => 0.5 - Math.random());
+            const needed = 3 - selected.length;
+            selected = selected.concat(shuffledNormal.slice(0, needed));
+        }
+
+        return selected.slice(0, 3);
+    }
+
     function randomizeHeroPolaroids() {
         if (!CONCEPTS || CONCEPTS.length === 0) return;
         const polaroids = document.querySelectorAll(".polaroid-card");
         if (polaroids.length === 0) return;
 
-        // Chỉ chọn các concept có ảnh thật từ Google Sheets của studio (tuyệt đối không lấy ảnh mẫu)
-        const realConcepts = CONCEPTS.filter(c => c.hasRealImages && c.images && c.images.length > 0 && !c.images[0].includes("unsplash"));
-        const candidateList = realConcepts.length > 0 ? realConcepts : CONCEPTS.filter(c => c.hasRealImages);
-
-        if (candidateList.length === 0) return;
-
-        // Xáo trộn ngẫu nhiên danh sách concepts thật của studio
-        const shuffled = [...candidateList].sort(() => 0.5 - Math.random());
-        const selected = shuffled.slice(0, Math.min(3, shuffled.length));
+        const selected = selectHeroConcepts(CONCEPTS);
+        if (selected.length === 0) return;
 
         polaroids.forEach((card, i) => {
             if (i < selected.length) {
                 const concept = selected[i];
                 card.classList.remove("loading-skeleton");
+                
+                // Thêm nhãn ngọn lửa nhỏ nếu bộ concept là Best Seller
+                const flameHtml = concept.isBestSeller ? `<span class="polaroid-best-badge">🔥 Hot</span>` : "";
+
                 card.innerHTML = `
+                    ${flameHtml}
                     <img src="${concept.images[0]}" alt="${concept.title}">
                     <div class="polaroid-caption">${concept.title}</div>
                 `;
@@ -3889,7 +3967,10 @@
                 return `<span class="tiemanh-card-badge" style="background:${info.bg};color:${info.color};">${info.icon} ${t}</span>`;
             }).join("");
 
+            const bestSellerHtml = concept.isBestSeller ? `<span class="concept-best-badge">🔥 Best Seller</span>` : "";
+
             card.innerHTML = `
+                ${bestSellerHtml}
                 <div class="collage-wrapper">
                     <img data-src="${img0}" class="collage-main-img" alt="${concept.title}" style="${img0 ? placeholderStyle : 'display:none'}">
                     <div class="collage-side">
@@ -4718,14 +4799,14 @@
         const themeBar = document.getElementById("themeFilterBar");
         if (!branchBar) return;
 
-        // 1. Trích xuất các chi nhánh duy nhất (Cố định danh sách Chi nhánh)
+        // 1. Trích xuất các chi nhánh duy nhất từ dữ liệu thực tế (cột Chi nhánh)
         const branches = [{ slug: "all", name: "Tất cả" }];
         const seenBranches = new Set();
         CONCEPTS.forEach(c => {
-            if (c.category && !seenBranches.has(c.category)) {
-                seenBranches.add(c.category);
-                const bName = normalizeBranchName(c.tag || c.category, c.category);
-                branches.push({ slug: c.category, name: bName });
+            const branchName = c.tag || c.branch;
+            if (branchName && !seenBranches.has(branchName)) {
+                seenBranches.add(branchName);
+                branches.push({ slug: branchName, name: branchName });
             }
         });
 
@@ -4746,27 +4827,29 @@
         enableDragScroll(themeBar);
     }
 
-    // Hàm vẽ lại bộ lọc chủ đề ĐỒNG BỘ TOÀN DIỆN CHO TẤT CẢ CHI NHÁNH
+    // Hàm vẽ lại bộ lọc chủ đề tự động quét từ dữ liệu Sheet (không code cứng)
     function renderThemeFilterBar() {
         const themeBar = document.getElementById("themeFilterBar");
         if (!themeBar) return;
 
-        // Bộ danh mục chủ đề chuẩn hóa toàn hệ thống (Đồng bộ tuyệt đối cho tất cả chi nhánh)
-        const UNIVERSAL_THEMES = [
-            { slug: "all", name: "Tất cả", icon: "✨" },
-            { slug: "NÀNG THƠ", name: "Nàng Thơ", icon: "🌸", keywords: ["NANG THO", "THO", "TIEN NU"] },
-            { slug: "CỔ TRANG", name: "Cổ Trang", icon: "🏮", keywords: ["CO TRANG", "HAN PHUC", "KIMONO"] },
-            { slug: "ÁO DÀI", name: "Áo Dài", icon: "👗", keywords: ["AO DAI", "YEM", "TRUYEN THONG"] },
-            { slug: "BEAUTY", name: "Beauty", icon: "👤", keywords: ["BEAUTY", "CHAN DUNG", "PROFILE", "LOOKBOOK"] },
-            { slug: "SINH NHẬT", name: "Sinh Nhật", icon: "🎂", keywords: ["SINH NHAT", "SN", "BIRTHDAY", "PARTY"] },
-            { slug: "CÁ TÍNH", name: "Cá Tính & Sexy", icon: "🔥", keywords: ["CA TINH", "SEXY", "BIEN", "STREET"] },
-            { slug: "COUPLE", name: "Couple", icon: "💖", keywords: ["COUPLE", "DOI", "BAN THAN"] },
-            { slug: "TẾT", name: "Tết", icon: "🧧", keywords: ["TET", "XUAN", "MUA XUAN"] },
-            { slug: "NOEL", name: "Noel", icon: "🎄", keywords: ["NOEL", "GIANG SINH", "MUA DONG"] }
-        ];
+        // Trích xuất các chủ đề duy nhất từ c.themes thực tế của các concept
+        const themes = [{ slug: "all", name: "Tất cả", icon: "✨" }];
+        const seenThemes = new Set();
+        
+        CONCEPTS.forEach(c => {
+            if (c.themes) {
+                c.themes.forEach(t => {
+                    if (t && !seenThemes.has(t.toUpperCase())) {
+                        seenThemes.add(t.toUpperCase());
+                        const info = getThemeInfo(t);
+                        themes.push({ slug: t, name: t, icon: info.icon });
+                    }
+                });
+            }
+        });
 
         // Vẽ danh sách chủ đề đồng bộ kèm icon trực quan
-        themeBar.innerHTML = UNIVERSAL_THEMES.map(t =>
+        themeBar.innerHTML = themes.map(t =>
             `<button class="tiemanh-filter-pill ${t.slug === selectedTheme ? 'active' : ''}" data-theme="${t.slug}">
                 <span>${t.icon}</span> <span>${t.name}</span>
             </button>`
@@ -4803,25 +4886,13 @@
     function applyDoubleFilter() {
         currentPage = 1;
         const filtered = CONCEPTS.filter(c => {
-            const matchBranch = (selectedBranch === "all" || c.category === selectedBranch);
+            // Lọc theo Chi nhánh (so khớp với tag/branch)
+            const matchBranch = (selectedBranch === "all" || c.tag === selectedBranch || c.branch === selectedBranch);
 
             if (selectedTheme === "all") return matchBranch;
 
-            // Kiểm tra so khớp thông minh giữa chủ đề đã chọn và concept
-            const themeUpper = selectedTheme.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/Đ/g, "D").replace(/đ/g, "d").toUpperCase();
-            const conceptThemes = ((c.themes && c.themes.length > 0) ? c.themes : [c.theme || ""]).map(t =>
-                t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/Đ/g, "D").replace(/đ/g, "d").toUpperCase()
-            );
-            const titleUpper = (c.title || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/Đ/g, "D").replace(/đ/g, "d").toUpperCase();
-
-            const matchTheme = conceptThemes.some(t => {
-                if (themeUpper === "CA TINH") return t.includes("CA TINH") || t.includes("SEXY") || t.includes("STREET");
-                if (themeUpper === "CO TRANG") return t.includes("CO TRANG") || t.includes("HAN PHUC") || t.includes("KIMONO");
-                if (themeUpper === "AO DAI") return t.includes("AO DAI") || t.includes("YEM");
-                if (themeUpper === "NOEL") return t.includes("NOEL") || t.includes("GIANG SINH");
-                if (themeUpper === "TET") return t.includes("TET") || t.includes("XUAN");
-                return t.includes(themeUpper) || themeUpper.includes(t);
-            });
+            // Kiểm tra so khớp chủ đề
+            const matchTheme = c.themes && c.themes.some(t => t.toUpperCase() === selectedTheme.toUpperCase());
 
             return matchBranch && matchTheme;
         });
@@ -4853,7 +4924,8 @@
         module.exports = {
             parseSheetsRow,
             normalizeBranchName,
-            extractMultiTagsSmart
+            extractMultiTagsSmart,
+            selectHeroConcepts
         };
     }
 })();
