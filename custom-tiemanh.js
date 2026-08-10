@@ -879,7 +879,7 @@
         .tiemanh-quytrinh-sec,
         .tiemanh-chinhanh-sec,
         .tiemanh-footer {
-            scroll-margin-top: 85px;
+            scroll-margin-top: 0; /* Offset xử lý thủ công trong JS */
         }
         .tiemanh-section-container {
             padding: 60px 8%;
@@ -4750,14 +4750,23 @@
             const navbar = document.getElementById("tiemanh-navbar");
             const navHeight = navbar ? navbar.offsetHeight : 70;
 
-            // Sử dụng scrollIntoView chuẩn kết hợp scroll-margin-top
-            targetEl.scrollIntoView({ behavior: "smooth", block: "start" });
-
-            // Hỗ trợ trường hợp phần tử nằm trong khung overlay cuộn độc lập
+            // Cuộn container độc lập (iframe Webcake) hoặc window
             const container = document.getElementById("tiemanh-container") || document.getElementById(CONFIG.targetId);
             if (container && container.scrollHeight > container.clientHeight && getComputedStyle(container).overflowY === "auto") {
-                const topPos = targetEl.offsetTop - navHeight - 10;
-                container.scrollTo({ top: Math.max(0, topPos), behavior: "smooth" });
+                // Tính vị trí tuyệt đối của element trong container
+                let el = targetEl;
+                let topPos = 0;
+                while (el && el !== container) {
+                    topPos += el.offsetTop;
+                    el = el.offsetParent;
+                }
+                // Trừ chiều cao navbar, không để khoảng trắng thừa phía trên
+                container.scrollTo({ top: Math.max(0, topPos - navHeight), behavior: "smooth" });
+            } else {
+                // Fallback: window cuộn
+                const rect = targetEl.getBoundingClientRect();
+                const absoluteTop = window.pageYOffset + rect.top - navHeight;
+                window.scrollTo({ top: Math.max(0, absoluteTop), behavior: "smooth" });
             }
 
             // GẮN CHẶT MOBILE CAROUSEL GÓI TOẢ SÁNG: Nếu cuộn tới bảng giá trên di động, tự động ghim gói Tỏa Sáng ở giữa
