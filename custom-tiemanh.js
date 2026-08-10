@@ -2832,18 +2832,18 @@
             align-items: flex-start;
         }
         .tiemanh-hero-title-new .title-serif {
-            font-family: 'Playfair Display', serif;
-            font-size: 52px;
+            font-family: 'Prata', serif;
+            font-size: 50px; /* Prata có nét chữ to hơn nên giảm nhẹ xuống 50px */
             letter-spacing: -0.5px;
             text-transform: none;
             color: #2e0813;
         }
         .tiemanh-hero-title-new .title-script {
-            font-family: 'Dancing Script', cursive;
-            font-size: 80px; /* Tăng nhẹ để có tỉ lệ hoàn hảo */
+            font-family: 'Charm', cursive;
+            font-size: 88px; /* Charm có nét bút thanh mảnh tinh tế nên tăng lên 88px */
             font-weight: 700;
             color: #d97706; /* Màu vàng hổ phách sẫm */
-            line-height: 0.8;
+            line-height: 0.75;
             margin-left: 20px;
             transform: rotate(-3deg);
             display: inline-block;
@@ -2851,8 +2851,8 @@
             text-transform: none;
         }
         .tiemanh-hero-title-new .title-serif-sub {
-            font-family: 'Playfair Display', serif;
-            font-size: 48px;
+            font-family: 'Prata', serif;
+            font-size: 46px;
             align-self: flex-start;
             margin-left: 90px;
             margin-top: -5px;
@@ -3026,7 +3026,7 @@
 
     const fontLink = document.createElement('link');
     fontLink.rel = 'stylesheet';
-    fontLink.href = 'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600;1,700&family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Dancing+Script:wght@700&display=swap';
+    fontLink.href = 'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600;1,700&family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=Prata&family=Charm:wght@700&family=Dancing+Script:wght@700&display=swap';
     document.head.appendChild(fontLink);
 
     const styleTag = document.createElement("style");
