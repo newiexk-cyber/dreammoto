@@ -2653,8 +2653,24 @@
 
             /* Header & Navbar gọn gàng */
             .tiemanh-navbar { flex-direction: column; gap: 10px; padding: 12px 14px; }
-            .tiemanh-menu { gap: 10px; flex-wrap: wrap; justify-content: center; }
-            .tiemanh-menu-item a { font-size: 13px; padding: 2px 0; }
+            .tiemanh-menu { 
+                gap: 16px; 
+                flex-wrap: nowrap; 
+                justify-content: flex-start; 
+                overflow-x: auto; 
+                width: 100%; 
+                padding: 4px 10px;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none; /* Firefox */
+                -ms-overflow-style: none; /* IE and Edge */
+            }
+            .tiemanh-menu::-webkit-scrollbar {
+                display: none; /* Chrome, Safari, Opera */
+            }
+            .tiemanh-menu-item {
+                flex-shrink: 0;
+            }
+            .tiemanh-menu-item a { font-size: 13.5px; padding: 4px 0; }
             .tiemanh-btn-primary { padding: 9px 18px; font-size: 13px; }
 
             /* Hero Section cực kỳ thoáng mắt */
