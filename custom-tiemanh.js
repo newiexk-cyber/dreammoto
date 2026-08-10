@@ -2320,7 +2320,7 @@
             .tiemanh-pricing-grid::-webkit-scrollbar { display: none; }
             .tiemanh-pricing-grid.active-drag { cursor: grabbing !important; scroll-behavior: auto !important; }
             .tiemanh-price-card {
-                flex: 0 0 85%;
+                flex: 0 0 78%;
                 min-width: 280px;
                 scroll-snap-align: center;
             }
