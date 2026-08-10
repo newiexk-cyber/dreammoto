@@ -1502,24 +1502,24 @@
             border: 2px solid #fbc02d !important;
             animation: tooltipFloat 2s ease-in-out infinite !important;
             transition: all 0.3s ease !important;
-            cursor: pointer;
+            cursor: default;
         }
         .tiemanh-zalo-guide-tooltip .guide-close-btn {
             position: absolute;
-            top: 6px;
-            right: 8px;
-            font-size: 12px;
-            color: #94a3b8;
+            top: 4px;
+            right: 4px;
+            font-size: 15px;
+            color: #64748b;
             cursor: pointer;
-            width: 20px;
-            height: 20px;
+            width: 24px;
+            height: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
             line-height: 0;
             padding-bottom: 2px;
             border-radius: 50%;
-            transition: background 0.2s;
+            transition: background 0.2s, color 0.2s;
         }
         .tiemanh-zalo-guide-tooltip .guide-close-btn:hover {
             background: #f1f5f9;
@@ -4421,16 +4421,12 @@
         }
 
         // Xử lý tooltip hướng dẫn chỉa vào Zalo
-        if (zaloGuideTooltip) {
-            zaloGuideTooltip.addEventListener("click", (e) => {
-                if (e.target === zaloGuideCloseBtn || zaloGuideCloseBtn?.contains(e.target)) {
-                    e.stopPropagation();
-                    zaloGuideTooltip.style.opacity = "0";
-                    zaloGuideTooltip.style.transform = "translateY(15px) scale(0.9)";
-                    setTimeout(() => { zaloGuideTooltip.style.display = "none"; }, 300);
-                    return;
-                }
-                openZaloModal("Tư Vấn Concept & Báo Giá Ưu Đãi");
+        if (zaloGuideCloseBtn && zaloGuideTooltip) {
+            zaloGuideCloseBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                zaloGuideTooltip.style.opacity = "0";
+                zaloGuideTooltip.style.transform = "translateY(15px) scale(0.9)";
+                setTimeout(() => { zaloGuideTooltip.style.display = "none"; }, 300);
             });
         }
 
