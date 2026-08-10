@@ -4740,8 +4740,8 @@
         // Kiểm tra URL xem khách có vào bằng link concept riêng không
         checkUrlAndOpenConcept();
 
-        // Kích hoạt Bảng giá (sử dụng bảng giá tĩnh định nghĩa trực tiếp trong file HTML bên trên)
-        setupPricingCarousel();
+        // Kích hoạt Bảng giá (tải tự động từ Sheets hoặc dùng mặc định)
+        fetchPricingFromSheets();
 
         // Xử lý cuộn mượt cho các liên kết ở Footer
         const footerLinks = document.querySelectorAll(".tiemanh-footer-links a");
