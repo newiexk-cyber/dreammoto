@@ -4750,26 +4750,26 @@
             const navbar = document.getElementById("tiemanh-navbar");
             const navHeight = navbar ? navbar.offsetHeight : 70;
 
-            // Cuộn container độc lập (iframe Webcake) hoặc window
+            // Tính vị trí section so với document
+            const rect = targetEl.getBoundingClientRect();
+            const absoluteTop = window.pageYOffset + rect.top;
+
+            // Cuộn window đến section (trừ chiều cao navbar sticky để nội dung không bị che)
+            window.scrollTo({ top: Math.max(0, absoluteTop - navHeight), behavior: "smooth" });
+
+            // Cũng thử cuộn container nếu trang nhúng trong div scrollable (Webcake iframe)
             const container = document.getElementById("tiemanh-container") || document.getElementById(CONFIG.targetId);
-            if (container && container.scrollHeight > container.clientHeight && getComputedStyle(container).overflowY === "auto") {
-                // Tính vị trí tuyệt đối của element trong container
+            if (container && getComputedStyle(container).overflowY !== "visible") {
                 let el = targetEl;
                 let topPos = 0;
                 while (el && el !== container) {
                     topPos += el.offsetTop;
                     el = el.offsetParent;
                 }
-                // Navbar là sticky nên scroll thẳng đến vị trí element, không cần trừ navHeight
-                container.scrollTo({ top: Math.max(0, topPos), behavior: "smooth" });
-            } else {
-                // Fallback: window cuộn
-                // Navbar là sticky nên scroll thẳng đến vị trí element
-                const absoluteTop = window.pageYOffset + rect.top;
-                window.scrollTo({ top: Math.max(0, absoluteTop), behavior: "smooth" });
+                container.scrollTo({ top: Math.max(0, topPos - navHeight), behavior: "smooth" });
             }
 
-            // GẮN CHẶT MOBILE CAROUSEL GÓI TOẢ SÁNG: Nếu cuộn tới bảng giá trên di động, tự động ghim gói Tỏa Sáng ở giữa
+            // GẮN CHẶT MOBILE CAROUSEL GÓI TOẢ SÁNG
             if (targetId === "banggiaSection" && window.innerWidth <= 991 && activePricingScrollFn) {
                 setTimeout(() => {
                     activePricingScrollFn(1);
