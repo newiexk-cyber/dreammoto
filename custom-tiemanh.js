@@ -3129,7 +3129,7 @@
             </section>
 
             <!-- Footer -->
-            <footer class="tiemanh-footer">
+            <footer class="tiemanh-footer" id="tiemanh-footer">
                 <div class="tiemanh-footer-grid">
                     <div class="tiemanh-footer-col">
                         <a class="tiemanh-logo tiemanh-footer-logo">
