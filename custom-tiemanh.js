@@ -2753,6 +2753,9 @@
             .tiemanh-modal-content { width: 94%; padding: 22px 16px; border-radius: 18px; max-height: 90vh; }
             .tiemanh-modal-header h3 { font-size: 19px; }
             .tiemanh-form-group input, .tiemanh-form-group select, .tiemanh-form-group textarea { padding: 10px 12px; font-size: 13px; }
+            .tiemanh-lightbox-arrow { width: 38px; height: 38px; font-size: 16px; }
+            .tiemanh-lightbox-arrow.left { left: 10px; }
+            .tiemanh-lightbox-arrow.right { right: 10px; }
         }
 
         @media (max-width: 420px) {
@@ -3277,12 +3280,12 @@
             <!-- Lightbox Modal -->
             <div class="tiemanh-lightbox-overlay" id="lightboxOverlay">
                 <button class="tiemanh-lightbox-close" id="lightboxClose">&times;</button>
-                <button class="tiemanh-lightbox-arrow left" id="lightboxPrev">&#10094;</button>
-                <button class="tiemanh-lightbox-arrow right" id="lightboxNext">&#10095;</button>
                 
                 <div class="tiemanh-lightbox-container">
                     <div class="tiemanh-lightbox-viewer">
+                        <button class="tiemanh-lightbox-arrow left" id="lightboxPrev">&#10094;</button>
                         <img src="" alt="Full view" class="tiemanh-lightbox-img" id="lightboxImg">
+                        <button class="tiemanh-lightbox-arrow right" id="lightboxNext">&#10095;</button>
                     </div>
                     <div class="tiemanh-lightbox-panel">
                         <div>
