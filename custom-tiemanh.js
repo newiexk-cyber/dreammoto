@@ -2819,12 +2819,12 @@
             text-transform: uppercase;
         }
 
-        /* --- CẤU HÌNH GIAO DIỆN HERO MỚI THEO THIẾT KẾ YÊU CẦU --- */
+        /* --- CẤU HÌNH GIAO DIỆN HERO MỚI THEO THIẾT KẾ YÊU CẦU (TỐI ƯU CHO NỀN SÁNG) --- */
         .tiemanh-hero-title-new {
             font-size: 54px;
             font-weight: 400;
             line-height: 1.15;
-            color: #ffffff;
+            color: #2e0813; /* Màu nâu đậm thương hiệu */
             margin: 0 0 24px 0;
             display: flex;
             flex-direction: column;
@@ -2836,17 +2836,17 @@
             font-size: 52px;
             letter-spacing: -0.5px;
             text-transform: none;
-            color: #ffffff;
+            color: #2e0813;
         }
         .tiemanh-hero-title-new .title-script {
             font-family: 'Pinyon Script', cursive;
             font-size: 78px;
-            color: #f59e0b; /* Vàng ánh kim */
+            color: #d97706; /* Màu vàng hổ phách đậm nổi bật trên nền sáng */
             line-height: 0.8;
             margin-left: 20px;
             transform: rotate(-3deg);
             display: inline-block;
-            text-shadow: 0 0 20px rgba(245, 158, 11, 0.2);
+            text-shadow: 0 2px 10px rgba(217, 119, 6, 0.15);
             text-transform: none;
         }
         .tiemanh-hero-title-new .title-serif-sub {
@@ -2856,7 +2856,13 @@
             margin-left: 90px;
             margin-top: -5px;
             text-transform: none;
-            color: #ffffff;
+            color: #2e0813;
+        }
+        .tiemanh-hero-desc {
+            color: #5c3d46 !important; /* Đổi màu chữ mô tả sẫm dễ đọc */
+            font-size: 15.5px;
+            max-width: 520px;
+            line-height: 1.75;
         }
 
         /* Khung thông số Stats */
@@ -2872,28 +2878,30 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: #ffffff; /* Nền trắng tinh tế nổi bật */
+            border: 1.5px solid rgba(251, 192, 45, 0.25); /* Viền vàng sẫm nhẹ */
             padding: 10px 14px;
             border-radius: 14px;
+            box-shadow: 0 4px 15px rgba(251, 192, 45, 0.08); /* Đổ bóng nhẹ */
             backdrop-filter: blur(8px);
             transition: all 0.3s ease;
         }
         .stat-item:hover {
-            background: rgba(255, 255, 255, 0.06);
-            border-color: rgba(245, 158, 11, 0.2);
+            background: #fffbeb; /* Vàng kem cực nhạt khi hover */
+            border-color: rgba(245, 158, 11, 0.4);
             transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(251, 192, 45, 0.15);
         }
         .stat-icon {
             font-size: 16px;
-            background: rgba(245, 158, 11, 0.12);
+            background: rgba(251, 192, 45, 0.15);
             width: 34px;
             height: 34px;
             display: flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
-            color: #f59e0b;
+            color: #b45309; /* Vàng cam sẫm */
         }
         .stat-info {
             display: flex;
@@ -2903,12 +2911,12 @@
         .stat-num {
             font-size: 15px;
             font-weight: 800;
-            color: #ffffff;
+            color: #2e0813; /* Nâu đậm sắc nét */
             font-family: 'Plus Jakarta Sans', sans-serif;
         }
         .stat-label {
             font-size: 11px;
-            color: rgba(255, 255, 255, 0.5);
+            color: #5c3d46; /* Nâu xám sẫm */
             font-family: 'Be Vietnam Pro', sans-serif;
             text-transform: none;
         }
@@ -2939,9 +2947,9 @@
         }
         .tiemanh-btn-secondary-new {
             background: transparent;
-            color: #ffffff !important;
+            color: #2e0813 !important; /* Đổi màu chữ sang nâu đậm */
             font-weight: 700;
-            border: 2px solid rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(46, 8, 19, 0.25); /* Viền nâu mờ */
             padding: 12px 26px;
             border-radius: 100px;
             font-size: 13px;
@@ -2955,9 +2963,9 @@
             text-decoration: none;
         }
         .tiemanh-btn-secondary-new:hover {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: #f59e0b;
-            color: #ffffff !important;
+            background: rgba(46, 8, 19, 0.05);
+            border-color: #2e0813;
+            color: #2e0813 !important;
             transform: translateY(-2px);
         }
 
