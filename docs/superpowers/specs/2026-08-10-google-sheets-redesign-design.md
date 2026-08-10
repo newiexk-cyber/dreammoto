@@ -237,6 +237,36 @@ function applySheetFormatting(sheet, startRow, endRow) {
   const bestRange = sheet.getRange(startRow, 7, endRow - startRow + 1, 1);
   bestRange.insertCheckboxes();
 }
+
+// Hàm hỗ trợ chọn nhiều chủ đề (Multi-select) từ Dropdown cột C (Chủ đề)
+function onEdit(e) {
+  const sheet = e.source.getActiveSheet();
+  const range = e.range;
+  
+  // Chỉ kích hoạt khi chỉnh sửa cột C (Chủ đề) từ dòng 2 trở đi
+  if (range.getColumn() === 3 && range.getRow() > 1) {
+    const newValue = e.value;
+    const oldValue = e.oldValue;
+    
+    // Nếu xóa ô thì giữ nguyên
+    if (!newValue) return;
+    
+    // Nếu đã có giá trị cũ trong ô
+    if (oldValue) {
+      const oldParts = oldValue.split(",").map(p => p.trim());
+      const idx = oldParts.indexOf(newValue);
+      
+      if (idx === -1) {
+        // Nếu chọn chủ đề mới -> Nối tiếp vào
+        range.setValue(oldValue + ", " + newValue);
+      } else {
+        // Nếu chọn chủ đề đã có -> Xóa chủ đề đó đi (Toggle)
+        const filteredParts = oldParts.filter(p => p !== newValue);
+        range.setValue(filteredParts.join(", "));
+      }
+    }
+  }
+}
 ```
 
 ---
