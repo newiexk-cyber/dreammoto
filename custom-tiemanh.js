@@ -2823,19 +2823,19 @@
         .tiemanh-hero-title-new {
             font-size: 56px;
             font-weight: 800;
-            line-height: 1.05;
+            line-height: 1.15; /* Tăng từ 1.05 lên 1.15 để chữ không bị đè dòng */
             color: #2e0813;
             margin: 0 0 24px 0;
             display: flex;
             flex-direction: column;
-            gap: 2px;
+            gap: 12px; /* Tăng khoảng cách giữa các dòng chữ cho thoáng */
             align-items: flex-start;
             font-family: 'Plus Jakarta Sans', 'Be Vietnam Pro', sans-serif;
         }
         .tiemanh-hero-title-new .title-serif {
             font-size: 52px;
             font-weight: 800;
-            letter-spacing: -1.5px;
+            letter-spacing: 0.5px; /* Giãn chữ ra thay vì co âm */
             text-transform: uppercase;
             color: #2e0813;
             font-family: inherit;
@@ -2844,11 +2844,11 @@
             font-size: 78px;
             font-weight: 900;
             color: #d97706; /* Màu vàng hổ phách sẫm */
-            line-height: 0.95;
+            line-height: 1; /* Tăng line-height cho thoải mái */
             margin-left: 0;
-            letter-spacing: -2.5px;
+            letter-spacing: -0.5px; /* Giãn ra đáng kể để dễ thở */
             text-transform: uppercase;
-            text-shadow: 0 4px 15px rgba(217, 119, 6, 0.15);
+            text-shadow: 0 4px 15px rgba(217, 119, 6, 0.12);
             font-family: inherit;
             display: inline-block;
         }
@@ -2856,11 +2856,11 @@
             font-size: 44px;
             font-weight: 700;
             align-self: flex-start;
-            margin-left: 60px;
+            margin-left: 80px; /* Đẩy lùi sang phải nhiều hơn cho thoáng */
             text-transform: lowercase;
             color: #5c3d46; /* Màu nâu nhạt hơn */
             font-family: inherit;
-            letter-spacing: -1px;
+            letter-spacing: 0.5px;
         }
         .tiemanh-hero-desc {
             color: #5c3d46 !important; /* Đổi màu chữ mô tả sẫm dễ đọc */
