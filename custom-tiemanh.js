@@ -4720,8 +4720,14 @@
             // Vòng lặp giữa 3 gói giá (0 -> 1 -> 2 -> 0)
             currentIndex = (index + totalCards) % totalCards;
             const cards = slider.querySelectorAll(".tiemanh-price-card");
-            if (cards[currentIndex]) {
-                cards[currentIndex].scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+            const card = cards[currentIndex];
+            if (card) {
+                // Tính toán vị trí cuộn ngang chuẩn xác để căn giữa card trên mobile
+                const sliderWidth = slider.clientWidth;
+                const cardWidth = card.offsetWidth;
+                const cardOffsetLeft = card.offsetLeft;
+                const targetScrollLeft = cardOffsetLeft - (sliderWidth - cardWidth) / 2;
+                slider.scrollTo({ left: Math.max(0, targetScrollLeft), behavior: "smooth" });
             }
             dots.forEach((d, i) => {
                 d.classList.toggle("active", i === currentIndex);
@@ -4765,7 +4771,7 @@
         // Tự động cuộn đến gói Tỏa Sáng (index 1) trên mobile khi trang web được tải
         setTimeout(() => {
             scrollToPackage(1);
-        }, 800);
+        }, 1000);
     }
 
     // Hàm kích hoạt kéo chuột mượt mà (Drag to Scroll) cho PC và hỗ trợ cảm ứng Mobile
