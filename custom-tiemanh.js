@@ -1508,7 +1508,7 @@
             position: absolute;
             top: 6px;
             right: 8px;
-            font-size: 14px;
+            font-size: 12px;
             color: #94a3b8;
             cursor: pointer;
             width: 20px;
@@ -1516,6 +1516,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            line-height: 0;
+            padding-bottom: 2px;
             border-radius: 50%;
             transition: background 0.2s;
         }
@@ -1897,6 +1899,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            line-height: 0;
+            padding-bottom: 4px;
             cursor: pointer;
             z-index: 10;
             transition: var(--tiemanh-transition);
@@ -2074,6 +2078,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            line-height: 0;
+            padding-bottom: 2px;
             cursor: pointer;
             transition: var(--tiemanh-transition);
         }
@@ -2247,6 +2253,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            line-height: 0;
+            padding-bottom: 2px;
             cursor: pointer;
             z-index: 10;
             transition: all 0.25s ease;
