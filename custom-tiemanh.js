@@ -3339,6 +3339,9 @@
 
     // 4. Khởi tạo gắn giao diện lên trang
     function init() {
+        // Xóa sạch toàn bộ dữ liệu demo tĩnh cũ để bộ lọc tự động sinh chính xác từ Google Sheets
+        CONCEPTS.length = 0;
+
         // Tự động ghi đè chiều cao của khung Webcake để không bị giới hạn chiều cao ảnh
         if (CONFIG.targetId) {
             const targetEl = document.getElementById(CONFIG.targetId);
