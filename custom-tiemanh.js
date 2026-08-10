@@ -3908,7 +3908,7 @@
             return;
         }
 
-        const apiUrl = `https://docs.google.com/spreadsheets/d/${CONFIG.sheetId}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent("cấu hình gói giá")}&tqx=responseHandler:handlePricingSheetsData&t=${Date.now()}`;
+        const apiUrl = `https://docs.google.com/spreadsheets/d/${CONFIG.sheetId}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent("banggia")}&tqx=responseHandler:handlePricingSheetsData&t=${Date.now()}`;
 
         // Nhúng thẻ script để load dữ liệu (vượt qua hoàn toàn CORS trên cả local file và web online)
         const oldScript = document.getElementById("tiemanh-pricing-sheets-jsonp");
