@@ -3563,10 +3563,23 @@
     function extractMultiTagsSmart(rawTheme, rawTitle, rawDesc) {
         // Nếu có rawTheme (chủ đề do người dùng nhập từ Sheet), phân tách bằng dấu phẩy và trả về trực tiếp
         if (rawTheme && String(rawTheme).trim().length > 0) {
-            return String(rawTheme)
-                .split(",")
-                .map(t => t.trim())
-                .filter(Boolean);
+            const rawParts = String(rawTheme).split(",").map(t => t.trim()).filter(Boolean);
+            // Ánh xạ tương thích ngược các tag/slug cũ sang tiếng Việt đẹp
+            return rawParts.map(t => {
+                const rawTrim = t.trim().toLowerCase();
+                if (rawTrim === "nutinh" || rawTrim === "nangtho") return "Nàng Thơ";
+                if (rawTrim === "catinh" || rawTrim === "sexy" || rawTrim === "street" || rawTrim === "streetstyle") return "Cá Tính & Sexy";
+                if (rawTrim === "couple" || rawTrim === "doi" || rawTrim === "banthan") return "Couple";
+                if (rawTrim === "giadinh") return "Gia Đình";
+                if (rawTrim === "kyyeu") return "Kỷ Yếu";
+                if (rawTrim === "profile" || rawTrim === "chandung" || rawTrim === "beauty") return "Beauty";
+                if (rawTrim === "cotrang") return "Cổ Trang";
+                if (rawTrim === "aodai") return "Áo Dài";
+                if (rawTrim === "noel") return "Noel";
+                if (rawTrim === "tet") return "Tết";
+                if (rawTrim === "sinhnhat") return "Sinh Nhật";
+                return t; // Giữ nguyên nếu là chủ đề tự nhập mới
+            });
         }
 
         const fullText = `${rawTheme || ''} ${rawTitle || ''} ${rawDesc || ''}`
