@@ -2963,7 +2963,7 @@
                                 <li>01 trang phục</li>
                                 <li>05 ảnh chỉnh sửa</li>
                                 <li>Thời gian chụp 30-45 phút</li>
-                                <li>Nhận full ảnh gốc trong 25h</li>
+                                <li>Nhận full ảnh gốc trong 24h</li>
                             </ul>
                             <div class="price-desc-highlight">⏰ Khách hàng <strong>chụp trải nghiệm nhanh</strong></div>
                             <div class="price-desc-fit">⭐ <strong>Phù hợp:</strong> Chụp kỷ niệm, sinh nhật.</div>
@@ -3897,119 +3897,7 @@
         }, 3000);
     }
 
-    // 4c. Tải dữ liệu bảng giá tự động từ tab "cấu hình gói giá" của Google Sheets qua JSONP (Bypass CORS)
-    async function fetchPricingFromSheets() {
-        if (!CONFIG.sheetId) {
-            setupPricingCarousel();
-            return;
-        }
 
-        const apiUrl = `https://docs.google.com/spreadsheets/d/${CONFIG.sheetId}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent("banggia")}&tqx=responseHandler:handlePricingSheetsData&t=${Date.now()}`;
-
-        // Nhúng thẻ script để load dữ liệu (vượt qua hoàn toàn CORS trên cả local file và web online)
-        const oldScript = document.getElementById("tiemanh-pricing-sheets-jsonp");
-        if (oldScript) oldScript.remove();
-
-        const script = document.createElement("script");
-        script.id = "tiemanh-pricing-sheets-jsonp";
-        script.src = apiUrl;
-        script.onerror = function () {
-            console.warn("[TiệmẢnh] Không thể kết nối Google Sheets để lấy bảng giá. Đang hiển thị bảng giá mặc định.");
-            setupPricingCarousel();
-        };
-        document.head.appendChild(script);
-    }
-
-    // Callback toàn cục để xử lý dữ liệu JSON trả về từ Google Sheets
-    window.handlePricingSheetsData = function (response) {
-        if (!response || !response.table || !response.table.rows) {
-            console.warn("[TiệmẢnh] Dữ liệu bảng giá từ Sheets trống hoặc sai cấu trúc.");
-            setupPricingCarousel();
-            return;
-        }
-
-        const rows = response.table.rows;
-        const packages = [];
-
-        rows.forEach(row => {
-            if (!row || !row.c || row.c.length < 2) return;
-            
-            // Lấy giá trị an toàn từ ô
-            const getVal = (idx) => {
-                const cell = row.c[idx];
-                if (!cell) return "";
-                // Ưu tiên lấy giá trị hiển thị .f (Formatted value) để giữ nguyên định dạng số tiền như 750.000
-                return (cell.f !== undefined && cell.f !== null) ? String(cell.f).trim() : (cell.v !== undefined && cell.v !== null ? String(cell.v).trim() : "");
-            };
-
-            const name = getVal(0);
-            if (!name || name.toLowerCase().includes("tên gói")) return; // Bỏ qua dòng header nếu có
-
-            const pkg = {
-                name: name,
-                price: getVal(1),
-                features: getVal(2),
-                highlight: getVal(3),
-                fit: getVal(4),
-                ribbon: getVal(5),
-                bestSeller: getVal(6),
-                featured: getVal(7).toLowerCase() === "true" || getVal(7).toLowerCase() === "có" || getVal(7).toLowerCase() === "yes"
-            };
-            packages.push(pkg);
-        });
-
-        if (packages.length > 0) {
-            renderPricingCards(packages);
-        }
-        setupPricingCarousel();
-
-        // Xóa thẻ script tạm sau khi load xong
-        const scriptTag = document.getElementById("tiemanh-pricing-sheets-jsonp");
-        if (scriptTag) scriptTag.remove();
-    };
-
-    // Vẽ giao diện các price card từ mảng dữ liệu lấy được
-    function renderPricingCards(packages) {
-        const slider = document.getElementById("pricingSlider");
-        if (!slider) return;
-
-        let html = "";
-        packages.forEach((pkg, index) => {
-            const isFeatured = pkg.featured ? "featured" : "";
-            const featureList = pkg.features.split(/[|\n]/)
-                .map(f => f.trim())
-                .filter(f => f.length > 0)
-                .map(f => `<li>${f}</li>`)
-                .join("");
-
-            html += `
-                <!-- Gói ${pkg.name} -->
-                <div class="tiemanh-price-card ${isFeatured}" data-pkg="${index}">
-                    ${pkg.ribbon ? `<div class="tiemanh-price-badge">${pkg.ribbon}</div>` : ""}
-                    <h3>${pkg.name}</h3>
-                    <div class="tiemanh-price-tag">${pkg.price} <span>đ</span></div>
-                    <ul class="tiemanh-price-features">
-                        ${featureList}
-                    </ul>
-                    ${pkg.highlight ? `<div class="price-desc-highlight">${pkg.highlight}</div>` : ""}
-                    ${pkg.fit ? `<div class="price-desc-fit">${pkg.fit}</div>` : ""}
-                    ${pkg.bestSeller ? `<div class="price-best-seller">${pkg.bestSeller}</div>` : ""}
-                </div>
-            `;
-        });
-        slider.innerHTML = html;
-
-        // Cập nhật lại dots phân trang ở dưới
-        const dotsContainer = document.getElementById("pricingDots");
-        if (dotsContainer) {
-            let dotsHtml = "";
-            packages.forEach((pkg, index) => {
-                const activeClass = index === 1 ? "active" : "";
-                dotsHtml += `<button class="tiemanh-pricing-dot ${activeClass}" data-index="${index}" title="${pkg.name}"></button>`;
-            });
-            dotsContainer.innerHTML = dotsHtml;
-        }
-    }
 
     // 5. Quản lý danh sách Concept, Phân trang và Bộ Lọc (Lọc kép)
     let currentFiltered = [...CONCEPTS];
@@ -4740,8 +4628,8 @@
         // Kiểm tra URL xem khách có vào bằng link concept riêng không
         checkUrlAndOpenConcept();
 
-        // Kích hoạt Bảng giá (tải tự động từ Sheets hoặc dùng mặc định)
-        fetchPricingFromSheets();
+        // Kích hoạt Bảng giá (sử dụng bảng giá tĩnh định nghĩa trực tiếp trong file HTML bên trên)
+        setupPricingCarousel();
 
         // Xử lý cuộn mượt cho các liên kết ở Footer
         const footerLinks = document.querySelectorAll(".tiemanh-footer-links a");
