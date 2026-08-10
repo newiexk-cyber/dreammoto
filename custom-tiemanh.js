@@ -2880,7 +2880,7 @@
                     </p>
                     <div class="tiemanh-hero-btns">
                         <button class="tiemanh-btn-primary" id="btnHeroBangGia">🍍 Xem Bảng Giá</button>
-                        <button class="tiemanh-btn-secondary" id="btnHeroExplore">🍍 Xem Thêm Concept ➔</button>
+                        <button class="tiemanh-btn-secondary" id="btnHeroExplore">🍍 Xem Thêm Concept</button>
                     </div>
                 </div>
                 <div class="tiemanh-hero-right">
