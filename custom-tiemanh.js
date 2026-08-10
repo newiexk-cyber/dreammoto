@@ -3932,7 +3932,11 @@
             const placeholderStyle = "background:linear-gradient(135deg,#f0f0f0,#e0e0e0);min-height:80px;";
 
             const themesList = (concept.themes && concept.themes.length > 0) ? concept.themes : [concept.theme || "Nàng Thơ"];
-            const badgesHtml = themesList.map(t => {
+            const filteredThemesList = themesList.filter(t => {
+                const cleanT = t.trim().toUpperCase();
+                return cleanT !== "CONCEPT" && cleanT !== "CONEPT";
+            });
+            const badgesHtml = filteredThemesList.map(t => {
                 const info = getThemeInfo(t);
                 return `<span class="tiemanh-card-badge" style="background:${info.bg};color:${info.color};">${info.icon} ${t}</span>`;
             }).join("");
@@ -4072,7 +4076,11 @@
 
         if (!overlay || !lightboxImg) return;
 
-        const displayThemes = (concept.themes && concept.themes.length > 0) ? concept.themes.join(" • ") : (concept.theme || concept.tag || "");
+        const filteredThemes = (concept.themes || []).filter(t => {
+            const cleanT = t.trim().toUpperCase();
+            return cleanT !== "CONCEPT" && cleanT !== "CONEPT";
+        });
+        const displayThemes = filteredThemes.length > 0 ? filteredThemes.join(" • ") : (concept.tag || "");
         lightboxCat.textContent = displayThemes ? `CONCEPT ${displayThemes.toUpperCase()}` : "CONCEPT NGHỆ THUẬT";
         lightboxTitle.textContent = concept.title;
 
