@@ -2214,12 +2214,12 @@
             align-items: stretch;
         }
         .tiemanh-price-card {
-            background-color: #fff2f5;
+            background-color: #ffffff;
             border-radius: 25px;
             padding: 35px 24px;
-            box-shadow: 0 10px 30px rgba(247, 196, 207, 0.35);
+            box-shadow: 0 10px 30px rgba(244, 63, 94, 0.06);
             transition: var(--tiemanh-transition);
-            border: 2px solid #f8cbd4;
+            border: 2px solid #fbcfe8;
             position: relative;
             overflow: hidden;
             display: flex;
@@ -2325,25 +2325,32 @@
         }
         .tiemanh-price-card:hover {
             transform: translateY(-8px);
-            box-shadow: 0 15px 35px rgba(247, 196, 207, 0.5);
-            border-color: #f5a3b4;
+            box-shadow: 0 18px 38px rgba(244, 63, 94, 0.12);
+            border-color: #f43f5e;
         }
         .tiemanh-price-card.featured {
-            border-color: var(--tiemanh-primary);
-            background: linear-gradient(180deg, #ffffff 0%, #fffcf5 100%);
-            box-shadow: 0 15px 35px rgba(251, 192, 45, 0.25);
+            border: 3px solid #fbbf24 !important;
+            background: #ffffff;
+            box-shadow: 0 18px 38px rgba(245, 158, 11, 0.15) !important;
+        }
+        .tiemanh-price-card.featured:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 42px rgba(245, 158, 11, 0.25) !important;
+            border-color: #f59e0b !important;
         }
         .tiemanh-price-badge {
             position: absolute;
-            top: 15px;
-            right: -35px;
-            background-color: var(--tiemanh-primary);
-            color: var(--tiemanh-dark);
-            font-size: 10px;
-            font-weight: 700;
-            padding: 5px 40px;
+            top: 20px;
+            right: -32px;
+            background-color: #fbbf24;
+            color: #5c1d30;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 4px 35px;
             transform: rotate(45deg);
             text-transform: uppercase;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            letter-spacing: 0.5px;
         }
         .tiemanh-price-card h3 {
             font-family: var(--tiemanh-serif);
@@ -2398,18 +2405,18 @@
             line-height: 1.4;
         }
         .price-best-seller {
-            background: #ffeb3b;
-            color: #5c1d30;
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            color: #ffffff;
             font-weight: 800;
-            font-size: 13px;
-            padding: 5px 15px;
+            font-size: 12.5px;
+            padding: 6px 20px;
             border-radius: 20px;
             text-align: center;
-            margin: 15px auto 0 auto;
+            margin: 18px auto 0 auto;
             width: fit-content;
-            box-shadow: 0 4px 10px rgba(255,235,59,0.3);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.35);
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
         }
         
         /* 5. Quy trình Section */
@@ -4748,6 +4755,11 @@
             });
             currentIndex = safeIndex;
         }, { passive: true });
+
+        // Tự động cuộn đến gói Tỏa Sáng (index 1) trên mobile khi trang web được tải
+        setTimeout(() => {
+            scrollToPackage(1);
+        }, 800);
     }
 
     // Hàm kích hoạt kéo chuột mượt mà (Drag to Scroll) cho PC và hỗ trợ cảm ứng Mobile
