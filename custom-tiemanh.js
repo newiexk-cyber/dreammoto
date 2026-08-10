@@ -4760,12 +4760,12 @@
                     topPos += el.offsetTop;
                     el = el.offsetParent;
                 }
-                // Trừ chiều cao navbar, không để khoảng trắng thừa phía trên
-                container.scrollTo({ top: Math.max(0, topPos - navHeight), behavior: "smooth" });
+                // Navbar là sticky nên scroll thẳng đến vị trí element, không cần trừ navHeight
+                container.scrollTo({ top: Math.max(0, topPos), behavior: "smooth" });
             } else {
                 // Fallback: window cuộn
-                const rect = targetEl.getBoundingClientRect();
-                const absoluteTop = window.pageYOffset + rect.top - navHeight;
+                // Navbar là sticky nên scroll thẳng đến vị trí element
+                const absoluteTop = window.pageYOffset + rect.top;
                 window.scrollTo({ top: Math.max(0, absoluteTop), behavior: "smooth" });
             }
 
