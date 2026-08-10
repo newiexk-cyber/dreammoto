@@ -685,6 +685,7 @@
             width: 100%;
         }
         .tiemanh-hot-showcase {
+            opacity: 0;
             background: linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(255, 251, 235, 0.94));
             border: 2px solid rgba(251, 192, 45, 0.5);
             border-radius: 28px;
@@ -697,7 +698,10 @@
             backdrop-filter: blur(12px);
             position: relative;
             box-sizing: border-box;
-            transition: box-shadow 0.4s ease, border-color 0.4s ease;
+            transition: box-shadow 0.4s ease, border-color 0.4s ease, opacity 0.4s ease-in-out;
+        }
+        .tiemanh-hot-showcase.loaded {
+            opacity: 1;
         }
         .tiemanh-hot-showcase:hover {
             box-shadow: 
@@ -3846,6 +3850,8 @@
                 card.style.display = "none";
             }
         });
+        const showcase = document.querySelector(".tiemanh-hot-showcase");
+        if (showcase) showcase.classList.add("loaded");
     }
 
     // 4b. Tải dữ liệu concept từ Google Sheets (CMS dạng bảng đơn - JSONP để bypass CORS)
