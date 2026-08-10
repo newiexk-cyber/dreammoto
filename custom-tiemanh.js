@@ -3380,8 +3380,7 @@
 
     // 4. Khởi tạo gắn giao diện lên trang
     function init() {
-        // Xóa sạch toàn bộ dữ liệu demo tĩnh cũ để bộ lọc tự động sinh chính xác từ Google Sheets
-        CONCEPTS.length = 0;
+        // Giữ nguyên dữ liệu dự phòng ban đầu để hiển thị ngay lập tức khi chờ kết nối Google Sheets
 
         // Tự động ghi đè chiều cao của khung Webcake để không bị giới hạn chiều cao ảnh
         if (CONFIG.targetId) {
@@ -3888,15 +3887,12 @@
 
         // Fallback Timeout: Nếu sau 3 giây Sheet không phản hồi, tự động render concept để không bị trắng trang
         setTimeout(() => {
-            if (!hasLoaded && CONCEPTS.length > 0) {
-                const grid = document.getElementById("conceptGrid");
-                if (grid && grid.children.length === 0) {
-                    console.warn("[TiệmẢnh] Quá thời gian chờ Google Sheet, tự động hiển thị dữ liệu dự phòng.");
-                    currentFiltered = [...CONCEPTS];
-                    setupGallery();
-                    randomizeHeroPolaroids();
-                    renderFilterBar();
-                }
+            if (!hasLoaded) {
+                console.warn("[TiệmẢnh] Quá thời gian chờ Google Sheet, tự động hiển thị dữ liệu dự phòng.");
+                currentFiltered = [...CONCEPTS];
+                setupGallery();
+                randomizeHeroPolaroids();
+                renderFilterBar();
             }
         }, 3000);
     }
