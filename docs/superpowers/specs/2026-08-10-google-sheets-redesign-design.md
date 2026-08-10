@@ -215,6 +215,28 @@ function initializeHeaders(sheet) {
   sheet.getRange(1, 1, 1, headers.length).setFontWeight("bold").setBackground("#FFF3CD").setHorizontalAlignment("center");
   sheet.setFrozenRows(1);
 }
+
+// Hàm thiết lập hộp kiểm (checkbox) và menu thả xuống (dropdown) cột Chủ đề
+function applySheetFormatting(sheet, startRow, endRow) {
+  if (startRow > endRow) return;
+  
+  // 1. Dropdown cột C (Chủ đề)
+  const themeRange = sheet.getRange(startRow, 3, endRow - startRow + 1, 1);
+  const themeRule = SpreadsheetApp.newDataValidation()
+    .requireValueInList(["Nàng Thơ", "Cổ Trang", "Áo Dài", "Beauty", "Sinh Nhật", "Cá Tính & Sexy", "Couple", "Tết", "Noel"], true)
+    .setAllowInvalid(true) // Cho phép tự viết thêm chủ đề khác hoặc nhập nhiều chủ đề cách nhau bởi dấu phẩy
+    .setHelpText("Chọn chủ đề chuẩn hoặc tự viết chủ đề tùy ý (phân tách bằng dấu phẩy)")
+    .build();
+  themeRange.setDataValidation(themeRule);
+  
+  // 2. Hộp kiểm cột F (Ẩn)
+  const hideRange = sheet.getRange(startRow, 6, endRow - startRow + 1, 1);
+  hideRange.insertCheckboxes();
+  
+  // 3. Hộp kiểm cột G (Best Seller)
+  const bestRange = sheet.getRange(startRow, 7, endRow - startRow + 1, 1);
+  bestRange.insertCheckboxes();
+}
 ```
 
 ---
