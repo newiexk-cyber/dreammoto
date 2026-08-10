@@ -2840,8 +2840,8 @@
                         Hơn 100+ concept nghệ thuật được đầu tư trang phục, makeup và bối cảnh thiết kế bài bản, chỉn chu giúp bạn tự tin tỏa sáng theo phong cách rất riêng của chính mình.
                     </p>
                     <div class="tiemanh-hero-btns">
-                        <button class="tiemanh-btn-primary" id="btnHeroBangGia">💎 Xem Bảng Giá</button>
-                        <button class="tiemanh-btn-secondary" id="btnHeroExplore">✨ Xem Thêm Concept ➔</button>
+                        <button class="tiemanh-btn-primary" id="btnHeroBangGia">🍍 Xem Bảng Giá</button>
+                        <button class="tiemanh-btn-secondary" id="btnHeroExplore">🍍 Xem Thêm Concept ➔</button>
                     </div>
                 </div>
                 <div class="tiemanh-hero-right">
@@ -2959,8 +2959,8 @@
                                 <li>Tặng 01 ảnh lớn 20x30cm 🎁</li>
                                 <li>Ưu tiên chọn lịch giờ vàng</li>
                             </ul>
-                            <div class="price-desc-highlight">💎 Khách hàng thích trải nghiệm <strong>cao cấp</strong>, ekip sẽ <strong>chăm sóc kỹ từng chi tiết</strong></div>
-                            <div class="price-desc-fit">⭐ <strong>Phù hợp:</strong> tất cả các concept chụp ảnh dịp quan trọng cần chỉn chu đầu tư.</div>
+                            <div class="price-desc-highlight">🍍 Khách hàng thích trải nghiệm <strong>cao cấp</strong>, ekip sẽ <strong>chăm sóc kỹ từng chi tiết</strong></div>
+                            <div class="price-desc-fit">🍍 <strong>Phù hợp:</strong> tất cả các concept chụp ảnh dịp quan trọng cần chỉn chu đầu tư.</div>
                         </div>
                     </div>
                     <!-- Dots phân trang 3 gói -->
@@ -3225,7 +3225,7 @@
                         <!-- Cụm 2 nút hành động nhanh tiện ích -->
                         <div class="zalo-quick-actions">
                             <button class="zalo-quick-btn pricing" id="zaloQuickPricingBtn">
-                                💎 Xem Bảng Giá
+                                🍍 Xem Bảng Giá
                             </button>
                             <button class="zalo-quick-btn branch" id="zaloQuickBranchBtn">
                                 📍 Xem Chi Nhánh
@@ -4774,7 +4774,7 @@
         if (!themeBar) return;
 
         // Trích xuất các chủ đề duy nhất từ c.themes thực tế của các concept
-        const themes = [{ slug: "all", name: "Tất cả", icon: "✨" }];
+        const themes = [{ slug: "all", name: "Tất cả", icon: "🍍" }];
         const seenThemes = new Set();
         
         CONCEPTS.forEach(c => {
