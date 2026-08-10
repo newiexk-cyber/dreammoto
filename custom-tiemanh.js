@@ -1720,7 +1720,7 @@
         }
         .tiemanh-footer-grid {
             display: grid;
-            grid-template-columns: 1.2fr 0.8fr 0.8fr 1.2fr;
+            grid-template-columns: 1.2fr 0.8fr 1.2fr;
             gap: 50px;
             margin-bottom: 60px;
         }
@@ -3158,16 +3158,7 @@
                             <a href="https://zalo.me/3453208760470152361" target="_blank" class="tiemanh-social-icon" title="Zalo">💬</a>
                         </div>
                     </div>
-                    <div class="tiemanh-footer-col">
-                        <h4 class="tiemanh-footer-title">Dịch Vụ Concept</h4>
-                        <ul class="tiemanh-footer-links">
-                            <li><a href="#filterBar">Concept Nàng Thơ & Beauty</a></li>
-                            <li><a href="#filterBar">Concept Sinh Nhật & Kỷ Niệm</a></li>
-                            <li><a href="#filterBar">Concept Tết & Áo Dài</a></li>
-                            <li><a href="#filterBar">Concept Cổ Trang Nghệ Thuật</a></li>
-                            <li><a href="#filterBar">Concept Sexy & Năng Động</a></li>
-                        </ul>
-                    </div>
+
                     <div class="tiemanh-footer-col">
                         <h4 class="tiemanh-footer-title">Khám Phá</h4>
                         <ul class="tiemanh-footer-links">
