@@ -882,7 +882,7 @@
             scroll-margin-top: 0; /* Offset xử lý thủ công trong JS */
         }
         .tiemanh-section-container {
-            padding: 60px 8%;
+            padding: 24px 8% 60px; /* Top gọn để không có khoảng trắng khi scroll tới */
         }
         /* Wrapper tạo hiệu ứng fade ở 2 cạnh gợi ý còn nội dung */
         .tiemanh-filter-scroll-wrap {
@@ -2173,7 +2173,7 @@
 
         /* 4. Bảng giá Section */
         .tiemanh-banggia-sec {
-            padding: 80px 8%;
+            padding: 24px 8% 80px; /* Top gọn để không có khoảng trắng khi scroll tới */
             background-color: #fffbf0;
             text-align: center;
         }
@@ -2435,7 +2435,7 @@
         
         /* 5. Quy trình Section */
         .tiemanh-quytrinh-sec {
-            padding: 80px 8%;
+            padding: 24px 8% 80px; /* Top gọn */
             background-color: #fffdf6;
             text-align: center;
         }
@@ -2656,7 +2656,7 @@
             .tiemanh-section-subtitle { font-size: 12px; letter-spacing: 1.5px; }
             .tiemanh-section-desc { font-size: 13.5px; margin-bottom: 22px; line-height: 1.5; }
             .tiemanh-section-container { padding: 25px 14px; }
-            .tiemanh-banggia-sec, .tiemanh-quytrinh-sec, .tiemanh-feedback-sec, .tiemanh-chinhanh-sec { padding: 40px 14px; }
+            .tiemanh-banggia-sec, .tiemanh-quytrinh-sec, .tiemanh-feedback-sec, .tiemanh-chinhanh-sec { padding: 20px 14px 40px; }
 
             /* Header & Navbar gọn gàng */
             .tiemanh-navbar { flex-direction: column; gap: 10px; padding: 12px 14px; }
