@@ -1227,6 +1227,29 @@
             transform: translateY(-2px);
             box-shadow: 0 8px 24px rgba(251, 192, 45, 0.5);
         }
+        .tiemanh-lightbox-booking-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #1e293b;
+            border: none;
+            padding: 11px 20px;
+            border-radius: 25px;
+            font-weight: 700;
+            font-size: 13.5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 14px rgba(245, 158, 11, 0.3);
+        }
+        .tiemanh-lightbox-booking-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5);
+            filter: brightness(1.1);
+        }
         .tiemanh-lightbox-share-btn {
             display: inline-flex;
             align-items: center;
@@ -3260,6 +3283,9 @@
                             <div class="tiemanh-lightbox-img-counter" id="lightboxImgCounter">1 / 10</div>
                             <div class="tiemanh-lightbox-thumb-container" id="lightboxThumbs"></div>
                             <div class="tiemanh-lightbox-actions">
+                                <button class="tiemanh-lightbox-booking-btn" id="lightboxBookBtn" title="Đặt lịch chụp & Tư vấn trực tiếp qua Zalo">
+                                    <span>🍍 Đặt Lịch & Tư Vấn Ngay</span>
+                                </button>
                                 <button class="tiemanh-lightbox-share-btn" id="lightboxShareBtn" title="Sao chép đường link trực tiếp dẫn tới concept này" style="width: 100%;">
                                     <span>🔗 Sao chép link Concept</span>
                                 </button>
@@ -4260,6 +4286,26 @@
                     lightboxImg.classList.remove("zoomed");
                 }
             });
+
+            // 🔥 Thêm chức năng vuốt (Swipe) trên Mobile
+            let touchStartX = 0;
+            let touchEndX = 0;
+            lightboxImg.addEventListener("touchstart", (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+            }, { passive: true });
+
+            lightboxImg.addEventListener("touchend", (e) => {
+                touchEndX = e.changedTouches[0].screenX;
+                const diffX = touchEndX - touchStartX;
+                // Ngưỡng vuốt tối thiểu là 50px
+                if (Math.abs(diffX) > 50) {
+                    if (diffX < 0) {
+                        nextLightboxImage(); // Vuốt sang trái -> Xem ảnh tiếp theo
+                    } else {
+                        prevLightboxImage(); // Vuốt sang phải -> Xem ảnh trước đó
+                    }
+                }
+            }, { passive: true });
         }
 
         // Nhấp nút Đặt lịch trên Lightbox panel
