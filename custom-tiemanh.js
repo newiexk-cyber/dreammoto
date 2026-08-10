@@ -3907,10 +3907,10 @@
             setupPricingCarousel();
             return;
         }
-        // Gọi export dạng CSV để bypass hoàn toàn CORS và lấy dữ liệu nhanh nhất
-        const url = `https://docs.google.com/spreadsheets/d/${CONFIG.sheetId}/export?format=csv&sheet=${encodeURIComponent("cấu hình gói giá")}`;
+        // Thêm tham số t=TIMESTAMP và cấu hình cache no-store để trình duyệt không dùng cache cũ
+        const url = `https://docs.google.com/spreadsheets/d/${CONFIG.sheetId}/export?format=csv&sheet=${encodeURIComponent("cấu hình gói giá")}&t=${new Date().getTime()}`;
         try {
-            const response = await fetch(url);
+            const response = await fetch(url, { cache: "no-store" });
             if (!response.ok) throw new Error("Không thể tải cấu hình gói giá");
             const csvText = await response.text();
             const packages = parsePricingCSV(csvText);
@@ -3925,11 +3925,20 @@
         }
     }
 
-    // Phân tích cú pháp CSV nâng cao (hỗ trợ các chuỗi có dấu nháy kép, dấu xuống dòng)
+    // Phân tích cú pháp CSV nâng cao (tự động phát hiện dấu phân cách cột , hoặc ;)
     function parsePricingCSV(text) {
         const lines = [];
         let row = [""];
         let inQuotes = false;
+
+        // Tự động nhận diện dấu phân cách cột (dấu phẩy , hoặc dấu chấm phẩy ;) của Google Sheets theo cài đặt khu vực
+        let delimiter = ",";
+        const firstLine = text.split(/[\r\n]+/)[0] || "";
+        const commaCount = (firstLine.match(/,/g) || []).length;
+        const semicolonCount = (firstLine.match(/;/g) || []).length;
+        if (semicolonCount > commaCount) {
+            delimiter = ";";
+        }
 
         for (let i = 0; i < text.length; i++) {
             const c = text[i];
@@ -3941,7 +3950,7 @@
                 } else {
                     inQuotes = !inQuotes;
                 }
-            } else if (c === ',' && !inQuotes) {
+            } else if (c === delimiter && !inQuotes) {
                 row.push('');
             } else if ((c === '\r' || c === '\n') && !inQuotes) {
                 if (c === '\r' && next === '\n') i++;
