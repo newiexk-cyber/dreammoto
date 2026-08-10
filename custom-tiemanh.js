@@ -2839,9 +2839,10 @@
             color: #2e0813;
         }
         .tiemanh-hero-title-new .title-script {
-            font-family: 'Pinyon Script', cursive;
-            font-size: 78px;
-            color: #d97706; /* Màu vàng hổ phách đậm nổi bật trên nền sáng */
+            font-family: 'Dancing Script', cursive;
+            font-size: 80px; /* Tăng nhẹ để có tỉ lệ hoàn hảo */
+            font-weight: 700;
+            color: #d97706; /* Màu vàng hổ phách sẫm */
             line-height: 0.8;
             margin-left: 20px;
             transform: rotate(-3deg);
@@ -3025,7 +3026,7 @@
 
     const fontLink = document.createElement('link');
     fontLink.rel = 'stylesheet';
-    fontLink.href = 'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600;1,700&family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Pinyon+Script&display=swap';
+    fontLink.href = 'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600;1,700&family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Dancing+Script:wght@700&display=swap';
     document.head.appendChild(fontLink);
 
     const styleTag = document.createElement("style");
@@ -3087,7 +3088,7 @@
                         <div class="stat-item">
                             <div class="stat-icon">📍</div>
                             <div class="stat-info">
-                                <span class="stat-num">8+</span>
+                                <span class="stat-num">5+</span>
                                 <span class="stat-label">chi nhánh</span>
                             </div>
                         </div>
