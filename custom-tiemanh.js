@@ -11,10 +11,10 @@
         redirectUrl: "", // Đường dẫn trang Cảm ơn nếu muốn chuyển hướng
         targetId: "w-naljqcdc", // ID phần tử trên Webcake để chèn giao diện
         // 🔑 ID của Google Sheet quản lý concept (nhân viên sửa tại đây)
-        // Lấy từ URL: https://docs.google.com/spreadsheets/d/1YVrDWbC9szD2J9QBauJLt6g5dkz6bAiCLGEzU5wUXGo/edit?gid=0
-        sheetId: "1YVrDWbC9szD2J9QBauJLt6g5dkz6bAiCLGEzU5wUXGo",
-        sheetGid: "0", // GID tab sheet quản lý concept
-        sheetName: "Trang tính1" // Tên tab sheet của bạn
+        // Lấy từ URL: https://docs.google.com/spreadsheets/d/1Sv3pxheEfamWKTSY96vwzQOi8bXK_lqJ1wB_wnZefCU/edit?gid=43962598
+        sheetId: "1Sv3pxheEfamWKTSY96vwzQOi8bXK_lqJ1wB_wnZefCU",
+        sheetGid: "43962598", // GID tab sheet quản lý concept
+        sheetName: "đồng bộ concept" // Tên tab sheet của bạn
     };
 
     // 1. Dữ liệu từng Concept cụ thể (mỗi card = 1 concept riêng biệt)
