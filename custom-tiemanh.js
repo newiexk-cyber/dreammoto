@@ -3175,8 +3175,12 @@
                             <li><span class="icon">📞</span> <span>Hotline: 0908 447 308</span></li>
                             <li><span class="icon">💬</span> <span>Zalo: <a href="https://zalo.me/3453208760470152361" target="_blank" style="color:var(--tiemanh-primary);text-decoration:none;font-weight:700;">Nhắn tin qua Zalo OA</a></span></li>
                             <li><span class="icon">✉️</span> <span>Email: tiemanhtraithom@gmail.com</span></li>
-                            <li class="address-line"><span class="icon">📍</span> <span>CS Quận 1-TPHCM: 214/19/21 Nguyễn Văn Nguyễn, P. Tân Định</span></li>
-                            <li class="address-line"><span class="icon">📍</span> <span>Hệ thống: Thủ Đức • Biên Hòa • Bình Dương • Cần Thơ • Đà Nẵng</span></li>
+                            <li class="address-line"><span class="icon">📍</span> <span>CS Quận 1: 214/19/21 Nguyễn Văn Nguyễn, P. Tân Định, Q.1</span></li>
+                            <li class="address-line"><span class="icon">📍</span> <span>CS Thủ Đức: 81 Chương Dương, P. Linh Chiểu, TP. Thủ Đức</span></li>
+                            <li class="address-line"><span class="icon">📍</span> <span>CS Bình Dương: 6 Đường Số 3, P. Phú Hòa, TP. Thủ Dầu Một</span></li>
+                            <li class="address-line"><span class="icon">📍</span> <span>CS Biên Hòa: Số 8, Đường N1, P. Thống Nhất, Biên Hòa</span></li>
+                            <li class="address-line"><span class="icon">📍</span> <span>CS Cần Thơ: A12 Đường Số 1, KDC Nam Long, Cần Thơ</span></li>
+                            <li class="address-line"><span class="icon">📍</span> <span>CS Đà Nẵng: 62 Nại Nam, P. Hòa Cường Bắc, Q. Hải Châu</span></li>
                         </ul>
                     </div>
                 </div>
