@@ -3901,90 +3901,76 @@
         }, 3000);
     }
 
-    // 4c. Tải dữ liệu bảng giá tự động từ tab "cấu hình gói giá" của Google Sheets
+    // 4c. Tải dữ liệu bảng giá tự động từ tab "cấu hình gói giá" của Google Sheets qua JSONP (Bypass CORS)
     async function fetchPricingFromSheets() {
         if (!CONFIG.sheetId) {
             setupPricingCarousel();
             return;
         }
-        // Thêm tham số t=TIMESTAMP và cấu hình cache no-store để trình duyệt không dùng cache cũ
-        const url = `https://docs.google.com/spreadsheets/d/${CONFIG.sheetId}/export?format=csv&sheet=${encodeURIComponent("cấu hình gói giá")}&t=${new Date().getTime()}`;
-        try {
-            const response = await fetch(url, { cache: "no-store" });
-            if (!response.ok) throw new Error("Không thể tải cấu hình gói giá");
-            const csvText = await response.text();
-            const packages = parsePricingCSV(csvText);
-            if (packages && packages.length > 0) {
-                renderPricingCards(packages);
-            }
-        } catch (error) {
-            console.warn("[TiệmẢnh] Không thể tải bảng giá từ Sheets (Tab 'cấu hình gói giá' chưa tồn tại hoặc bị lỗi). Đang dùng bảng giá mặc định.");
-        } finally {
-            // Luôn luôn khởi tạo Carousel để các nút bấm hoạt động bình thường
+
+        const apiUrl = `https://docs.google.com/spreadsheets/d/${CONFIG.sheetId}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent("cấu hình gói giá")}&tqx=responseHandler:handlePricingSheetsData&t=${Date.now()}`;
+
+        // Nhúng thẻ script để load dữ liệu (vượt qua hoàn toàn CORS trên cả local file và web online)
+        const oldScript = document.getElementById("tiemanh-pricing-sheets-jsonp");
+        if (oldScript) oldScript.remove();
+
+        const script = document.createElement("script");
+        script.id = "tiemanh-pricing-sheets-jsonp";
+        script.src = apiUrl;
+        script.onerror = function () {
+            console.warn("[TiệmẢnh] Không thể kết nối Google Sheets để lấy bảng giá. Đang hiển thị bảng giá mặc định.");
             setupPricingCarousel();
-        }
+        };
+        document.head.appendChild(script);
     }
 
-    // Phân tích cú pháp CSV nâng cao (tự động phát hiện dấu phân cách cột , hoặc ;)
-    function parsePricingCSV(text) {
-        const lines = [];
-        let row = [""];
-        let inQuotes = false;
-
-        // Tự động nhận diện dấu phân cách cột (dấu phẩy , hoặc dấu chấm phẩy ;) của Google Sheets theo cài đặt khu vực
-        let delimiter = ",";
-        const firstLine = text.split(/[\r\n]+/)[0] || "";
-        const commaCount = (firstLine.match(/,/g) || []).length;
-        const semicolonCount = (firstLine.match(/;/g) || []).length;
-        if (semicolonCount > commaCount) {
-            delimiter = ";";
+    // Callback toàn cục để xử lý dữ liệu JSON trả về từ Google Sheets
+    window.handlePricingSheetsData = function (response) {
+        if (!response || !response.table || !response.table.rows) {
+            console.warn("[TiệmẢnh] Dữ liệu bảng giá từ Sheets trống hoặc sai cấu trúc.");
+            setupPricingCarousel();
+            return;
         }
 
-        for (let i = 0; i < text.length; i++) {
-            const c = text[i];
-            const next = text[i + 1];
-            if (c === '"') {
-                if (inQuotes && next === '"') {
-                    row[row.length - 1] += '"';
-                    i++;
-                } else {
-                    inQuotes = !inQuotes;
-                }
-            } else if (c === delimiter && !inQuotes) {
-                row.push('');
-            } else if ((c === '\r' || c === '\n') && !inQuotes) {
-                if (c === '\r' && next === '\n') i++;
-                lines.push(row);
-                row = [''];
-            } else {
-                row[row.length - 1] += c;
-            }
-        }
-        if (row.length > 1 || row[0] !== '') {
-            lines.push(row);
-        }
-
-        if (lines.length < 2) return [];
-
+        const rows = response.table.rows;
         const packages = [];
-        for (let i = 1; i < lines.length; i++) {
-            const cells = lines[i];
-            if (cells.length < 2 || !cells[0]) continue; // Bỏ qua dòng trống
+
+        rows.forEach(row => {
+            if (!row || !row.c || row.c.length < 2) return;
+            
+            // Lấy giá trị an toàn từ ô
+            const getVal = (idx) => {
+                const cell = row.c[idx];
+                if (!cell) return "";
+                // Ưu tiên lấy giá trị hiển thị .f (Formatted value) để giữ nguyên định dạng số tiền như 750.000
+                return (cell.f !== undefined && cell.f !== null) ? String(cell.f).trim() : (cell.v !== undefined && cell.v !== null ? String(cell.v).trim() : "");
+            };
+
+            const name = getVal(0);
+            if (!name || name.toLowerCase().includes("tên gói")) return; // Bỏ qua dòng header nếu có
 
             const pkg = {
-                name: cells[0]?.trim() || "",
-                price: cells[1]?.trim() || "",
-                features: cells[2]?.trim() || "",
-                highlight: cells[3]?.trim() || "",
-                fit: cells[4]?.trim() || "",
-                ribbon: cells[5]?.trim() || "",
-                bestSeller: cells[6]?.trim() || "",
-                featured: (cells[7]?.trim() || "").toLowerCase() === "true" || (cells[7]?.trim() || "").toLowerCase() === "có"
+                name: name,
+                price: getVal(1),
+                features: getVal(2),
+                highlight: getVal(3),
+                fit: getVal(4),
+                ribbon: getVal(5),
+                bestSeller: getVal(6),
+                featured: getVal(7).toLowerCase() === "true" || getVal(7).toLowerCase() === "có" || getVal(7).toLowerCase() === "yes"
             };
             packages.push(pkg);
+        });
+
+        if (packages.length > 0) {
+            renderPricingCards(packages);
         }
-        return packages;
-    }
+        setupPricingCarousel();
+
+        // Xóa thẻ script tạm sau khi load xong
+        const scriptTag = document.getElementById("tiemanh-pricing-sheets-jsonp");
+        if (scriptTag) scriptTag.remove();
+    };
 
     // Vẽ giao diện các price card từ mảng dữ liệu lấy được
     function renderPricingCards(packages) {
