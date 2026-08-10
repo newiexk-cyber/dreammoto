@@ -4822,15 +4822,22 @@
         const themeBar = document.getElementById("themeFilterBar");
         if (!themeBar) return;
 
-        // Trích xuất các chủ đề duy nhất từ c.themes thực tế của các concept
-        const themes = [{ slug: "all", name: "Tất cả", icon: "🍍" }];
+        // Trích xuất các chủ đề duy nhất từ c.themes thực tế của các concept, chèn sẵn nút Best Seller ở đầu
+        const themes = [
+            { slug: "all", name: "Tất cả", icon: "🍍" },
+            { slug: "bestseller", name: "Best Seller", icon: "🔥" }
+        ];
         const seenThemes = new Set();
         
         CONCEPTS.forEach(c => {
             if (c.themes) {
                 c.themes.forEach(t => {
-                    if (t && !seenThemes.has(t.toUpperCase())) {
-                        seenThemes.add(t.toUpperCase());
+                    const cleanT = t.trim().toUpperCase();
+                    // Loại bỏ tag "Concept" hoặc "Conept" làm rác bộ lọc
+                    if (cleanT === "CONCEPT" || cleanT === "CONEPT") return;
+
+                    if (t && !seenThemes.has(cleanT)) {
+                        seenThemes.add(cleanT);
                         const info = getThemeInfo(t);
                         themes.push({ slug: t, name: t, icon: info.icon });
                     }
@@ -4879,10 +4886,15 @@
             // Lọc theo Chi nhánh (so khớp với tag/branch)
             const matchBranch = (selectedBranch === "all" || c.tag === selectedBranch || c.branch === selectedBranch);
 
-            if (selectedTheme === "all") return matchBranch;
-
-            // Kiểm tra so khớp chủ đề
-            const matchTheme = c.themes && c.themes.some(t => t.toUpperCase() === selectedTheme.toUpperCase());
+            // Kiểm tra so khớp chủ đề hoặc bộ lọc Best Seller
+            let matchTheme = false;
+            if (selectedTheme === "all") {
+                matchTheme = true;
+            } else if (selectedTheme === "bestseller") {
+                matchTheme = c.isBestSeller;
+            } else {
+                matchTheme = c.themes && c.themes.some(t => t.toUpperCase() === selectedTheme.toUpperCase());
+            }
 
             return matchBranch && matchTheme;
         });
