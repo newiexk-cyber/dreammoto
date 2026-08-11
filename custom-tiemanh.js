@@ -2861,65 +2861,44 @@
             .polaroid-caption { font-size: 9.5px; }
         }
 
-        /* Nhãn Best Seller lấp lánh sang trọng */
-        .tiemanh-card {
-            position: relative;
-        }
-        .concept-best-badge {
+        /* Khung viền góc Best Seller lấp lánh sang trọng */
+        .concept-best-corner {
             position: absolute;
-            top: -23px; /* Cân chỉnh cho vương miện lớn */
-            left: -15px;
+            top: 8px; /* Khớp với padding của collage-wrapper */
+            right: 8px;
+            width: 140px; /* Kích thước cân đối cho Concept card */
+            height: auto;
             z-index: 10;
-            font-size: 46px; /* Tăng kích thước vương miện lên 46px */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            /* Đổ bóng phát sáng lấp lánh rực rỡ */
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)) drop-shadow(0 0 12px rgba(251, 192, 45, 0.75));
-            animation: tiemanh-crown-sway 2.4s infinite ease-in-out;
-            cursor: default;
+            pointer-events: none; /* Tránh cản click vào ảnh */
+            transform-origin: top right;
+            animation: tiemanh-corner-glow 2.4s infinite ease-in-out;
             user-select: none;
-            pointer-events: none; /* Không cản trở click */
         }
-        @keyframes tiemanh-crown-sway {
+        .polaroid-best-corner {
+            position: absolute;
+            top: 12px; /* Khớp với padding của polaroid-card */
+            right: 12px;
+            width: 95px; /* Kích thước nhỏ gọn cho Polaroid */
+            height: auto;
+            z-index: 10;
+            pointer-events: none;
+            transform-origin: top right;
+            animation: tiemanh-corner-glow 2.4s infinite ease-in-out;
+            user-select: none;
+        }
+        @keyframes tiemanh-corner-glow {
             0% { 
-                transform: scale(1) rotate(-22deg) translate(0, 0); 
-                filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)) drop-shadow(0 0 12px rgba(251, 192, 45, 0.7));
+                transform: scale(1);
+                filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15)) brightness(1); 
             }
             50% { 
-                transform: scale(1.08) rotate(-15deg) translate(1px, -2px); 
-                filter: drop-shadow(0 6px 14px rgba(0,0,0,0.35)) drop-shadow(0 0 20px rgba(255, 179, 0, 0.95)) brightness(1.15); /* Phát sáng rực rỡ lấp lánh ở pha giữa */
+                transform: scale(1.03); /* Phát sáng co giãn nhẹ nhàng đồng điệu */
+                filter: drop-shadow(0 4px 10px rgba(251,192,45,0.35)) drop-shadow(0 0 8px rgba(255,179,0,0.5)) brightness(1.06); 
             }
             100% { 
-                transform: scale(1) rotate(-22deg) translate(0, 0); 
-                filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)) drop-shadow(0 0 12px rgba(251, 192, 45, 0.7));
+                transform: scale(1);
+                filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15)) brightness(1); 
             }
-        }
-
-        /* Badge trên Polaroid card ở Hero banner */
-        .polaroid-card {
-            position: relative;
-        }
-        .polaroid-best-badge {
-            position: absolute;
-            top: -14px; /* Đẩy vương miện nhỏ lên trên mép ảnh Polaroid */
-            left: -8px; /* Đẩy vương miện nhỏ ra mép trái (nửa trong nửa ngoài) */
-            z-index: 10;
-            font-size: 32px; /* Kích cỡ vương miện nhỏ gọn cho Polaroid */
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            filter: drop-shadow(0 3px 5px rgba(0,0,0,0.25)) drop-shadow(0 0 10px rgba(251, 192, 45, 0.7));
-            animation: tiemanh-crown-sway-small 2.4s infinite ease-in-out;
-            cursor: default;
-            user-select: none;
-            pointer-events: none; /* Tránh cản click */
-        }
-        @keyframes tiemanh-crown-sway-small {
-            0% { transform: scale(1) rotate(-22deg) translate(0, 0); }
-            50% { transform: scale(1.08) rotate(-15deg) translate(1px, -1px); filter: drop-shadow(0 5px 10px rgba(0,0,0,0.3)) drop-shadow(0 0 16px rgba(255, 179, 0, 0.9)) brightness(1.15); }
-            100% { transform: scale(1) rotate(-22deg) translate(0, 0); }
-        }
         }
 
         /* --- CẤU HÌNH TYPOGRAPHY BOLD HIỆN ĐẠI (SỬ DỤNG PHÔNG MẶC ĐỊNH, KHÔNG LO BỊ CHẶN FONT) --- */
@@ -4169,8 +4148,8 @@
                 const concept = selected[i];
                 card.classList.remove("loading-skeleton");
                 
-                // Thêm nhãn vương miện nhỏ nếu bộ concept là Best Seller
-                const flameHtml = concept.isBestSeller ? `<span class="polaroid-best-badge" title="Concept Best Seller">👑</span>` : "";
+                // Thêm khung góc vương miện nếu bộ concept là Best Seller
+                const flameHtml = concept.isBestSeller ? `<img src="bestseller-corner.png" class="polaroid-best-corner" alt="Best Seller" title="Concept Best Seller">` : "";
 
                 card.innerHTML = `
                     ${flameHtml}
@@ -4299,7 +4278,7 @@
                 return `<span class="tiemanh-card-badge" style="background:${info.bg};color:${info.color};">${info.icon} ${t}</span>`;
             }).join("");
 
-            const bestSellerHtml = concept.isBestSeller ? `<span class="concept-best-badge" title="Concept Best Seller">👑</span>` : "";
+            const bestSellerHtml = concept.isBestSeller ? `<img src="bestseller-corner.png" class="concept-best-corner" alt="Best Seller" title="Concept Best Seller">` : "";
 
             card.innerHTML = `
                 ${bestSellerHtml}
