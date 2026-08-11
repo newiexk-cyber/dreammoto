@@ -325,25 +325,58 @@ function onEdit(e) {
       return str.toString()
         .replace(/&amp;/g, "&")
         .replace(/\s+/g, " ")
-        .trim()
-        .toLowerCase();
+        .trim();
     };
     
-    if (oldValue) {
-      const oldParts = oldValue.split(",").map(p => p.trim()).filter(Boolean);
-      const normOldParts = oldParts.map(p => normalize(p));
-      const normNew = normalize(newValue);
-      const idx = normOldParts.indexOf(normNew);
-      
-      if (idx === -1) {
-        // Nếu chọn chủ đề mới -> Chèn thêm vào
-        range.setValue(oldParts.join(", ") + ", " + newValue);
-      } else {
-        // Nếu chọn chủ đề đã có -> Xóa chủ đề đó đi (Toggle)
-        oldParts.splice(idx, 1);
-        range.setValue(oldParts.join(", "));
+    const val = range.getValue();
+    const parts = val.split(",").map(p => p.trim()).filter(Boolean);
+    
+    // Lọc trùng lặp thông minh cho chuỗi hiện tại trong ô
+    const uniqueParts = [];
+    const seen = new Set();
+    for (const part of parts) {
+      const norm = normalize(part).toLowerCase();
+      if (!seen.has(norm) && norm !== "") {
+        seen.add(norm);
+        uniqueParts.push(part.replace(/&amp;/g, "&").trim());
       }
     }
+    
+    // Nếu Google Sheets ghi đè làm mất giá trị cũ (oldValue không nằm trong uniqueParts)
+    if (oldValue && newValue) {
+      const oldParts = oldValue.split(",").map(p => p.trim()).filter(Boolean);
+      const normOldParts = oldParts.map(p => normalize(p).toLowerCase());
+      const normNewValue = normalize(newValue).toLowerCase();
+      
+      const isNewInOld = normOldParts.includes(normNewValue);
+      
+      // Nếu giá trị trong ô hiện tại (val) chỉ chứa đúng newValue (chứng tỏ Google Sheets đã ghi đè làm mất oldValue)
+      if (parts.length === 1 && normalize(parts[0]).toLowerCase() === normNewValue) {
+        if (isNewInOld) {
+          // Toggle: Nếu chọn lại cái đã có -> Xóa nó đi khỏi danh sách cũ
+          const filtered = oldParts.filter(p => normalize(p).toLowerCase() !== normNewValue);
+          range.setValue(filtered.map(p => p.replace(/&amp;/g, "&").trim()).join(", "));
+          return;
+        } else {
+          // Ghép thêm: Nếu chọn cái chưa có -> Nối tiếp vào danh sách cũ
+          const combined = [...oldParts, newValue];
+          const cleanCombined = [];
+          const combinedSeen = new Set();
+          for (const part of combined) {
+            const norm = normalize(part).toLowerCase();
+            if (!combinedSeen.has(norm) && norm !== "") {
+              combinedSeen.add(norm);
+              cleanCombined.push(part.replace(/&amp;/g, "&").trim());
+            }
+          }
+          range.setValue(cleanCombined.join(", "));
+          return;
+        }
+      }
+    }
+    
+    // Nếu không bị ghi đè mất giá trị cũ, chỉ cần ghi lại chuỗi đã khử trùng
+    range.setValue(uniqueParts.join(", "));
   }
 }
 
