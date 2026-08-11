@@ -997,10 +997,11 @@
             gap: 6px;
             height: 380px;
             padding: 8px;
-            background: #ffffff; /* Trùng với màu nền card để triệt tiêu vệt lệch pixel */
+            background: transparent !important; /* Đặt trong suốt để không che mất viền vàng ở z-index 1 */
             overflow: hidden;
             border-radius: 22px 22px 0 0; /* Đồng nhất bo góc 22px ở đỉnh */
             position: relative;
+            z-index: 2; /* Nằm trên khung góc vàng (z-index 1) để ảnh con đè lên */
             /* Khắc phục lỗi vỡ góc bo tròn trên iOS Safari khi ảnh con transform scale */
             -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
@@ -4287,8 +4288,8 @@
             const bestSellerHtml = concept.isBestSeller ? `<img src="bestseller-corner.png" class="concept-best-corner" alt="Best Seller" title="Concept Best Seller">` : "";
 
             card.innerHTML = `
+                ${bestSellerHtml}
                 <div class="collage-wrapper">
-                    ${bestSellerHtml}
                     <img data-src="${img0}" class="collage-main-img" alt="${concept.title}" style="${img0 ? placeholderStyle : 'display:none'}">
                     <div class="collage-side">
                         <img data-src="${img1}" class="collage-side-img top" alt="${concept.title}" style="${img1 ? placeholderStyle : 'display:none'}">
