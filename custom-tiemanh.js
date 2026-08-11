@@ -2429,6 +2429,7 @@
             box-shadow: 0 20px 48px rgba(245, 127, 23, 0.22), 0 0 20px rgba(251, 192, 45, 0.15) !important;
             transform: scale(1.02); /* Phóng nhẹ lên một xíu để nổi bật */
             z-index: 2;
+            overflow: visible !important; /* Để ruy băng lấp lánh chéo góc lồi ra ngoài viền card */
         }
         .tiemanh-price-card.featured:hover {
             transform: scale(1.02) translateY(-8px);
@@ -2456,6 +2457,17 @@
             0% { transform: scale(1); box-shadow: 0 6px 16px rgba(245, 127, 23, 0.4); }
             50% { transform: scale(1.06); box-shadow: 0 8px 22px rgba(245, 127, 23, 0.6); }
             100% { transform: scale(1); box-shadow: 0 6px 16px rgba(245, 127, 23, 0.4); }
+        }
+        .tiemanh-price-badge-img {
+            position: absolute;
+            top: -4px; /* Đẩy sát sạt góc trên bên phải ngoài cùng của card */
+            right: -4px;
+            width: 105px; /* Chiều rộng cân đối cho card bảng giá */
+            height: auto;
+            z-index: 5;
+            pointer-events: none; /* Tránh cản click */
+            user-select: none;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
         }
         .tiemanh-price-badge {
             position: absolute;
@@ -3314,7 +3326,7 @@
 
                         <!-- Gói Toả Sáng -->
                         <div class="tiemanh-price-card featured" data-pkg="1">
-                            <div class="tiemanh-price-badge">Bán chạy</div>
+                            <img src="banchay-ribbon.png" class="tiemanh-price-badge-img" alt="Bán chạy">
                             <h3>🌸 GÓI TOẢ SÁNG</h3>
                             <div class="tiemanh-price-tag">1.250.000 <span>đ</span></div>
                             <ul class="tiemanh-price-features">
