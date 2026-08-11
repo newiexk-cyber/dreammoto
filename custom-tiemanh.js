@@ -751,8 +751,8 @@
             background: #ffffff;
             padding: 12px 12px 16px 12px;
             border-radius: 18px;
-            box-shadow: 0 8px 24px rgba(251, 192, 45, 0.12); /* Bóng đổ vàng nhạt cho card đề xuất ở herobaner */
-            border: 2px solid rgba(251, 192, 45, 0.7); /* Viền vàng cam nổi bật của card đề xuất ở herobaner */
+            box-shadow: 0 8px 24px rgba(255, 214, 0, 0.15); /* Bóng đổ vàng tươi cho card đề xuất */
+            border: 2px solid #ffd600; /* Màu vàng tươi sáng rực rỡ */
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             cursor: pointer;
             display: flex;
@@ -764,15 +764,15 @@
             box-sizing: border-box;
         }
         
-        /* Hiệu ứng bồng bềnh so le nhẹ nhàng, nhịp điệu sinh động */
+        /* Hiệu ứng bồng bềnh so le kết hợp nhấp nháy viền vàng tươi sáng */
         .polaroid-card.p1 {
-            animation: gentleFloat1 5s infinite alternate ease-in-out;
+            animation: gentleFloat1 5s infinite alternate ease-in-out, polaroidBorderPulse 3s infinite ease-in-out;
         }
         .polaroid-card.p2 {
-            animation: gentleFloat2 5.6s infinite alternate ease-in-out 0.4s;
+            animation: gentleFloat2 5.6s infinite alternate ease-in-out 0.4s, polaroidBorderPulse 3s infinite ease-in-out;
         }
         .polaroid-card.p3 {
-            animation: gentleFloat3 5.2s infinite alternate ease-in-out 0.8s;
+            animation: gentleFloat3 5.2s infinite alternate ease-in-out 0.8s, polaroidBorderPulse 3s infinite ease-in-out;
         }
         
         @keyframes gentleFloat1 {
@@ -990,12 +990,43 @@
         
         /* Viền vàng nổi bật dành riêng cho các concept Best Seller */
         .tiemanh-card.bestseller-featured {
-            border: 2.5px solid #ffb300 !important; /* Viền vàng cam Best Seller dày dặn, nổi bật hẳn lên */
-            box-shadow: 0 10px 30px rgba(251, 192, 45, 0.18) !important;
+            border: 2.5px solid #ffd600 !important; /* Viền vàng tươi sáng dày dặn, nổi bật hẳn lên */
+            box-shadow: 0 10px 30px rgba(255, 214, 0, 0.15) !important;
+            animation: bestsellerBorderPulse 3s infinite ease-in-out;
         }
         .tiemanh-card.bestseller-featured:hover {
-            border-color: #ff8f00 !important; /* Đổi màu vàng đậm tươi tắn khi hover */
-            box-shadow: 0 16px 36px rgba(255, 143, 0, 0.28) !important;
+            animation: none !important; /* Tắt animation khi hover để giữ tương tác nhạy */
+            border-color: #ffea00 !important; /* Đổi màu vàng neon sáng rực khi hover */
+            box-shadow: 0 16px 36px rgba(255, 234, 0, 0.38) !important;
+        }
+        
+        @keyframes polaroidBorderPulse {
+            0% {
+                border-color: #ffd600;
+                box-shadow: 0 8px 24px rgba(255, 214, 0, 0.15);
+            }
+            50% {
+                border-color: #ffea00;
+                box-shadow: 0 8px 28px rgba(255, 234, 0, 0.35), 0 0 10px rgba(255, 214, 0, 0.2);
+            }
+            100% {
+                border-color: #ffd600;
+                box-shadow: 0 8px 24px rgba(255, 214, 0, 0.15);
+            }
+        }
+        @keyframes bestsellerBorderPulse {
+            0% {
+                border-color: #ffd600;
+                box-shadow: 0 10px 30px rgba(255, 214, 0, 0.15);
+            }
+            50% {
+                border-color: #ffea00;
+                box-shadow: 0 10px 34px rgba(255, 234, 0, 0.35), 0 0 12px rgba(255, 214, 0, 0.25);
+            }
+            100% {
+                border-color: #ffd600;
+                box-shadow: 0 10px 30px rgba(255, 214, 0, 0.15);
+            }
         }
 
         /* Collage inside card */
