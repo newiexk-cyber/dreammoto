@@ -2875,14 +2875,14 @@
         }
         .polaroid-best-corner {
             position: absolute;
-            top: -4px; /* Dịch nhẹ để khớp khít sạt sát viền trắng của Polaroid */
-            right: -4px;
-            width: 50px; /* Thu nhỏ từ 95px xuống 50px để vừa vặn, không che khuất nhân vật trên Polaroid */
+            top: -2.5px; /* Cân chỉnh lại tọa độ cho vương miện siêu nhỏ */
+            right: -2.5px;
+            width: 35px; /* Thu nhỏ tối đa xuống 35px để nằm nép ở góc Polaroid, không lấn vào ảnh */
             height: auto;
             z-index: 10; /* Nổi hẳn lên trên ảnh Polaroid (không bị ảnh che) */
             pointer-events: none;
             user-select: none;
-            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.15)) drop-shadow(0 0 3px rgba(251, 192, 45, 0.35));
+            filter: drop-shadow(0 1px 1px rgba(0,0,0,0.15)) drop-shadow(0 0 2px rgba(251, 192, 45, 0.3));
         }
 
         /* --- CẤU HÌNH TYPOGRAPHY BOLD HIỆN ĐẠI (SỬ DỤNG PHÔNG MẶC ĐỊNH, KHÔNG LO BỊ CHẶN FONT) --- */
