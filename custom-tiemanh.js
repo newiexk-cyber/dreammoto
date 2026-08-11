@@ -3152,7 +3152,7 @@
             <section class="tiemanh-section-container" id="filterBar">
                 <!-- Filter bar -->
                 <!-- Bộ lọc kép: Chi nhánh & Chủ đề -->
-                <div class="tiemanh-filter-group" style="margin-bottom: 20px;">
+                <div class="tiemanh-filter-group" id="conceptFilterGroup" style="margin-bottom: 20px;">
                     <div class="tiemanh-filter-label">📍 Chọn Chi nhánh:</div>
                     <div class="tiemanh-filter-scroll-wrap">
                         <div class="tiemanh-filter-bar" id="branchFilterBar">
@@ -4795,7 +4795,7 @@
         // Xử lý cuộn mượt cho toàn bộ Menu Header
         const menuScrollLinks = [
             { id: "menuTrangChu", targetId: null }, // null tức là cuộn lên top
-            { id: "menuConcept", targetId: "filterBar" },
+            { id: "menuConcept", targetId: "conceptFilterGroup" },
             { id: "menuBangGia", targetId: "pricingSlider" },
             { id: "menuQuyTrinh", targetId: "quytrinhSection" },
             { id: "menuChiNhanh", targetId: "chinhanhSection" },
@@ -4843,7 +4843,7 @@
         if (btnHeroExplore) {
             btnHeroExplore.addEventListener("click", (e) => {
                 e.preventDefault();
-                smoothScrollToSection("filterBar");
+                smoothScrollToSection("conceptFilterGroup");
             });
         }
 
@@ -4934,7 +4934,7 @@
                     if (targetId === "banggiaSection") smoothScrollToSection("pricingSlider");
                     else if (targetId === "quytrinhSection") smoothScrollToSection("quytrinhSection");
                     else if (targetId === "chinhanhSection") smoothScrollToSection("chinhanhSection");
-                    else if (targetId === "filterBar") smoothScrollToSection("filterBar");
+                    else if (targetId === "filterBar") smoothScrollToSection("conceptFilterGroup");
                 }
             });
         });
