@@ -2944,8 +2944,8 @@
         /* Khung viền góc Best Seller lấp lánh sang trọng */
         .concept-best-corner {
             position: absolute;
-            top: -2px; /* Lower ribbon to cover background corner */
-            left: -18px; right: auto; /* Align left edge of ribbon with inner image */
+            top: 2px; /* Align top fold perfectly to image border */
+            left: -22px; right: auto; /* Align left edge of ribbon with inner image */
             width: 130px; /* Optimal ribbon width to avoid corner leakage */
             height: auto;
             z-index: 10; /* Nổi hẳn lên trên ảnh con (không bị ảnh che) */
