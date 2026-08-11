@@ -995,7 +995,7 @@
             gap: 6px;
             height: 380px;
             padding: 8px;
-            background: #fffdf5;
+            background: #ffffff; /* Trùng với màu nền card để triệt tiêu vệt lệch pixel */
             overflow: hidden;
             border-radius: 20px 20px 0 0;
             position: relative;
@@ -1007,6 +1007,7 @@
             -webkit-mask-image: -webkit-radial-gradient(white, black);
         }
         .collage-main-img {
+            display: block; /* Ép hiển thị dạng block để tính toán kích thước tuyệt đối chính xác */
             width: 100%;
             height: 100%;
             object-fit: cover;
@@ -1017,8 +1018,11 @@
             display: grid;
             grid-template-rows: 1fr 1fr;
             gap: 6px;
+            height: 100%; /* Lấp đầy chiều cao của cột bên phải */
+            width: 100%;  /* Lấp đầy chiều rộng */
         }
         .collage-side-img {
+            display: block; /* Ép hiển thị dạng block để tránh lệch pixel */
             width: 100%;
             height: 100%;
             object-fit: cover;
