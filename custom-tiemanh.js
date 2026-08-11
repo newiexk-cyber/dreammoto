@@ -2460,8 +2460,8 @@
         }
         .tiemanh-price-badge-img {
             position: absolute;
-            top: -4px; /* Đẩy sát sạt góc trên bên phải ngoài cùng của card */
-            right: -4px;
+            top: -10px; /* Dịch âm sâu hơn để dải ruy băng cam khớp khít sạt sát viền ngoài card */
+            right: -10px;
             width: 105px; /* Chiều rộng cân đối cho card bảng giá */
             height: auto;
             z-index: 5;
