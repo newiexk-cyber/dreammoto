@@ -1061,8 +1061,8 @@
             transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
         .collage-side {
-            display: grid;
-            grid-template-rows: 1fr 1fr;
+            display: flex;
+            flex-direction: column;
             gap: 6px;
             height: 100%; /* Lấp đầy chiều cao của cột bên phải */
             width: 100%;  /* Lấp đầy chiều rộng */
@@ -1070,7 +1070,8 @@
         .collage-side-img {
             display: block; /* Ép hiển thị dạng block để tránh lệch pixel */
             width: 100%;
-            height: 100%;
+            height: 0;
+            flex: 1; /* Phân chia chiều cao đều nhau tuyệt đối, triệt tiêu lệch pixel trên Safari/mobile */
             object-fit: cover;
             transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
