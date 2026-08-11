@@ -307,20 +307,28 @@ function applySheetFormatting(sheet, startRow, endRow) {
   bestRange.insertCheckboxes();
 }
 
-// Hàm hỗ trợ chọn nhiều chủ đề (Multi-select) từ Dropdown cột C (Chủ đề) - Khử trùng & Chuẩn hóa thông minh (Không cần range.getValue())
+// Hàm hỗ trợ chọn nhiều chủ đề (Multi-select) từ Dropdown cột C (Chủ đề) - Khử trùng & Chuẩn hóa thông minh (Chống tranh chấp Race Condition bằng LockService)
 function onEdit(e) {
-  try {
-    const sheet = e.source.getActiveSheet();
-    const range = e.range;
+  const sheet = e.source.getActiveSheet();
+  const range = e.range;
+  
+  // Chỉ kích hoạt khi chỉnh sửa cột C (Chủ đề) từ dòng 2 trở đi
+  if (range.getColumn() === 3 && range.getRow() > 1) {
+    const newValue = e.value;
     
-    // Chỉ kích hoạt khi chỉnh sửa cột C (Chủ đề) từ dòng 2 trở đi
-    if (range.getColumn() === 3 && range.getRow() > 1) {
-      const newValue = e.value;
-      const oldValue = e.oldValue;
-      
-      // Nếu xóa sạch ô -> cho phép xóa thoải mái
-      if (!newValue) return;
-      
+    // Nếu xóa sạch ô -> cho phép xóa thoải mái
+    if (!newValue) return;
+    
+    // Lấy khóa LockService để ngăn chặn các luồng onEdit chạy đè lẫn nhau khi click nhanh
+    const lock = LockService.getScriptLock();
+    try {
+      lock.waitLock(5000); // Chờ lấy khóa trong tối đa 5 giây
+    } catch (f) {
+      console.warn("Không thể lấy khóa lock: " + f.toString());
+      return;
+    }
+    
+    try {
       const normalize = function(str) {
         if (!str) return "";
         return str.toString()
@@ -330,7 +338,6 @@ function onEdit(e) {
       };
       
       const newStr = String(newValue).trim();
-      const oldStr = oldValue ? String(oldValue).trim() : "";
       
       // 1. Lấy danh sách các lựa chọn dropdown hợp lệ từ quy tắc xác thực của ô
       let dropdownValues = [];
@@ -349,12 +356,34 @@ function onEdit(e) {
       const isFromDropdown = normDropdown.includes(normalize(newStr).toLowerCase());
       
       // 2. Xử lý logic ghép hoặc xóa
-      if (oldStr) {
-        const oldParts = oldStr.split(",").map(p => p.trim()).filter(Boolean);
+      if (isFromDropdown) {
+        // TRƯỜNG HỢP A: Chọn từ Dropdown để thêm -> Đọc giá trị hiện tại trên server và ghép thêm
+        // Nhờ có Lock nên getValue() ở đây luôn trả về giá trị mới nhất của luồng trước
+        const currentVal = String(range.getValue()).trim();
         
-        if (isFromDropdown) {
-          // TRƯỜNG HỢP A: Chọn thêm từ Dropdown -> Thực hiện ghép thêm và lọc trùng
-          const combined = [...oldParts, newStr];
+        // Nếu ô trống hoặc giá trị hiện tại trùng với giá trị mới (do ghi đè)
+        if (!currentVal || normalize(currentVal).toLowerCase() === normalize(newStr).toLowerCase()) {
+          const oldValue = e.oldValue;
+          if (oldValue) {
+            const oldParts = String(oldValue).split(",").map(p => p.trim()).filter(Boolean);
+            const combined = [...oldParts, newStr];
+            const cleanCombined = [];
+            const combinedSeen = new Set();
+            for (const part of combined) {
+              const norm = normalize(part).toLowerCase();
+              if (!combinedSeen.has(norm) && norm !== "") {
+                combinedSeen.add(norm);
+                cleanCombined.push(part.replace(/&amp;/g, "&").trim());
+              }
+            }
+            range.setValue(cleanCombined.join(", "));
+          } else {
+            range.setValue(newStr.replace(/&amp;/g, "&").trim());
+          }
+        } else {
+          // Nếu ô đã chứa các tag khác, tiến hành ghép thêm bình thường
+          const currentParts = currentVal.split(",").map(p => p.trim()).filter(Boolean);
+          const combined = [...currentParts, newStr];
           const cleanCombined = [];
           const combinedSeen = new Set();
           for (const part of combined) {
@@ -365,22 +394,9 @@ function onEdit(e) {
             }
           }
           range.setValue(cleanCombined.join(", "));
-        } else {
-          // TRƯỜNG HỢP B: Người dùng bấm dấu x để xóa bớt chip -> Giữ nguyên giá trị mới (cho phép xóa)
-          const newParts = newStr.split(",").map(p => p.trim()).filter(Boolean);
-          const uniqueNew = [];
-          const seenNew = new Set();
-          for (const part of newParts) {
-            const norm = normalize(part).toLowerCase();
-            if (!seenNew.has(norm) && norm !== "") {
-              seenNew.add(norm);
-              uniqueNew.push(part.replace(/&amp;/g, "&").trim());
-            }
-          }
-          range.setValue(uniqueNew.join(", "));
         }
       } else {
-        // Nếu trước đó ô trống
+        // TRƯỜNG HỢP B: Bấm dấu x xóa chip -> Lọc trùng chuỗi mới và lưu lại thoải mái
         const newParts = newStr.split(",").map(p => p.trim()).filter(Boolean);
         const uniqueNew = [];
         const seenNew = new Set();
@@ -393,9 +409,11 @@ function onEdit(e) {
         }
         range.setValue(uniqueNew.join(", "));
       }
+    } catch (err) {
+      console.error("Lỗi onEdit: " + err.toString());
+    } finally {
+      lock.releaseLock(); // Luôn giải phóng khóa giải tỏa tài nguyên
     }
-  } catch (err) {
-    console.error("Lỗi onEdit: " + err.toString());
   }
 }
 
