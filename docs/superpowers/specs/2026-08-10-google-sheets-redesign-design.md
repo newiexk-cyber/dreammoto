@@ -33,7 +33,8 @@ const ROOT_FOLDER_ID = "1NPnZ-KHeJb4HY3pumreapPrwbs2UXzvn";
 function onOpen() {
   const ui = SpreadsheetApp.getUi();
   ui.createMenu("🍇 Đồng bộ Tiệm Ảnh")
-    .addItem("🔄 Đồng bộ dữ liệu từ Drive", "syncDriveToSheets")
+    .addItem("🔄 Đồng bộ nhanh (Chỉ quét concept mới)", "syncDriveToSheetsQuick")
+    .addItem("♻️ Đồng bộ toàn bộ (Quét lại tất cả ảnh)", "syncDriveToSheetsFull")
     .addItem("🛠️ Khởi tạo bảng trắng tinh", "runInitialization")
     .addToUi();
 }
@@ -41,10 +42,21 @@ function onOpen() {
 function runInitialization() {
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   initializeHeaders(sheet);
-  SpreadsheetApp.getUi().alert("Khởi tạo thành công", "Đã chèn hàng tiêu đề cột thành công. Bây giờ bạn có thể nhấn 'Đồng bộ dữ liệu từ Drive'!", SpreadsheetApp.getUi().ButtonSet.OK);
+  SpreadsheetApp.getUi().alert("Khởi tạo thành công", "Đã chèn hàng tiêu đề cột thành công. Bây giờ bạn có thể nhấn 'Đồng bộ nhanh' hoặc 'Đồng bộ toàn bộ'!", SpreadsheetApp.getUi().ButtonSet.OK);
 }
 
-function syncDriveToSheets() {
+// 1. Hàm Menu - Đồng bộ nhanh (Chỉ quét concept mới)
+function syncDriveToSheetsQuick() {
+  syncDriveToSheetsCore(true);
+}
+
+// 2. Hàm Menu - Đồng bộ toàn bộ (Quét lại toàn bộ ảnh trên Drive)
+function syncDriveToSheetsFull() {
+  syncDriveToSheetsCore(false);
+}
+
+// Hàm lõi xử lý đồng bộ dữ liệu
+function syncDriveToSheetsCore(isQuick) {
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   const ui = SpreadsheetApp.getUi();
   
@@ -52,6 +64,8 @@ function syncDriveToSheets() {
     ui.alert("Lỗi cấu hình", "Vui lòng mở Trình biên tập kịch bản (Extensions > Apps Script) và cập nhật ROOT_FOLDER_ID bằng ID thư mục Google Drive của bạn.", ui.ButtonSet.OK);
     return;
   }
+  
+  const modeName = isQuick ? "Đồng bộ nhanh" : "Đồng bộ toàn bộ";
   
   try {
     const rootFolder = DriveApp.getFolderById(ROOT_FOLDER_ID);
@@ -83,17 +97,19 @@ function syncDriveToSheets() {
       return;
     }
     
-    // Tạo Map từ dữ liệu hiện tại để tra cứu nhanh bằng Folder ID (Lưu chỉ số index của hàng trong mảng values)
+    // Tạo Map từ dữ liệu hiện tại để tra cứu nhanh bằng Folder ID
     const sheetDataMap = new Map(); // Key: FolderID, Value: index (0-indexed)
-    // Tạo Set chứa các Folder ID đã có ảnh sẵn trên Sheet để bỏ qua quét ảnh
+    // Tạo Set chứa các Folder ID đã có ảnh sẵn trên Sheet để bỏ qua quét ảnh (Chỉ áp dụng khi chạy chế độ đồng bộ nhanh)
     const existingFolderIdsWithImages = new Set();
     for (let r = 1; r < values.length; r++) {
       const fId = values[r][colIdx.folderId];
       if (fId) {
         sheetDataMap.set(fId, r);
-        const img1 = values[r][colIdx.imgStart];
-        if (img1) {
-          existingFolderIdsWithImages.add(fId);
+        if (isQuick) {
+          const img1 = values[r][colIdx.imgStart];
+          if (img1) {
+            existingFolderIdsWithImages.add(fId);
+          }
         }
       }
     }
@@ -181,7 +197,7 @@ function syncDriveToSheets() {
     // 4. Định dạng lại bảng tính (chèn Checkbox cho các dòng mới)
     applySheetFormatting(sheet, 2, values.length);
     
-    ui.alert("Đồng bộ hoàn tất", `Đồng bộ thành công bằng kịch bản tối ưu!\n- Tổng số concept trên Drive: ${conceptFoldersList.length}\n- Thêm mới: ${newRowsCount} concept.\n- Cập nhật lại hình ảnh của các concept cũ.\n- Đã tự động ẩn các concept bị xóa trên Drive.`, ui.ButtonSet.OK);
+    ui.alert("Đồng bộ hoàn tất", `Đồng bộ thành công bằng chế độ [${modeName}]!\n- Tổng số concept trên Drive: ${conceptFoldersList.length}\n- Thêm mới: ${newRowsCount} concept.\n- Cập nhật lại hình ảnh của các concept cũ.\n- Đã tự động ẩn các concept bị xóa trên Drive.`, ui.ButtonSet.OK);
     
   } catch (error) {
     let msg = "Có lỗi xảy ra: " + error.toString();
