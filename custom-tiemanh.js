@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Tiệm Ảnh Trái Thơm - Hệ thống Script giao diện và tính năng Concept nâng cao
  * Tác giả: NHATLAM
  * Chức năng: Tạo giao diện Landing Page chuyên nghiệp, lọc danh mục, xem album ảnh dạng Lightbox, đăng ký lịch tư vấn/chụp ảnh.
@@ -2944,8 +2944,8 @@
         /* Khung viền góc Best Seller lấp lánh sang trọng */
         .concept-best-corner {
             position: absolute;
-            top: -2.5px; /* Canh chinh vua khit goc card */
-            left: -2.5px; right: auto; /* Dat cheo o goc tren ben trai */
+            top: 5px; /* Canh chinh om tron sat goc anh */
+            left: 5px; right: auto; /* Dat cheo o goc tren ben trai */
             width: 105px; /* Kich thuoc toi uu cho ruy bang cheo goc trai */
             height: auto;
             z-index: 10; /* Nổi hẳn lên trên ảnh con (không bị ảnh che) */
