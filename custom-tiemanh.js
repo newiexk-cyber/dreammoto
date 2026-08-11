@@ -2866,27 +2866,26 @@
         }
         .concept-best-badge {
             position: absolute;
-            top: 15px;
-            left: 15px;
-            background: linear-gradient(135deg, #ef4444 0%, #f97316 100%);
-            color: #ffffff;
-            font-size: 11px;
-            font-weight: 800;
-            padding: 5px 12px;
-            border-radius: 50px;
+            top: 16px;
+            left: 16px;
+            width: 42px;
+            height: 42px;
+            background: linear-gradient(135deg, #ffe082 0%, #ffb300 50%, #ff8f00 100%);
+            border: 2.5px solid #ffffff;
+            border-radius: 50%;
             z-index: 10;
-            display: inline-flex;
+            display: flex;
             align-items: center;
-            gap: 4px;
-            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            animation: badgePulse 2s infinite alternate ease-in-out;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(255, 143, 0, 0.35), 0 0 0 2px #ffb300;
+            font-size: 20px;
+            animation: tiemanh-crown-pulse 2.2s infinite ease-in-out;
+            cursor: default;
         }
-
-        @keyframes badgePulse {
-            0% { transform: scale(1); box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4); }
-            100% { transform: scale(1.05); box-shadow: 0 6px 16px rgba(239, 68, 68, 0.6); }
+        @keyframes tiemanh-crown-pulse {
+            0% { transform: scale(1) rotate(0deg); box-shadow: 0 4px 12px rgba(255, 143, 0, 0.35), 0 0 0 2px #ffb300; }
+            50% { transform: scale(1.08) rotate(6deg); box-shadow: 0 6px 18px rgba(255, 143, 0, 0.55), 0 0 0 2.5px #ffb300; }
+            100% { transform: scale(1) rotate(0deg); box-shadow: 0 4px 12px rgba(255, 143, 0, 0.35), 0 0 0 2px #ffb300; }
         }
 
         /* Badge trên Polaroid card ở Hero banner */
@@ -4282,7 +4281,7 @@
                 return `<span class="tiemanh-card-badge" style="background:${info.bg};color:${info.color};">${info.icon} ${t}</span>`;
             }).join("");
 
-            const bestSellerHtml = concept.isBestSeller ? `<span class="concept-best-badge">🔥 Best Seller</span>` : "";
+            const bestSellerHtml = concept.isBestSeller ? `<span class="concept-best-badge" title="Concept Best Seller">👑</span>` : "";
 
             card.innerHTML = `
                 ${bestSellerHtml}
