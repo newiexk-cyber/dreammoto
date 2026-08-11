@@ -167,7 +167,11 @@ function syncDriveToSheets() {
     ui.alert("Đồng bộ hoàn tất", `Đồng bộ thành công bằng thuật toán tối ưu!\n- Tổng số concept trên Drive: ${conceptFoldersList.length}\n- Thêm mới: ${newRowsCount} concept.\n- Cập nhật lại hình ảnh của các concept cũ.\n- Đã tự động ẩn các concept bị xóa trên Drive.`, ui.ButtonSet.OK);
     
   } catch (error) {
-    ui.alert("Lỗi đồng bộ", "Có lỗi xảy ra: " + error.toString(), ui.ButtonSet.OK);
+    let msg = "Có lỗi xảy ra: " + error.toString();
+    if (error.toString().includes("quy tắc xác thực") || error.toString().includes("validation")) {
+      msg += "\n\n💡 Mẹo khắc phục: Lỗi này do quy tắc xác thực (Data Validation) của cột C (Chủ đề) đang bật chế độ 'Từ chối nhập'. Bạn chỉ cần bôi đen cột C > Vào Dữ liệu > Xác thực dữ liệu > Tùy chọn nâng cao > Chọn 'Hiển thị cảnh báo' thay vì 'Từ chối nhập' là sẽ đồng bộ bình thường!";
+    }
+    ui.alert("Lỗi đồng bộ", msg, ui.ButtonSet.OK);
   }
 }
 
@@ -216,24 +220,15 @@ function initializeHeaders(sheet) {
   sheet.setFrozenRows(1);
 }
 
-// Hàm thiết lập hộp kiểm (checkbox) và menu thả xuống (dropdown) cột Chủ đề
+// Hàm thiết lập hộp kiểm (checkbox) cột Ẩn và cột Best Seller
 function applySheetFormatting(sheet, startRow, endRow) {
   if (startRow > endRow) return;
   
-  // 1. Dropdown cột C (Chủ đề)
-  const themeRange = sheet.getRange(startRow, 3, endRow - startRow + 1, 1);
-  const themeRule = SpreadsheetApp.newDataValidation()
-    .requireValueInList(["Nàng Thơ", "Cổ Trang", "Áo Dài", "Beauty", "Sinh Nhật", "Cá Tính & Sexy", "Couple", "Tết", "Noel"], true)
-    .setAllowInvalid(true) // Cho phép tự viết thêm chủ đề khác hoặc nhập nhiều chủ đề cách nhau bởi dấu phẩy
-    .setHelpText("Chọn chủ đề chuẩn hoặc tự viết chủ đề tùy ý (phân tách bằng dấu phẩy)")
-    .build();
-  themeRange.setDataValidation(themeRule);
-  
-  // 2. Hộp kiểm cột F (Ẩn)
+  // 1. Hộp kiểm cột F (Ẩn)
   const hideRange = sheet.getRange(startRow, 6, endRow - startRow + 1, 1);
   hideRange.insertCheckboxes();
   
-  // 3. Hộp kiểm cột G (Best Seller)
+  // 2. Hộp kiểm cột G (Best Seller)
   const bestRange = sheet.getRange(startRow, 7, endRow - startRow + 1, 1);
   bestRange.insertCheckboxes();
 }
