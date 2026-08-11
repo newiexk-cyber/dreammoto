@@ -307,50 +307,53 @@ function applySheetFormatting(sheet, startRow, endRow) {
   bestRange.insertCheckboxes();
 }
 
-// Hàm hỗ trợ chọn nhiều chủ đề (Multi-select) từ Dropdown cột C (Chủ đề) - Khử trùng & Chuẩn hóa thông minh
+// Hàm hỗ trợ chọn nhiều chủ đề (Multi-select) từ Dropdown cột C (Chủ đề) - Khử trùng & Chuẩn hóa thông minh (Không cần range.getValue())
 function onEdit(e) {
-  const sheet = e.source.getActiveSheet();
-  const range = e.range;
-  
-  // Chỉ kích hoạt khi chỉnh sửa cột C (Chủ đề) từ dòng 2 trở đi
-  if (range.getColumn() === 3 && range.getRow() > 1) {
-    const newValue = e.value;
-    const oldValue = e.oldValue;
+  try {
+    const sheet = e.source.getActiveSheet();
+    const range = e.range;
     
-    if (!newValue) return;
-    
-    // Hàm chuẩn hóa chuỗi để so sánh không phân biệt khoảng trắng, hoa thường, ký tự &
-    const normalize = function(str) {
-      if (!str) return "";
-      return str.toString()
-        .replace(/&amp;/g, "&")
-        .replace(/\s+/g, " ")
-        .trim();
-    };
-    
-    const val = range.getValue();
-    const parts = val.split(",").map(p => p.trim()).filter(Boolean);
-    
-    // Lọc trùng lặp thông minh cho chuỗi hiện tại trong ô
-    const uniqueParts = [];
-    const seen = new Set();
-    for (const part of parts) {
-      const norm = normalize(part).toLowerCase();
-      if (!seen.has(norm) && norm !== "") {
-        seen.add(norm);
-        uniqueParts.push(part.replace(/&amp;/g, "&").trim());
-      }
-    }
-    
-    // Nếu Google Sheets ghi đè làm mất giá trị cũ (oldValue không nằm trong uniqueParts)
-    if (oldValue && newValue) {
-      const oldParts = oldValue.split(",").map(p => p.trim()).filter(Boolean);
-      const normNewValue = normalize(newValue).toLowerCase();
+    // Chỉ kích hoạt khi chỉnh sửa cột C (Chủ đề) từ dòng 2 trở đi
+    if (range.getColumn() === 3 && range.getRow() > 1) {
+      const newValue = e.value;
+      const oldValue = e.oldValue;
       
-      // Nếu giá trị trong ô hiện tại (val) chỉ chứa đúng newValue (chứng tỏ Google Sheets đã ghi đè làm mất oldValue)
-      if (parts.length === 1 && normalize(parts[0]).toLowerCase() === normNewValue) {
-        // Chỉ thực hiện GHÉP THÊM & KHỬ TRÙNG (Không toggle xóa tag để tránh mất dữ liệu của người dùng)
-        const combined = [...oldParts, newValue];
+      // Nếu xóa sạch ô -> cho phép xóa
+      if (!newValue) return;
+      
+      const normalize = function(str) {
+        if (!str) return "";
+        return str.toString()
+          .replace(/&amp;/g, "&")
+          .replace(/\s+/g, " ")
+          .trim();
+      };
+      
+      const newStr = String(newValue).trim();
+      const oldStr = oldValue ? String(oldValue).trim() : "";
+      
+      const newParts = newStr.split(",").map(p => p.trim()).filter(Boolean);
+      
+      if (oldStr) {
+        const oldParts = oldStr.split(",").map(p => p.trim()).filter(Boolean);
+        
+        // TRƯỜNG HỢP 1: Người dùng xóa bớt tag (Số lượng tag mới ít hơn số lượng tag cũ)
+        if (newParts.length < oldParts.length) {
+          const uniqueNew = [];
+          const seenNew = new Set();
+          for (const part of newParts) {
+            const norm = normalize(part).toLowerCase();
+            if (!seenNew.has(norm) && norm !== "") {
+              seenNew.add(norm);
+              uniqueNew.push(part.replace(/&amp;/g, "&").trim());
+            }
+          }
+          range.setValue(uniqueNew.join(", "));
+          return;
+        }
+        
+        // TRƯỜNG HỢP 2: Người dùng chọn thêm tag từ Dropdown (Ghép thêm và lọc trùng)
+        const combined = [...oldParts, ...newParts];
         const cleanCombined = [];
         const combinedSeen = new Set();
         for (const part of combined) {
@@ -361,12 +364,23 @@ function onEdit(e) {
           }
         }
         range.setValue(cleanCombined.join(", "));
-        return;
+        
+      } else {
+        // Nếu trước đó ô trống, chỉ cần ghi giá trị mới đã khử trùng
+        const uniqueNew = [];
+        const seenNew = new Set();
+        for (const part of newParts) {
+          const norm = normalize(part).toLowerCase();
+          if (!seenNew.has(norm) && norm !== "") {
+            seenNew.add(norm);
+            uniqueNew.push(part.replace(/&amp;/g, "&").trim());
+          }
+        }
+        range.setValue(uniqueNew.join(", "));
       }
     }
-    
-    // Nếu không bị ghi đè mất giá trị cũ, chỉ cần ghi lại chuỗi đã khử trùng
-    range.setValue(uniqueParts.join(", "));
+  } catch (err) {
+    console.error("Lỗi onEdit: " + err.toString());
   }
 }
 
