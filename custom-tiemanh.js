@@ -4847,6 +4847,28 @@
             });
         }
 
+        // Tối ưu hóa click cho các liên kết gọi điện (tel:) khi chạy trong iframe Webcake
+        document.addEventListener("click", (e) => {
+            const telLink = e.target.closest('a[href^="tel:"]');
+            if (telLink) {
+                const href = telLink.getAttribute("href");
+                if (href) {
+                    e.preventDefault();
+                    try {
+                        // Thử mở ở top-level window (cửa sổ cha ngoài cùng của iframe Webcake) để phá sandbox
+                        if (window.top && window.top !== window) {
+                            window.top.location.href = href;
+                        } else {
+                            window.location.href = href;
+                        }
+                    } catch (err) {
+                        // Fallback an toàn nếu bị trình duyệt chặn cross-origin location access
+                        window.location.href = href;
+                    }
+                }
+            }
+        });
+
 
 
         // Xử lý nút Sao chép Link Concept
