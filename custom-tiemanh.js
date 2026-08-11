@@ -4757,8 +4757,8 @@
             const viewportHeight = window.innerHeight;
 
             let targetScrollTop = absoluteTop - navHeight;
-            // Nếu phần tử ngắn hơn viewport trừ đi navbar, căn giữa phần tử theo chiều dọc
-            if (elementHeight < viewportHeight - navHeight) {
+            // Chỉ tự động căn giữa dọc đối với pricingSlider
+            if (targetId === "pricingSlider" && elementHeight < viewportHeight - navHeight) {
                 targetScrollTop = absoluteTop - navHeight - (viewportHeight - navHeight - elementHeight) / 2;
             }
 
@@ -4778,7 +4778,7 @@
                 const containerHeight = container.clientHeight;
                 const elHeight = targetEl.offsetHeight;
                 let containerScrollTop = topPos - navHeight;
-                if (elHeight < containerHeight - navHeight) {
+                if (targetId === "pricingSlider" && elHeight < containerHeight - navHeight) {
                     containerScrollTop = topPos - navHeight - (containerHeight - navHeight - elHeight) / 2;
                 }
                 container.scrollTo({ top: Math.max(0, containerScrollTop), behavior: "smooth" });
