@@ -345,33 +345,23 @@ function onEdit(e) {
     // Nếu Google Sheets ghi đè làm mất giá trị cũ (oldValue không nằm trong uniqueParts)
     if (oldValue && newValue) {
       const oldParts = oldValue.split(",").map(p => p.trim()).filter(Boolean);
-      const normOldParts = oldParts.map(p => normalize(p).toLowerCase());
       const normNewValue = normalize(newValue).toLowerCase();
-      
-      const isNewInOld = normOldParts.includes(normNewValue);
       
       // Nếu giá trị trong ô hiện tại (val) chỉ chứa đúng newValue (chứng tỏ Google Sheets đã ghi đè làm mất oldValue)
       if (parts.length === 1 && normalize(parts[0]).toLowerCase() === normNewValue) {
-        if (isNewInOld) {
-          // Toggle: Nếu chọn lại cái đã có -> Xóa nó đi khỏi danh sách cũ
-          const filtered = oldParts.filter(p => normalize(p).toLowerCase() !== normNewValue);
-          range.setValue(filtered.map(p => p.replace(/&amp;/g, "&").trim()).join(", "));
-          return;
-        } else {
-          // Ghép thêm: Nếu chọn cái chưa có -> Nối tiếp vào danh sách cũ
-          const combined = [...oldParts, newValue];
-          const cleanCombined = [];
-          const combinedSeen = new Set();
-          for (const part of combined) {
-            const norm = normalize(part).toLowerCase();
-            if (!combinedSeen.has(norm) && norm !== "") {
-              combinedSeen.add(norm);
-              cleanCombined.push(part.replace(/&amp;/g, "&").trim());
-            }
+        // Chỉ thực hiện GHÉP THÊM & KHỬ TRÙNG (Không toggle xóa tag để tránh mất dữ liệu của người dùng)
+        const combined = [...oldParts, newValue];
+        const cleanCombined = [];
+        const combinedSeen = new Set();
+        for (const part of combined) {
+          const norm = normalize(part).toLowerCase();
+          if (!combinedSeen.has(norm) && norm !== "") {
+            combinedSeen.add(norm);
+            cleanCombined.push(part.replace(/&amp;/g, "&").trim());
           }
-          range.setValue(cleanCombined.join(", "));
-          return;
         }
+        range.setValue(cleanCombined.join(", "));
+        return;
       }
     }
     
