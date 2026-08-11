@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Tiệm Ảnh Trái Thơm - Hệ thống Script giao diện và tính năng Concept nâng cao
  * Tác giả: NHATLAM
  * Chức năng: Tạo giao diện Landing Page chuyên nghiệp, lọc danh mục, xem album ảnh dạng Lightbox, đăng ký lịch tư vấn/chụp ảnh.
@@ -2894,8 +2894,8 @@
             .collage-side-img.bottom { border-radius: 3px 3px 10px 3px; }
             .concept-best-corner {
                 top: 0px !important;
-                left: -16px !important;
-                width: 95px !important;
+                left: -18px !important;
+                width: 100px !important;
             }
             .tiemanh-card-footer { 
                 padding: 12px 14px 14px 14px; 
@@ -4294,7 +4294,9 @@
         const themeInfo = getThemeInfo(primaryTheme);
 
         const cleanedBranch = normalizeBranchName(obj.tag || obj.branch || obj.category || obj['Chi nhánh'], obj.category);
-        const cleanedTitle = obj['Tên concept'] || obj.title || primaryTheme;
+        // Tìm giá trị title theo nhiều key khác nhau, chuẩn hóa NFC để tránh lỗi glyph tiếng Việt (Mâu → Mẫu)
+        const rawTitle = obj['Tên concept'] || obj['Ten concept'] || obj.title || obj.concept || primaryTheme;
+        const cleanedTitle = String(rawTitle).normalize('NFC').trim();
 
         // Tập hợp các ảnh thật từ img1 -> img12 từ Google Sheets (mới hỗ trợ 12 ảnh)
         let realImages = [];
@@ -4350,7 +4352,7 @@
             const rows = data.table.rows;
             if (!rows || rows.length === 0) return;
 
-            const cols = data.table.cols.map(c => (c.label || c.id || "").trim());
+            const cols = data.table.cols.map(c => (c.label || c.id || "").normalize("NFC").trim());
             const parsed = rows.map((row, rowIdx) => {
                 const obj = {};
                 row.c.forEach((cell, ci) => {
