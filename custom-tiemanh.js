@@ -796,8 +796,6 @@
             border-radius: 12px;
             border: 1px solid rgba(0, 0, 0, 0.04);
             transition: transform 0.45s ease;
-            position: relative; /* Thêm position relative và z-index để đè lên trên khung góc vàng */
-            z-index: 2;
         }
         .polaroid-card:hover img {
             transform: none; /* Tắt zoom ảnh để bảo toàn bố cục nghệ thuật gốc */
@@ -997,11 +995,10 @@
             gap: 6px;
             height: 380px;
             padding: 8px;
-            background: transparent !important; /* Đặt trong suốt để không che mất viền vàng ở z-index 1 */
+            background: #ffffff; /* Trùng với màu nền card để triệt tiêu vệt lệch pixel */
             overflow: hidden;
             border-radius: 22px 22px 0 0; /* Đồng nhất bo góc 22px ở đỉnh */
             position: relative;
-            z-index: 2; /* Nằm trên khung góc vàng (z-index 1) để ảnh con đè lên */
             /* Khắc phục lỗi vỡ góc bo tròn trên iOS Safari khi ảnh con transform scale */
             -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
@@ -1016,8 +1013,6 @@
             object-fit: cover;
             border-radius: 14px 4px 4px 14px;
             transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
-            position: relative; /* Thêm position relative và z-index để đè lên trên khung góc vàng */
-            z-index: 2;
         }
         .collage-side {
             display: grid;
@@ -1025,8 +1020,6 @@
             gap: 6px;
             height: 100%; /* Lấp đầy chiều cao của cột bên phải */
             width: 100%;  /* Lấp đầy chiều rộng */
-            position: relative; /* Thêm position relative và z-index để đè lên trên khung góc vàng */
-            z-index: 2;
         }
         .collage-side-img {
             display: block; /* Ép hiển thị dạng block để tránh lệch pixel */
@@ -2871,11 +2864,11 @@
         /* Khung viền góc Best Seller lấp lánh sang trọng */
         .concept-best-corner {
             position: absolute;
-            top: 0; /* Khít sát sạt với góc của collage-wrapper */
-            right: 0;
+            top: -3px; /* Đưa góc vuông của hình hợp khít với góc vuông của card */
+            right: -3px;
             width: 140px; /* Kích thước cân đối cho Concept card */
             height: auto;
-            z-index: 1; /* Nằm dưới lớp ảnh (z-index 2) để ảnh con đè lên phần lấn sân */
+            z-index: 10; /* Nổi hẳn lên trên ảnh con (không bị ảnh che) */
             pointer-events: none; /* Tránh cản click vào ảnh */
             transform-origin: top right;
             animation: tiemanh-corner-glow 2.4s infinite ease-in-out;
@@ -2883,11 +2876,11 @@
         }
         .polaroid-best-corner {
             position: absolute;
-            top: 0; /* Khít sát sạt với góc của polaroid-card */
-            right: 0;
+            top: -3px; /* Đưa góc vuông của hình hợp khít với góc vuông của card Polaroid */
+            right: -3px;
             width: 95px; /* Kích thước nhỏ gọn cho Polaroid */
             height: auto;
-            z-index: 1; /* Nằm dưới lớp ảnh (z-index 2) để ảnh Polaroid đè lên phần lấn sân */
+            z-index: 10; /* Nổi hẳn lên trên ảnh Polaroid (không bị ảnh che) */
             pointer-events: none;
             transform-origin: top right;
             animation: tiemanh-corner-glow 2.4s infinite ease-in-out;
