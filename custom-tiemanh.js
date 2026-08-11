@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Tiệm Ảnh Trái Thơm - Hệ thống Script giao diện và tính năng Concept nâng cao
  * Tác giả: NHATLAM
  * Chức năng: Tạo giao diện Landing Page chuyên nghiệp, lọc danh mục, xem album ảnh dạng Lightbox, đăng ký lịch tư vấn/chụp ảnh.
@@ -3841,6 +3841,132 @@
         // Chờ tải dữ liệu thực tế từ Google Sheets (tránh nháy ảnh mẫu không phù hợp)
         fetchConceptsFromSheets();
         setupInteractions();
+        createRibbonDevTools();
+    }
+
+    // Công cụ Dev Tool nhỏ để hỗ trợ chủ tiệm tự kéo và căn chỉnh pixel ruy băng Best Seller realtime trên màn hình
+    function createRibbonDevTools() {
+        if (typeof window === 'undefined' || typeof document === 'undefined') return;
+        const params = new URLSearchParams(window.location.search);
+        if (!params.has("dev") && !params.has("test")) return;
+
+        // Tạo phần tử container cho DevTools
+        const container = document.createElement("div");
+        container.id = "ribbon-devtools";
+        container.style.cssText = `
+            position: fixed !important;
+            bottom: 20px !important;
+            right: 20px !important;
+            width: 320px !important;
+            background: rgba(25, 25, 25, 0.95) !important;
+            border: 1px solid rgba(255, 214, 0, 0.5) !important;
+            border-radius: 12px !important;
+            padding: 15px !important;
+            color: #ffffff !important;
+            font-family: Arial, sans-serif !important;
+            font-size: 13px !important;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
+            z-index: 2147483647 !important;
+            backdrop-filter: blur(10px) !important;
+        `;
+
+        container.innerHTML = `
+            <div style="font-weight: bold; margin-bottom: 12px; color: #ffd600; font-size: 14px; display: flex; justify-content: space-between; align-items: center;">
+                <span>🍇 Ribbon Developer Tool</span>
+                <span id="close-devtools" style="cursor: pointer; font-size: 16px;">&times;</span>
+            </div>
+            <div style="margin-bottom: 10px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                    <span>Top: <strong id="top-val">0px</strong></span>
+                </div>
+                <input type="range" id="slider-top" min="-50" max="50" value="0" style="width: 100%; accent-color: #ffd600;">
+            </div>
+            <div style="margin-bottom: 10px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                    <span>Left: <strong id="left-val">-22px</strong></span>
+                </div>
+                <input type="range" id="slider-left" min="-100" max="50" value="-22" style="width: 100%; accent-color: #ffd600;">
+            </div>
+            <div style="margin-bottom: 12px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                    <span>Width: <strong id="width-val">125px</strong></span>
+                </div>
+                <input type="range" id="slider-width" min="80" max="200" value="125" style="width: 100%; accent-color: #ffd600;">
+            </div>
+            <div style="margin-top: 10px; background: rgba(0,0,0,0.3); padding: 8px; border-radius: 6px;">
+                <div style="font-size: 11px; color: #aaa; margin-bottom: 4px;">CSS Output:</div>
+                <code id="css-output" style="font-family: monospace; font-size: 11px; display: block; white-space: pre-wrap; word-break: break-all; color: #4ade80;"></code>
+            </div>
+            <button id="copy-css" style="width: 100%; margin-top: 8px; background: #ffd600; color: #000; border: none; border-radius: 6px; padding: 6px; font-weight: bold; cursor: pointer; transition: background 0.2s;">Copy CSS</button>
+        `;
+
+        document.body.appendChild(container);
+
+        const sliderTop = container.querySelector("#slider-top");
+        const sliderLeft = container.querySelector("#slider-left");
+        const sliderWidth = container.querySelector("#slider-width");
+        
+        const topLabel = container.querySelector("#top-val");
+        const leftLabel = container.querySelector("#left-val");
+        const widthLabel = container.querySelector("#width-val");
+        const cssOutput = container.querySelector("#css-output");
+        const copyBtn = container.querySelector("#copy-css");
+        const closeBtn = container.querySelector("#close-devtools");
+
+        const styleEl = document.createElement("style");
+        styleEl.id = "ribbon-temp-styles";
+        document.head.appendChild(styleEl);
+
+        function updateStyles() {
+            const topVal = sliderTop.value;
+            const leftVal = sliderLeft.value;
+            const widthVal = sliderWidth.value;
+
+            topLabel.textContent = topVal + "px";
+            leftLabel.textContent = leftVal + "px";
+            widthLabel.textContent = widthVal + "px";
+
+            const cssCode = `.concept-best-corner {
+    top: ${topVal}px !important;
+    left: ${leftVal}px !important;
+    width: ${widthVal}px !important;
+}`;
+            cssOutput.textContent = cssCode;
+            styleEl.innerHTML = cssCode;
+        }
+
+        sliderTop.addEventListener("input", updateStyles);
+        sliderLeft.addEventListener("input", updateStyles);
+        sliderWidth.addEventListener("input", updateStyles);
+
+        copyBtn.addEventListener("click", () => {
+            navigator.clipboard.writeText(cssOutput.textContent)
+                .then(() => {
+                    const originalText = copyBtn.textContent;
+                    copyBtn.textContent = "Copied! 🍇";
+                    copyBtn.style.background = "#4ade80";
+                    setTimeout(() => {
+                        copyBtn.textContent = originalText;
+                        copyBtn.style.background = "#ffd600";
+                    }, 1500);
+                });
+        });
+
+        closeBtn.addEventListener("click", () => {
+            container.remove();
+            styleEl.remove();
+        });
+
+        // Set initial values from the current stylesheet values
+        const currentStyleTop = 0;
+        const currentStyleLeft = -22;
+        const currentStyleWidth = 125;
+
+        sliderTop.value = currentStyleTop;
+        sliderLeft.value = currentStyleLeft;
+        sliderWidth.value = currentStyleWidth;
+
+        updateStyles();
     }
 
     // Hàm chuyển Google Drive share link → thumbnail URL ổn định (không bị chặn cross-origin)
