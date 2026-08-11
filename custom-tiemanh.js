@@ -967,7 +967,7 @@
             background: #ffffff;
             border-radius: 22px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-            overflow: hidden;
+            overflow: visible; /* Để vương miện lòi ra ngoài góc card (nửa trong nửa ngoài) */
             border: 1.5px solid rgba(251, 192, 45, 0.22);
             transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
             display: flex;
@@ -997,7 +997,7 @@
             padding: 8px;
             background: #ffffff; /* Trùng với màu nền card để triệt tiêu vệt lệch pixel */
             overflow: hidden;
-            border-radius: 20px 20px 0 0;
+            border-radius: 22px 22px 0 0; /* Đồng nhất bo góc 22px ở đỉnh */
             position: relative;
             /* Khắc phục lỗi vỡ góc bo tròn trên iOS Safari khi ảnh con transform scale */
             -webkit-backface-visibility: hidden;
@@ -1049,6 +1049,7 @@
             border-top: 1px solid rgba(251, 192, 45, 0.15);
             min-height: 86px;
             box-sizing: border-box;
+            border-radius: 0 0 22px 22px; /* Đồng nhất bo góc 22px ở đáy */
         }
         .tiemanh-card-meta {
             display: flex;
@@ -2866,26 +2867,23 @@
         }
         .concept-best-badge {
             position: absolute;
-            top: 16px;
-            left: 16px;
-            width: 42px;
-            height: 42px;
-            background: linear-gradient(135deg, #ffe082 0%, #ffb300 50%, #ff8f00 100%);
-            border: 2.5px solid #ffffff;
-            border-radius: 50%;
+            top: -18px; /* Đẩy vương miện lên trên mép ảnh */
+            left: -12px; /* Đẩy vương miện ra ngoài mép trái (nửa trong nửa ngoài) */
             z-index: 10;
+            font-size: 38px; /* Tăng cỡ vương miện to rõ nghệ thuật */
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 12px rgba(255, 143, 0, 0.35), 0 0 0 2px #ffb300;
-            font-size: 20px;
-            animation: tiemanh-crown-pulse 2.2s infinite ease-in-out;
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25)) drop-shadow(0 0 8px rgba(251, 192, 45, 0.55));
+            animation: tiemanh-crown-sway 2.5s infinite ease-in-out;
             cursor: default;
+            user-select: none;
+            pointer-events: none; /* Người dùng click xuyên qua vương miện để mở Lightbox ảnh bình thường */
         }
-        @keyframes tiemanh-crown-pulse {
-            0% { transform: scale(1) rotate(0deg); box-shadow: 0 4px 12px rgba(255, 143, 0, 0.35), 0 0 0 2px #ffb300; }
-            50% { transform: scale(1.08) rotate(6deg); box-shadow: 0 6px 18px rgba(255, 143, 0, 0.55), 0 0 0 2.5px #ffb300; }
-            100% { transform: scale(1) rotate(0deg); box-shadow: 0 4px 12px rgba(255, 143, 0, 0.35), 0 0 0 2px #ffb300; }
+        @keyframes tiemanh-crown-sway {
+            0% { transform: scale(1) rotate(-22deg) translate(0, 0); }
+            50% { transform: scale(1.06) rotate(-16deg) translate(1px, -1px); }
+            100% { transform: scale(1) rotate(-22deg) translate(0, 0); }
         }
 
         /* Badge trên Polaroid card ở Hero banner */
