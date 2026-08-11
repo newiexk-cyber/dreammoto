@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Tiệm Ảnh Trái Thơm - Hệ thống Script giao diện và tính năng Concept nâng cao
  * Tác giả: NHATLAM
  * Chức năng: Tạo giao diện Landing Page chuyên nghiệp, lọc danh mục, xem album ảnh dạng Lightbox, đăng ký lịch tư vấn/chụp ảnh.
@@ -4776,7 +4776,7 @@
         if (zaloQuickPricingBtn) {
             zaloQuickPricingBtn.addEventListener("click", () => {
                 closeZaloModal();
-                smoothScrollToSection("pricingSlider");
+                smoothScrollToSection("banggiaSection");
             });
         }
         if (zaloQuickBranchBtn) {
@@ -4931,8 +4931,8 @@
         // Xử lý cuộn mượt cho toàn bộ Menu Header
         const menuScrollLinks = [
             { id: "menuTrangChu", targetId: null }, // null tức là cuộn lên top
-            { id: "menuConcept", targetId: "conceptFilterGroup" },
-            { id: "menuBangGia", targetId: "pricingSlider" },
+            { id: "menuConcept", targetId: "filterBar" },
+            { id: "menuBangGia", targetId: "banggiaSection" },
             { id: "menuQuyTrinh", targetId: "quytrinhSection" },
             { id: "menuChiNhanh", targetId: "chinhanhSection" },
             { id: "menuLienHe", targetId: "tiemanh-footer" }
@@ -5067,10 +5067,10 @@
                 if (href && href.startsWith("#")) {
                     e.preventDefault();
                     const targetId = href.substring(1);
-                    if (targetId === "banggiaSection") smoothScrollToSection("pricingSlider");
+                    if (targetId === "banggiaSection") smoothScrollToSection("banggiaSection");
                     else if (targetId === "quytrinhSection") smoothScrollToSection("quytrinhSection");
                     else if (targetId === "chinhanhSection") smoothScrollToSection("chinhanhSection");
-                    else if (targetId === "filterBar") smoothScrollToSection("conceptFilterGroup");
+                    else if (targetId === "filterBar") smoothScrollToSection("filterBar");
                 }
             });
         });
