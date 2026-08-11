@@ -35,6 +35,7 @@ function onOpen() {
   ui.createMenu("🍇 Đồng bộ Tiệm Ảnh")
     .addItem("🔄 Đồng bộ nhanh (Chỉ quét concept mới)", "syncDriveToSheetsQuick")
     .addItem("♻️ Đồng bộ toàn bộ (Quét lại tất cả ảnh)", "syncDriveToSheetsFull")
+    .addItem("🧹 Dọn dẹp tag trùng trên Sheet", "cleanDuplicateTagsOnSheet")
     .addItem("🛠️ Khởi tạo bảng trắng tinh", "runInitialization")
     .addToUi();
 }
@@ -343,6 +344,57 @@ function onEdit(e) {
         range.setValue(oldParts.join(", "));
       }
     }
+  }
+}
+
+// Hàm dọn dẹp và xóa các tag bị trùng lặp hiện có trên Sheet
+function cleanDuplicateTagsOnSheet() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const lastRow = sheet.getLastRow();
+  if (lastRow < 2) return;
+  
+  const range = sheet.getRange(2, 3, lastRow - 1, 1); // Cột C (Chủ đề) bắt đầu từ dòng 2
+  const values = range.getValues();
+  
+  const normalize = function(str) {
+    if (!str) return "";
+    return str.toString()
+      .replace(/&amp;/g, "&")
+      .replace(/\s+/g, " ")
+      .trim();
+  };
+  
+  let fixedCount = 0;
+  
+  for (let i = 0; i < values.length; i++) {
+    const cellValue = values[i][0];
+    if (cellValue) {
+      const parts = cellValue.split(",").map(p => p.trim()).filter(Boolean);
+      
+      // Lọc trùng lặp thông minh
+      const uniqueParts = [];
+      const seen = new Set();
+      for (let j = 0; j < parts.length; j++) {
+        const norm = normalize(parts[j]).toLowerCase();
+        if (!seen.has(norm) && norm !== "") {
+          seen.add(norm);
+          uniqueParts.push(parts[j].replace(/&amp;/g, "&").trim());
+        }
+      }
+      
+      const newValue = uniqueParts.join(", ");
+      if (newValue !== cellValue) {
+        values[i][0] = newValue;
+        fixedCount++;
+      }
+    }
+  }
+  
+  if (fixedCount > 0) {
+    range.setValues(values);
+    SpreadsheetApp.getUi().alert("Dọn dẹp hoàn tất", `Đã tự động lọc trùng và sửa thành công ${fixedCount} ô chứa tag bị lặp trên Sheet!`, SpreadsheetApp.getUi().ButtonSet.OK);
+  } else {
+    SpreadsheetApp.getUi().alert("Thông báo", "Không tìm thấy ô nào bị trùng lặp tag cần sửa.", SpreadsheetApp.getUi().ButtonSet.OK);
   }
 }
 ```
