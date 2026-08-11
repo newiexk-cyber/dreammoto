@@ -3984,14 +3984,16 @@
             .join(' ');
     }
 
-    // Hàm trích xuất Tag CHUẨN (Hỗ trợ nạp trực tiếp danh sách phân tách bởi dấu phẩy từ Sheet, hoặc tự động bóc tách từ khóa nếu trống)
+    // Hàm trích xuất Tag CHUẨN (Hỗ trợ nạp trực tiếp danh sách phân tách bởi dấu phẩy từ Sheet, lọc trùng và loại bỏ các tag lặp)
     function extractMultiTagsSmart(rawTheme, rawTitle, rawDesc) {
         // Nếu có rawTheme (chủ đề do người dùng nhập từ Sheet), phân tách bằng dấu phẩy và trả về trực tiếp
         if (rawTheme && String(rawTheme).trim().length > 0) {
-            return String(rawTheme)
+            const cleanTags = String(rawTheme)
+                .replace(/&amp;/g, "&") // Chuẩn hóa ký tự &
                 .split(",")
                 .map(t => t.trim())
                 .filter(Boolean);
+            return [...new Set(cleanTags)]; // Khử trùng hoàn toàn
         }
 
         // Nếu hoàn toàn không có chủ đề, mặc định là "Concept"

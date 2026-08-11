@@ -306,7 +306,7 @@ function applySheetFormatting(sheet, startRow, endRow) {
   bestRange.insertCheckboxes();
 }
 
-// Hàm hỗ trợ chọn nhiều chủ đề (Multi-select) từ Dropdown cột C (Chủ đề)
+// Hàm hỗ trợ chọn nhiều chủ đề (Multi-select) từ Dropdown cột C (Chủ đề) - Khử trùng & Chuẩn hóa thông minh
 function onEdit(e) {
   const sheet = e.source.getActiveSheet();
   const range = e.range;
@@ -316,21 +316,31 @@ function onEdit(e) {
     const newValue = e.value;
     const oldValue = e.oldValue;
     
-    // Nếu xóa ô thì giữ nguyên
     if (!newValue) return;
     
-    // Nếu đã có giá trị cũ trong ô
+    // Hàm chuẩn hóa chuỗi để so sánh không phân biệt khoảng trắng, hoa thường, ký tự &
+    const normalize = function(str) {
+      if (!str) return "";
+      return str.toString()
+        .replace(/&amp;/g, "&")
+        .replace(/\s+/g, " ")
+        .trim()
+        .toLowerCase();
+    };
+    
     if (oldValue) {
-      const oldParts = oldValue.split(",").map(p => p.trim());
-      const idx = oldParts.indexOf(newValue);
+      const oldParts = oldValue.split(",").map(p => p.trim()).filter(Boolean);
+      const normOldParts = oldParts.map(p => normalize(p));
+      const normNew = normalize(newValue);
+      const idx = normOldParts.indexOf(normNew);
       
       if (idx === -1) {
-        // Nếu chọn chủ đề mới -> Nối tiếp vào
-        range.setValue(oldValue + ", " + newValue);
+        // Nếu chọn chủ đề mới -> Chèn thêm vào
+        range.setValue(oldParts.join(", ") + ", " + newValue);
       } else {
         // Nếu chọn chủ đề đã có -> Xóa chủ đề đó đi (Toggle)
-        const filteredParts = oldParts.filter(p => p !== newValue);
-        range.setValue(filteredParts.join(", "));
+        oldParts.splice(idx, 1);
+        range.setValue(oldParts.join(", "));
       }
     }
   }
