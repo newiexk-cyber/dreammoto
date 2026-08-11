@@ -2867,23 +2867,33 @@
         }
         .concept-best-badge {
             position: absolute;
-            top: -18px; /* Đẩy vương miện lên trên mép ảnh */
-            left: -12px; /* Đẩy vương miện ra ngoài mép trái (nửa trong nửa ngoài) */
+            top: -23px; /* Cân chỉnh cho vương miện lớn */
+            left: -15px;
             z-index: 10;
-            font-size: 38px; /* Tăng cỡ vương miện to rõ nghệ thuật */
+            font-size: 46px; /* Tăng kích thước vương miện lên 46px */
             display: flex;
             align-items: center;
             justify-content: center;
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.25)) drop-shadow(0 0 8px rgba(251, 192, 45, 0.55));
-            animation: tiemanh-crown-sway 2.5s infinite ease-in-out;
+            /* Đổ bóng phát sáng lấp lánh rực rỡ */
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)) drop-shadow(0 0 12px rgba(251, 192, 45, 0.75));
+            animation: tiemanh-crown-sway 2.4s infinite ease-in-out;
             cursor: default;
             user-select: none;
-            pointer-events: none; /* Người dùng click xuyên qua vương miện để mở Lightbox ảnh bình thường */
+            pointer-events: none; /* Không cản trở click */
         }
         @keyframes tiemanh-crown-sway {
-            0% { transform: scale(1) rotate(-22deg) translate(0, 0); }
-            50% { transform: scale(1.06) rotate(-16deg) translate(1px, -1px); }
-            100% { transform: scale(1) rotate(-22deg) translate(0, 0); }
+            0% { 
+                transform: scale(1) rotate(-22deg) translate(0, 0); 
+                filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)) drop-shadow(0 0 12px rgba(251, 192, 45, 0.7));
+            }
+            50% { 
+                transform: scale(1.08) rotate(-15deg) translate(1px, -2px); 
+                filter: drop-shadow(0 6px 14px rgba(0,0,0,0.35)) drop-shadow(0 0 20px rgba(255, 179, 0, 0.95)) brightness(1.15); /* Phát sáng rực rỡ lấp lánh ở pha giữa */
+            }
+            100% { 
+                transform: scale(1) rotate(-22deg) translate(0, 0); 
+                filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3)) drop-shadow(0 0 12px rgba(251, 192, 45, 0.7));
+            }
         }
 
         /* Badge trên Polaroid card ở Hero banner */
