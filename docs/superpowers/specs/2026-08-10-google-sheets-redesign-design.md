@@ -184,20 +184,31 @@ function syncDriveToSheetsCore(isQuick) {
       }
     }
     
-    // 3. Xử lý các Concept bị xóa trên Drive: Tích chọn Ẩn (Cột F) trực tiếp trên mảng values
-    for (const [fId, r] of sheetDataMap.entries()) {
-      if (!processedFolderIds.has(fId)) {
-        values[r][colIdx.hide] = true;
+    // 3. Xử lý các Concept bị xóa trên Drive: Loại bỏ hoàn toàn khỏi Sheet và dồn hàng
+    const newValues = [headers];
+    let deletedRowsCount = 0;
+    let stt = 1;
+    for (let r = 1; r < values.length; r++) {
+      const fId = values[r][colIdx.folderId];
+      if (fId) {
+        if (processedFolderIds.has(fId)) {
+          const row = values[r];
+          row[colIdx.stt] = stt++; // Đánh số lại STT từ 1 tăng dần liên tục chằn chặn
+          newValues.push(row);
+        } else {
+          deletedRowsCount++;
+        }
       }
     }
     
-    // 🔥 GHI TOÀN BỘ DỮ LIỆU ĐÃ CẬP NHẬT/THÊM MỚI XUỐNG SHEET CHỈ BẰNG MỘT LỆNH DUY NHẤT (Batch Write)
-    sheet.getRange(1, 1, values.length, headers.length).setValues(values);
+    // 🔥 XÓA SẠCH NỘI DUNG CŨ VÀ GHI ĐÈ MẢNG MỚI ĐÃ DỒN HÀNG XUỐNG SHEET (Giữ nguyên định dạng)
+    sheet.clearContents();
+    sheet.getRange(1, 1, newValues.length, headers.length).setValues(newValues);
     
     // 4. Định dạng lại bảng tính (chèn Checkbox cho các dòng mới)
-    applySheetFormatting(sheet, 2, values.length);
+    applySheetFormatting(sheet, 2, newValues.length);
     
-    ui.alert("Đồng bộ hoàn tất", `Đồng bộ thành công bằng chế độ [${modeName}]!\n- Tổng số concept trên Drive: ${conceptFoldersList.length}\n- Thêm mới: ${newRowsCount} concept.\n- Cập nhật lại hình ảnh của các concept cũ.\n- Đã tự động ẩn các concept bị xóa trên Drive.`, ui.ButtonSet.OK);
+    ui.alert("Đồng bộ hoàn tất", `Đồng bộ thành công bằng chế độ [${modeName}]!\n- Tổng số concept trên Drive: ${conceptFoldersList.length}\n- Thêm mới: ${newRowsCount} concept.\n- Đã tự động xóa & dồn hàng: ${deletedRowsCount} concept bị mất trên Drive.\n- Đã tự động đánh số lại STT liên tục từ 1 đến ${newValues.length - 1}.`, ui.ButtonSet.OK);
     
   } catch (error) {
     let msg = "Có lỗi xảy ra: " + error.toString();
