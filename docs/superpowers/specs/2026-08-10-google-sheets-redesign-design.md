@@ -318,7 +318,7 @@ function onEdit(e) {
       const newValue = e.value;
       const oldValue = e.oldValue;
       
-      // Nếu xóa sạch ô -> cho phép xóa
+      // Nếu xóa sạch ô -> cho phép xóa thoải mái
       if (!newValue) return;
       
       const normalize = function(str) {
@@ -332,13 +332,42 @@ function onEdit(e) {
       const newStr = String(newValue).trim();
       const oldStr = oldValue ? String(oldValue).trim() : "";
       
-      const newParts = newStr.split(",").map(p => p.trim()).filter(Boolean);
+      // 1. Lấy danh sách các lựa chọn dropdown hợp lệ từ quy tắc xác thực của ô
+      let dropdownValues = [];
+      const rule = range.getDataValidation();
+      if (rule) {
+        const criteria = rule.getCriteriaType();
+        if (criteria === SpreadsheetApp.DataValidationCriteria.VALUE_IN_LIST) {
+          dropdownValues = rule.getCriteriaValues()[0];
+        } else if (criteria === SpreadsheetApp.DataValidationCriteria.VALUE_IN_RANGE) {
+          const validationRange = rule.getCriteriaValues()[0];
+          dropdownValues = validationRange.getValues().map(r => r[0]);
+        }
+      }
       
+      const normDropdown = dropdownValues.map(v => normalize(v).toLowerCase());
+      const isFromDropdown = normDropdown.includes(normalize(newStr).toLowerCase());
+      
+      // 2. Xử lý logic ghép hoặc xóa
       if (oldStr) {
         const oldParts = oldStr.split(",").map(p => p.trim()).filter(Boolean);
         
-        // TRƯỜNG HỢP 1: Người dùng xóa bớt tag (Số lượng tag mới ít hơn số lượng tag cũ)
-        if (newParts.length < oldParts.length) {
+        if (isFromDropdown) {
+          // TRƯỜNG HỢP A: Chọn thêm từ Dropdown -> Thực hiện ghép thêm và lọc trùng
+          const combined = [...oldParts, newStr];
+          const cleanCombined = [];
+          const combinedSeen = new Set();
+          for (const part of combined) {
+            const norm = normalize(part).toLowerCase();
+            if (!combinedSeen.has(norm) && norm !== "") {
+              combinedSeen.add(norm);
+              cleanCombined.push(part.replace(/&amp;/g, "&").trim());
+            }
+          }
+          range.setValue(cleanCombined.join(", "));
+        } else {
+          // TRƯỜNG HỢP B: Người dùng bấm dấu x để xóa bớt chip -> Giữ nguyên giá trị mới (cho phép xóa)
+          const newParts = newStr.split(",").map(p => p.trim()).filter(Boolean);
           const uniqueNew = [];
           const seenNew = new Set();
           for (const part of newParts) {
@@ -349,24 +378,10 @@ function onEdit(e) {
             }
           }
           range.setValue(uniqueNew.join(", "));
-          return;
         }
-        
-        // TRƯỜNG HỢP 2: Người dùng chọn thêm tag từ Dropdown (Ghép thêm và lọc trùng)
-        const combined = [...oldParts, ...newParts];
-        const cleanCombined = [];
-        const combinedSeen = new Set();
-        for (const part of combined) {
-          const norm = normalize(part).toLowerCase();
-          if (!combinedSeen.has(norm) && norm !== "") {
-            combinedSeen.add(norm);
-            cleanCombined.push(part.replace(/&amp;/g, "&").trim());
-          }
-        }
-        range.setValue(cleanCombined.join(", "));
-        
       } else {
-        // Nếu trước đó ô trống, chỉ cần ghi giá trị mới đã khử trùng
+        // Nếu trước đó ô trống
+        const newParts = newStr.split(",").map(p => p.trim()).filter(Boolean);
         const uniqueNew = [];
         const seenNew = new Set();
         for (const part of newParts) {
