@@ -1,4 +1,4 @@
-/**
+﻿/**
  * Tiệm Ảnh Trái Thơm - Hệ thống Script giao diện và tính năng Concept nâng cao
  * Tác giả: NHATLAM
  * Chức năng: Tạo giao diện Landing Page chuyên nghiệp, lọc danh mục, xem album ảnh dạng Lightbox, đăng ký lịch tư vấn/chụp ảnh.
@@ -324,7 +324,7 @@
     ];
 
     const STYLES = `
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600;1,700&family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600;1,700&family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&display=swap');
 
         :root {
             --tiemanh-font: 'Plus Jakarta Sans', 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
@@ -502,7 +502,7 @@
             font-size: 32px;
         }
         .tiemanh-logo-text {
-            font-family: var(--tiemanh-serif);
+            font-family: 'Inter', var(--tiemanh-serif);
             font-weight: 800;
             color: var(--tiemanh-dark);
             font-size: 22px;
@@ -630,7 +630,7 @@
             line-height: 1.2;
         }
         .tiemanh-hero-title {
-            font-family: var(--tiemanh-serif);
+            font-family: 'Inter', var(--tiemanh-serif);
             font-size: 62px;
             font-weight: 900;
             line-height: 1.1;
@@ -741,7 +741,7 @@
             100% { transform: scale(1.05); box-shadow: 0 6px 22px rgba(230, 81, 0, 0.55); }
         }
         .hot-showcase-title {
-            font-family: var(--tiemanh-serif);
+            font-family: 'Inter', var(--tiemanh-serif);
             font-size: 23px;
             font-weight: 800;
             color: var(--tiemanh-dark);
@@ -1141,7 +1141,7 @@
             min-width: 0;
         }
         .tiemanh-card-title {
-            font-family: var(--tiemanh-serif);
+            font-family: 'Inter', var(--tiemanh-serif);
             font-weight: 800;
             font-size: 16px;
             color: var(--tiemanh-dark);
@@ -1778,7 +1778,7 @@
             gap: 6px;
         }
         .tiemanh-cta-title {
-            font-family: var(--tiemanh-serif);
+            font-family: 'Inter', var(--tiemanh-serif);
             font-weight: 800;
             font-size: 24px;
             color: var(--tiemanh-dark);
@@ -2038,7 +2038,7 @@
             margin-bottom: 8px;
         }
         .tiemanh-lightbox-title {
-            font-family: var(--tiemanh-serif);
+            font-family: 'Inter', var(--tiemanh-serif);
             font-size: 28px;
             font-weight: 800;
             color: var(--tiemanh-white);
@@ -2138,7 +2138,7 @@
             color: var(--tiemanh-dark);
         }
         .tiemanh-modal-title {
-            font-family: var(--tiemanh-serif);
+            font-family: 'Inter', var(--tiemanh-serif);
             font-size: 22px;
             font-weight: 800;
             margin: 0;
@@ -2236,7 +2236,7 @@
             animation: pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
         .tiemanh-success-title {
-            font-family: var(--tiemanh-serif);
+            font-family: 'Inter', var(--tiemanh-serif);
             font-size: 24px;
             font-weight: 800;
             color: var(--tiemanh-dark);
@@ -2271,7 +2271,7 @@
             letter-spacing: 2px;
         }
         .tiemanh-sec-title {
-            font-family: var(--tiemanh-serif);
+            font-family: 'Inter', var(--tiemanh-serif);
             font-size: 42px;
             font-weight: 800;
             margin: 10px 0 0 0;
@@ -2510,7 +2510,7 @@
             letter-spacing: 0.5px;
         }
         .tiemanh-price-card h3 {
-            font-family: var(--tiemanh-serif);
+            font-family: 'Inter', var(--tiemanh-serif);
             font-size: 22px;
             font-weight: 800;
             margin: 0 0 15px 0;
@@ -2518,7 +2518,7 @@
             text-align: center;
         }
         .tiemanh-price-tag {
-            font-family: var(--tiemanh-serif);
+            font-family: 'Inter', var(--tiemanh-serif);
             font-size: 32px;
             font-weight: 800;
             color: #5c1d30;
@@ -2609,7 +2609,7 @@
             border-radius: 50%;
             background-color: var(--tiemanh-primary);
             color: var(--tiemanh-dark);
-            font-family: var(--tiemanh-serif);
+            font-family: 'Inter', var(--tiemanh-serif);
             font-size: 20px;
             font-weight: 800;
             display: flex;
@@ -2619,7 +2619,7 @@
             box-shadow: 0 4px 10px rgba(251, 192, 45, 0.3);
         }
         .tiemanh-step-card h4 {
-            font-family: var(--tiemanh-serif);
+            font-family: 'Inter', var(--tiemanh-serif);
             font-size: 18px;
             margin: 0 0 10px 0;
             color: var(--tiemanh-dark);
@@ -2674,7 +2674,7 @@
             background-color: #eee;
         }
         .tiemanh-feedback-info h5 {
-            font-family: var(--tiemanh-serif);
+            font-family: 'Inter', var(--tiemanh-serif);
             font-size: 15px;
             margin: 0;
             color: var(--tiemanh-dark);
@@ -3186,7 +3186,7 @@
 
     const fontLink = document.createElement('link');
     fontLink.rel = 'stylesheet';
-    fontLink.href = 'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600;1,700&family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=Prata&family=Charm:wght@700&family=Dancing+Script:wght@700&display=swap';
+    fontLink.href = 'https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600;1,700&family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=Prata&family=Charm:wght@700&family=Dancing+Script:wght@700&display=swap';
     document.head.appendChild(fontLink);
 
     const styleTag = document.createElement("style");
