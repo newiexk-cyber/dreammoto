@@ -2326,8 +2326,8 @@
             .tiemanh-pricing-grid::-webkit-scrollbar { display: none; }
             .tiemanh-pricing-grid.active-drag { cursor: grabbing !important; scroll-behavior: auto !important; }
             .tiemanh-price-card {
-                flex: 0 0 78%;
-                min-width: 280px;
+                flex: 0 0 72%; /* Giảm từ 78% xuống 72% để lộ nhiều hơn 2 gói hai bên */
+                min-width: 240px; /* Giảm từ 280px để các màn hình hẹp vẫn hiển thị cân đối tỷ lệ */
                 scroll-snap-align: center;
                 height: auto !important; /* Đảm bảo flex stretch hoạt động kéo giãn chiều cao */
             }
@@ -2344,14 +2344,38 @@
             border-color: #f43f5e;
         }
         .tiemanh-price-card.featured {
-            border: 3px solid #fbbf24 !important;
+            border: 3.5px solid #fbbf24 !important;
             background: #ffffff;
-            box-shadow: 0 18px 38px rgba(245, 158, 11, 0.15) !important;
+            box-shadow: 0 20px 48px rgba(245, 127, 23, 0.22), 0 0 20px rgba(251, 192, 45, 0.15) !important;
+            transform: scale(1.02); /* Phóng nhẹ lên một xíu để nổi bật */
+            z-index: 2;
         }
         .tiemanh-price-card.featured:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 20px 42px rgba(245, 158, 11, 0.25) !important;
+            transform: scale(1.02) translateY(-8px);
+            box-shadow: 0 24px 54px rgba(245, 127, 23, 0.32), 0 0 25px rgba(251, 192, 45, 0.25) !important;
             border-color: #f59e0b !important;
+        }
+        .tiemanh-price-card.featured h3 {
+            color: #d84315; /* Chữ màu cam đỏ nổi bật */
+            font-size: 23px;
+        }
+        .tiemanh-price-card.featured .tiemanh-price-badge {
+            background-color: #f57f17;
+            color: #ffffff;
+            font-size: 11.5px;
+            box-shadow: 0 3px 8px rgba(245, 127, 23, 0.3);
+        }
+        .tiemanh-price-card.featured .price-best-seller {
+            background: linear-gradient(135deg, #f57f17 0%, #ffb300 100%) !important;
+            font-size: 13.5px;
+            padding: 8px 24px;
+            box-shadow: 0 6px 16px rgba(245, 127, 23, 0.4) !important;
+            animation: tiemanh-pulse-glow 2.2s infinite ease-in-out;
+        }
+        @keyframes tiemanh-pulse-glow {
+            0% { transform: scale(1); box-shadow: 0 6px 16px rgba(245, 127, 23, 0.4); }
+            50% { transform: scale(1.06); box-shadow: 0 8px 22px rgba(245, 127, 23, 0.6); }
+            100% { transform: scale(1); box-shadow: 0 6px 16px rgba(245, 127, 23, 0.4); }
         }
         .tiemanh-price-badge {
             position: absolute;
