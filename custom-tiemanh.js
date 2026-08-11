@@ -3122,12 +3122,18 @@
                 padding: 8px 10px;
             }
             .tiemanh-hero-btns {
-                flex-direction: column;
+                flex-direction: row; /* Để 2 nút nằm ngang */
+                flex-wrap: nowrap; /* Đảm bảo tuyệt đối không bị xuống dòng */
                 width: 100%;
+                justify-content: center;
                 gap: 10px;
             }
             .tiemanh-btn-primary-new, .tiemanh-btn-secondary-new {
-                width: 100%;
+                flex: 1;
+                max-width: 180px; /* Giới hạn chiều rộng nút cho nhỏ gọn vừa vặn */
+                padding: 10px 12px;
+                font-size: 12px; /* Thu nhỏ chữ nhẹ để vừa dòng */
+                white-space: nowrap; /* Đảm bảo chữ trong nút không bị rớt dòng */
                 justify-content: center;
                 box-sizing: border-box;
             }
