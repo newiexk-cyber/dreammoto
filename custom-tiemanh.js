@@ -4132,11 +4132,7 @@
                 const concept = selected[i];
                 card.classList.remove("loading-skeleton");
                 
-                // Thêm khung góc vương miện nếu bộ concept là Best Seller
-                const flameHtml = concept.isBestSeller ? `<img src="bestseller-corner.png" class="polaroid-best-corner" alt="Best Seller" title="Concept Best Seller">` : "";
-
                 card.innerHTML = `
-                    ${flameHtml}
                     <img src="${concept.images[0]}" alt="${concept.title}">
                     <div class="polaroid-caption">${concept.title}</div>
                 `;
