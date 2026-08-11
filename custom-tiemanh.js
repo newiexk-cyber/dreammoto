@@ -2944,8 +2944,8 @@
         /* Khung viền góc Best Seller lấp lánh sang trọng */
         .concept-best-corner {
             position: absolute;
-            top: -3px; /* Align top fold perfectly to inner pink image */
-            left: -18px; right: auto; /* Align left edge of ribbon with inner pink image */
+            top: 0px; /* Shift down to touch top image edge */
+            left: -22px; right: auto; /* Shift left to touch left image edge */
             width: 125px; /* Optimal ribbon width to cover both edges */
             height: auto;
             z-index: 10; /* Nổi hẳn lên trên ảnh con (không bị ảnh che) */
