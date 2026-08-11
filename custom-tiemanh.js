@@ -2488,7 +2488,7 @@
             position: absolute;
             top: -14px; /* Dịch lên trên thêm để mép gấp ruy băng cam thẳng hàng hoàn toàn với viền vàng trên cùng */
             right: -14px; /* Dịch sang phải tương ứng để giữ cân đối chéo 45 độ */
-            width: 130px; /* Optimal ribbon width to avoid corner leakage */
+            width: 110px; /* Scaling down ribbon to match desired size */
             height: auto;
             z-index: 5;
             pointer-events: none; /* Tránh cản click */
@@ -2944,9 +2944,9 @@
         /* Khung viền góc Best Seller lấp lánh sang trọng */
         .concept-best-corner {
             position: absolute;
-            top: 2px; /* Align top fold perfectly to image border */
-            left: -22px; right: auto; /* Align left edge of ribbon with inner image */
-            width: 130px; /* Optimal ribbon width to avoid corner leakage */
+            top: -1px; /* Align top fold perfectly to image border */
+            left: -13px; right: auto; /* Align left edge of ribbon with inner image */
+            width: 110px; /* Scaling down ribbon to match desired size */
             height: auto;
             z-index: 10; /* Nổi hẳn lên trên ảnh con (không bị ảnh che) */
             pointer-events: none; /* Tránh cản click vào ảnh */
