@@ -2864,8 +2864,8 @@
         /* Khung viền góc Best Seller lấp lánh sang trọng */
         .concept-best-corner {
             position: absolute;
-            top: 8px; /* Khớp với padding của collage-wrapper */
-            right: 8px;
+            top: 0; /* Nằm khít sạt sát với góc ngoài cùng của viền trắng card */
+            right: 0;
             width: 140px; /* Kích thước cân đối cho Concept card */
             height: auto;
             z-index: 10;
@@ -2876,8 +2876,8 @@
         }
         .polaroid-best-corner {
             position: absolute;
-            top: 12px; /* Khớp với padding của polaroid-card */
-            right: 12px;
+            top: 0; /* Nằm khít sạt sát với góc ngoài cùng của viền trắng card Polaroid */
+            right: 0;
             width: 95px; /* Kích thước nhỏ gọn cho Polaroid */
             height: auto;
             z-index: 10;
