@@ -1034,10 +1034,7 @@
         .collage-side-img.bottom {
             border-radius: 4px 4px 14px 4px;
         }
-        .tiemanh-card:hover .collage-main-img, 
-        .tiemanh-card:hover .collage-side-img {
-            transform: scale(1.03); /* Giảm nhẹ tỉ lệ zoom từ 1.05 xuống 1.03 để mượt mà và sang trọng hơn */
-        }
+
 
         /* Card Content footer - Balanced & Uniform Layout */
         .tiemanh-card-footer {
