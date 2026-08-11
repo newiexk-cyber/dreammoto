@@ -1643,6 +1643,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-shrink: 0; /* Khóa cứng không cho co bóp méo hình tròn */
             transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
             box-shadow: 0 4px 6px rgba(0,0,0,0.02);
         }
@@ -2657,6 +2658,8 @@
             .tiemanh-section-desc { font-size: 13.5px; margin-bottom: 22px; line-height: 1.5; }
             .tiemanh-section-container { padding: 25px 14px; }
             .tiemanh-banggia-sec, .tiemanh-quytrinh-sec, .tiemanh-feedback-sec, .tiemanh-chinhanh-sec { padding: 20px 14px 40px; }
+            .tiemanh-pagination { gap: 6px; margin-top: 30px; }
+            .tiemanh-page-btn { width: 32px; height: 32px; font-size: 12px; }
 
             /* Header & Navbar gọn gàng */
             .tiemanh-navbar { flex-direction: column; gap: 10px; padding: 12px 14px; }
