@@ -796,6 +796,8 @@
             border-radius: 12px;
             border: 1px solid rgba(0, 0, 0, 0.04);
             transition: transform 0.45s ease;
+            position: relative; /* Thêm position relative và z-index để đè lên trên khung góc vàng */
+            z-index: 2;
         }
         .polaroid-card:hover img {
             transform: none; /* Tắt zoom ảnh để bảo toàn bố cục nghệ thuật gốc */
@@ -1013,6 +1015,8 @@
             object-fit: cover;
             border-radius: 14px 4px 4px 14px;
             transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+            position: relative; /* Thêm position relative và z-index để đè lên trên khung góc vàng */
+            z-index: 2;
         }
         .collage-side {
             display: grid;
@@ -1020,6 +1024,8 @@
             gap: 6px;
             height: 100%; /* Lấp đầy chiều cao của cột bên phải */
             width: 100%;  /* Lấp đầy chiều rộng */
+            position: relative; /* Thêm position relative và z-index để đè lên trên khung góc vàng */
+            z-index: 2;
         }
         .collage-side-img {
             display: block; /* Ép hiển thị dạng block để tránh lệch pixel */
@@ -2864,11 +2870,11 @@
         /* Khung viền góc Best Seller lấp lánh sang trọng */
         .concept-best-corner {
             position: absolute;
-            top: -4px; /* Dịch nhẹ ra ngoài để đường viền vàng ôm khít hoàn toàn viền trắng card mẹ */
-            right: -4px;
+            top: 0; /* Khít sát sạt với góc của collage-wrapper */
+            right: 0;
             width: 140px; /* Kích thước cân đối cho Concept card */
             height: auto;
-            z-index: 10;
+            z-index: 1; /* Nằm dưới lớp ảnh (z-index 2) để ảnh con đè lên phần lấn sân */
             pointer-events: none; /* Tránh cản click vào ảnh */
             transform-origin: top right;
             animation: tiemanh-corner-glow 2.4s infinite ease-in-out;
@@ -2876,11 +2882,11 @@
         }
         .polaroid-best-corner {
             position: absolute;
-            top: -4px; /* Dịch nhẹ ra ngoài để đường viền vàng ôm khít hoàn toàn viền trắng Polaroid */
-            right: -4px;
+            top: 0; /* Khít sát sạt với góc của polaroid-card */
+            right: 0;
             width: 95px; /* Kích thước nhỏ gọn cho Polaroid */
             height: auto;
-            z-index: 10;
+            z-index: 1; /* Nằm dưới lớp ảnh (z-index 2) để ảnh Polaroid đè lên phần lấn sân */
             pointer-events: none;
             transform-origin: top right;
             animation: tiemanh-corner-glow 2.4s infinite ease-in-out;
@@ -4281,8 +4287,8 @@
             const bestSellerHtml = concept.isBestSeller ? `<img src="bestseller-corner.png" class="concept-best-corner" alt="Best Seller" title="Concept Best Seller">` : "";
 
             card.innerHTML = `
-                ${bestSellerHtml}
                 <div class="collage-wrapper">
+                    ${bestSellerHtml}
                     <img data-src="${img0}" class="collage-main-img" alt="${concept.title}" style="${img0 ? placeholderStyle : 'display:none'}">
                     <div class="collage-side">
                         <img data-src="${img1}" class="collage-side-img top" alt="${concept.title}" style="${img1 ? placeholderStyle : 'display:none'}">
