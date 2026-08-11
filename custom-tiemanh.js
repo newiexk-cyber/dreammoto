@@ -2460,8 +2460,8 @@
         }
         .tiemanh-price-badge-img {
             position: absolute;
-            top: -10px; /* Dịch âm sâu hơn để dải ruy băng cam khớp khít sạt sát viền ngoài card */
-            right: -10px;
+            top: -14px; /* Dịch lên trên thêm để mép gấp ruy băng cam thẳng hàng hoàn toàn với viền vàng trên cùng */
+            right: -14px; /* Dịch sang phải tương ứng để giữ cân đối chéo 45 độ */
             width: 105px; /* Chiều rộng cân đối cho card bảng giá */
             height: auto;
             z-index: 5;
