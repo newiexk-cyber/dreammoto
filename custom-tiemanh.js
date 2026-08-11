@@ -2864,41 +2864,25 @@
         /* Khung viền góc Best Seller lấp lánh sang trọng */
         .concept-best-corner {
             position: absolute;
-            top: -3px; /* Đưa góc vuông của hình hợp khít với góc vuông của card */
-            right: -3px;
+            top: -11px; /* Đẩy sâu lên trên để dải viền vàng trùng khít hoàn toàn viền trắng card */
+            right: -11px; /* Đẩy sâu sang phải để dải viền vàng trùng khít hoàn toàn viền trắng card */
             width: 140px; /* Kích thước cân đối cho Concept card */
             height: auto;
             z-index: 10; /* Nổi hẳn lên trên ảnh con (không bị ảnh che) */
             pointer-events: none; /* Tránh cản click vào ảnh */
-            transform-origin: top right;
-            animation: tiemanh-corner-glow 2.4s infinite ease-in-out;
             user-select: none;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15)) drop-shadow(0 0 6px rgba(251, 192, 45, 0.45));
         }
         .polaroid-best-corner {
             position: absolute;
-            top: -3px; /* Đưa góc vuông của hình hợp khít với góc vuông của card Polaroid */
-            right: -3px;
+            top: -8px; /* Đẩy sâu lên trên để dải viền vàng trùng khít hoàn toàn viền trắng Polaroid */
+            right: -8px; /* Đẩy sâu sang phải để dải viền vàng trùng khít hoàn toàn viền trắng Polaroid */
             width: 95px; /* Kích thước nhỏ gọn cho Polaroid */
             height: auto;
             z-index: 10; /* Nổi hẳn lên trên ảnh Polaroid (không bị ảnh che) */
             pointer-events: none;
-            transform-origin: top right;
-            animation: tiemanh-corner-glow 2.4s infinite ease-in-out;
             user-select: none;
-        }
-        @keyframes tiemanh-corner-glow {
-            0% { 
-                transform: scale(1);
-                filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15)) brightness(1); 
-            }
-            50% { 
-                transform: scale(1.03); /* Phát sáng co giãn nhẹ nhàng đồng điệu */
-                filter: drop-shadow(0 4px 10px rgba(251,192,45,0.35)) drop-shadow(0 0 8px rgba(255,179,0,0.5)) brightness(1.06); 
-            }
-            100% { 
-                transform: scale(1);
-                filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15)) brightness(1); 
-            }
+            filter: drop-shadow(0 2px 3px rgba(0,0,0,0.15)) drop-shadow(0 0 5px rgba(251, 192, 45, 0.35));
         }
 
         /* --- CẤU HÌNH TYPOGRAPHY BOLD HIỆN ĐẠI (SỬ DỤNG PHÔNG MẶC ĐỊNH, KHÔNG LO BỊ CHẶN FONT) --- */
