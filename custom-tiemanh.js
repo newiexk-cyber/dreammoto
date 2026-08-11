@@ -4871,41 +4871,48 @@
             const targetEl = document.getElementById(targetId);
             if (!targetEl) return;
 
-            const navbar = document.getElementById("tiemanh-navbar");
-            const navHeight = navbar ? navbar.offsetHeight : 70;
+            // Ưu tiên sử dụng scrollIntoView để cuộn mượt native (hỗ trợ hoàn hảo iframe Webcake trên di động)
+            try {
+                targetEl.scrollIntoView({ behavior: "smooth", block: "start" });
+            } catch (err) {
+                // Fallback tính toán thủ công nếu trình duyệt cũ không hỗ trợ scrollIntoView smooth
+                const navbar = document.getElementById("tiemanh-navbar");
+                const navHeight = navbar ? navbar.offsetHeight : 70;
+                const rect = targetEl.getBoundingClientRect();
+                const absoluteTop = window.pageYOffset + rect.top;
+                const elementHeight = rect.height;
+                const viewportHeight = window.innerHeight;
 
-            // Tính vị trí section so với document và chiều cao của nó
-            const rect = targetEl.getBoundingClientRect();
-            const absoluteTop = window.pageYOffset + rect.top;
-            const elementHeight = rect.height;
-            const viewportHeight = window.innerHeight;
+                let targetScrollTop = absoluteTop - navHeight;
+                if (targetId === "pricingSlider" && elementHeight < viewportHeight - navHeight) {
+                    targetScrollTop = absoluteTop - navHeight - (viewportHeight - navHeight - elementHeight) / 2;
+                }
 
-            let targetScrollTop = absoluteTop - navHeight;
-            // Chỉ tự động căn giữa dọc đối với pricingSlider
-            if (targetId === "pricingSlider" && elementHeight < viewportHeight - navHeight) {
-                targetScrollTop = absoluteTop - navHeight - (viewportHeight - navHeight - elementHeight) / 2;
+                window.scrollTo({ top: Math.max(0, targetScrollTop), behavior: "smooth" });
             }
 
-            // Cuộn window đến vị trí tối ưu
-            window.scrollTo({ top: Math.max(0, targetScrollTop), behavior: "smooth" });
-
-            // Cũng thử cuộn container nếu trang nhúng trong div scrollable (Webcake iframe)
+            // Fallback cuộn container nội bộ nếu trang nhúng trong div scrollable
             const container = document.getElementById("tiemanh-container") || document.getElementById(CONFIG.targetId);
             if (container && getComputedStyle(container).overflowY !== "visible") {
-                let el = targetEl;
-                let topPos = 0;
-                while (el && el !== container) {
-                    topPos += el.offsetTop;
-                    el = el.offsetParent;
+                try {
+                    targetEl.scrollIntoView({ behavior: "smooth", block: "start" });
+                } catch (e) {
+                    let el = targetEl;
+                    let topPos = 0;
+                    while (el && el !== container) {
+                        topPos += el.offsetTop;
+                        el = el.offsetParent;
+                    }
+                    const navbar = document.getElementById("tiemanh-navbar");
+                    const navHeight = navbar ? navbar.offsetHeight : 70;
+                    const containerHeight = container.clientHeight;
+                    const elHeight = targetEl.offsetHeight;
+                    let containerScrollTop = topPos - navHeight;
+                    if (targetId === "pricingSlider" && elHeight < containerHeight - navHeight) {
+                        containerScrollTop = topPos - navHeight - (containerHeight - navHeight - elHeight) / 2;
+                    }
+                    container.scrollTo({ top: Math.max(0, containerScrollTop), behavior: "smooth" });
                 }
-                
-                const containerHeight = container.clientHeight;
-                const elHeight = targetEl.offsetHeight;
-                let containerScrollTop = topPos - navHeight;
-                if (targetId === "pricingSlider" && elHeight < containerHeight - navHeight) {
-                    containerScrollTop = topPos - navHeight - (containerHeight - navHeight - elHeight) / 2;
-                }
-                container.scrollTo({ top: Math.max(0, containerScrollTop), behavior: "smooth" });
             }
 
             // GẮN CHẶT MOBILE CAROUSEL GÓI TOẢ SÁNG: Hỗ trợ cả targetId là pricingSlider hoặc banggiaSection
@@ -4967,7 +4974,7 @@
         if (btnHeroExplore) {
             btnHeroExplore.addEventListener("click", (e) => {
                 e.preventDefault();
-                smoothScrollToSection("conceptFilterGroup");
+                smoothScrollToSection("filterBar"); /* Cuộn tới toàn bộ vùng bộ lọc và Concept */
             });
         }
 
