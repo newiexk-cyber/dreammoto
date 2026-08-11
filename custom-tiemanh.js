@@ -2338,10 +2338,36 @@
             .tiemanh-pricing-grid::-webkit-scrollbar { display: none; }
             .tiemanh-pricing-grid.active-drag { cursor: grabbing !important; scroll-behavior: auto !important; }
             .tiemanh-price-card {
-                flex: 0 0 72%; /* Giảm từ 78% xuống 72% để lộ nhiều hơn 2 gói hai bên */
-                min-width: 240px; /* Giảm từ 280px để các màn hình hẹp vẫn hiển thị cân đối tỷ lệ */
+                flex: 0 0 76%; /* Rộng 76% giúp lấp đầy khoảng trống thừa hai bên, cân đối đối xứng */
+                min-width: 260px; /* Đảm bảo chiều rộng chứa text đầy đủ */
                 scroll-snap-align: center;
                 height: auto !important; /* Đảm bảo flex stretch hoạt động kéo giãn chiều cao */
+                padding: 26px 14px; /* Giảm padding ngang từ 24px xuống 14px để nhường chỗ cho chữ */
+            }
+            .tiemanh-price-card h3 {
+                font-size: 17px !important; /* Thu nhỏ chữ h3 trên mobile để không bao giờ bị rớt xuống dòng */
+            }
+            .tiemanh-price-card.featured h3 {
+                font-size: 18px !important;
+            }
+            .tiemanh-price-tag {
+                font-size: 26px !important; /* Thu nhỏ thẻ giá tiền trên mobile cho vừa vặn */
+                margin-bottom: 15px !important;
+            }
+            .tiemanh-price-features li {
+                font-size: 13px !important;
+            }
+            .price-desc-highlight {
+                font-size: 12px !important;
+                margin-top: 10px !important;
+                padding-top: 10px !important;
+            }
+            .price-desc-fit {
+                font-size: 12px !important;
+            }
+            .price-best-seller {
+                font-size: 11px !important;
+                padding: 6px 18px !important;
             }
             .tiemanh-pricing-nav-btn {
                 display: flex !important;
@@ -2803,7 +2829,7 @@
                 grid-template-columns: 1fr;
                 gap: 18px;
             }
-            .tiemanh-price-card { padding: 26px 18px; border-radius: 18px; }
+            .tiemanh-price-card { padding: 26px 14px; border-radius: 18px; }
             .tiemanh-step-card { padding: 22px 16px; border-radius: 16px; }
             .tiemanh-branch-card { padding: 22px 16px; border-radius: 18px; }
 
