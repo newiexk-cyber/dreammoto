@@ -759,7 +759,7 @@
             flex-direction: column;
             align-items: center;
             position: relative;
-            overflow: hidden;
+            overflow: visible; /* Cho phép vương miện nhỏ lòi ra ngoài góc ảnh (nửa trong nửa ngoài) */
             width: 100%;
             box-sizing: border-box;
         }
@@ -798,7 +798,7 @@
             transition: transform 0.45s ease;
         }
         .polaroid-card:hover img {
-            transform: scale(1.07);
+            transform: none; /* Tắt zoom ảnh để bảo toàn bố cục nghệ thuật gốc */
         }
         .polaroid-caption {
             font-family: var(--tiemanh-font);
@@ -2902,17 +2902,24 @@
         }
         .polaroid-best-badge {
             position: absolute;
-            top: 10px;
-            left: 10px;
-            background: #ef4444;
-            color: #ffffff;
-            font-size: 10px;
-            font-weight: 800;
-            padding: 3px 8px;
-            border-radius: 4px;
-            z-index: 5;
-            box-shadow: 0 2px 6px rgba(239, 68, 68, 0.3);
-            text-transform: uppercase;
+            top: -14px; /* Đẩy vương miện nhỏ lên trên mép ảnh Polaroid */
+            left: -8px; /* Đẩy vương miện nhỏ ra mép trái (nửa trong nửa ngoài) */
+            z-index: 10;
+            font-size: 32px; /* Kích cỡ vương miện nhỏ gọn cho Polaroid */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            filter: drop-shadow(0 3px 5px rgba(0,0,0,0.25)) drop-shadow(0 0 10px rgba(251, 192, 45, 0.7));
+            animation: tiemanh-crown-sway-small 2.4s infinite ease-in-out;
+            cursor: default;
+            user-select: none;
+            pointer-events: none; /* Tránh cản click */
+        }
+        @keyframes tiemanh-crown-sway-small {
+            0% { transform: scale(1) rotate(-22deg) translate(0, 0); }
+            50% { transform: scale(1.08) rotate(-15deg) translate(1px, -1px); filter: drop-shadow(0 5px 10px rgba(0,0,0,0.3)) drop-shadow(0 0 16px rgba(255, 179, 0, 0.9)) brightness(1.15); }
+            100% { transform: scale(1) rotate(-22deg) translate(0, 0); }
+        }
         }
 
         /* --- CẤU HÌNH TYPOGRAPHY BOLD HIỆN ĐẠI (SỬ DỤNG PHÔNG MẶC ĐỊNH, KHÔNG LO BỊ CHẶN FONT) --- */
@@ -3952,6 +3959,9 @@
     // Hàm lấy Icon và Màu sắc chủ đạo tương ứng với 9 Chủ Đề Chuẩn
     function getThemeInfo(themeName) {
         const clean = cleanTextForMatching(themeName);
+        if (clean.includes("BESTSELLER") || clean.includes("BANCHAY")) {
+            return { icon: "👑", color: "#f59e0b", bg: "rgba(245,158,11,0.12)" };
+        }
         if (clean.includes("NANGTHO") || clean.includes("THO") || clean.includes("TIENNU")) {
             return { icon: "🌸", color: "#ff758f", bg: "rgba(255,117,143,0.12)" };
         }
@@ -4159,8 +4169,8 @@
                 const concept = selected[i];
                 card.classList.remove("loading-skeleton");
                 
-                // Thêm nhãn ngọn lửa nhỏ nếu bộ concept là Best Seller
-                const flameHtml = concept.isBestSeller ? `<span class="polaroid-best-badge">🔥 Hot</span>` : "";
+                // Thêm nhãn vương miện nhỏ nếu bộ concept là Best Seller
+                const flameHtml = concept.isBestSeller ? `<span class="polaroid-best-badge" title="Concept Best Seller">👑</span>` : "";
 
                 card.innerHTML = `
                     ${flameHtml}
@@ -5243,7 +5253,7 @@
         // Trích xuất các chủ đề duy nhất từ c.themes thực tế của các concept, chèn sẵn nút Best Seller ở đầu
         const themes = [
             { slug: "all", name: "Tất cả", icon: "🍍" },
-            { slug: "bestseller", name: "Best Seller", icon: "🔥" }
+            { slug: "bestseller", name: "Best Seller", icon: "👑" }
         ];
         const seenThemes = new Set();
         
