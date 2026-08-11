@@ -4647,7 +4647,7 @@
         if (zaloQuickPricingBtn) {
             zaloQuickPricingBtn.addEventListener("click", () => {
                 closeZaloModal();
-                smoothScrollToSection("banggiaSection");
+                smoothScrollToSection("pricingSlider");
             });
         }
         if (zaloQuickBranchBtn) {
@@ -4735,7 +4735,7 @@
             });
         });
 
-        // Hàm cuộn mượt thông minh (hỗ trợ cả cuộn cửa sổ và cuộn Webcake overlay)
+        // Hàm cuộn mượt thông minh (hỗ trợ cả cuộn cửa sổ và cuộn Webcake overlay, tự động căn giữa dọc)
         function smoothScrollToSection(targetId) {
             if (!targetId) {
                 window.scrollTo({ top: 0, behavior: "smooth" });
@@ -4750,12 +4750,20 @@
             const navbar = document.getElementById("tiemanh-navbar");
             const navHeight = navbar ? navbar.offsetHeight : 70;
 
-            // Tính vị trí section so với document
+            // Tính vị trí section so với document và chiều cao của nó
             const rect = targetEl.getBoundingClientRect();
             const absoluteTop = window.pageYOffset + rect.top;
+            const elementHeight = rect.height;
+            const viewportHeight = window.innerHeight;
 
-            // Cuộn window đến section (trừ chiều cao navbar sticky để nội dung không bị che)
-            window.scrollTo({ top: Math.max(0, absoluteTop - navHeight), behavior: "smooth" });
+            let targetScrollTop = absoluteTop - navHeight;
+            // Nếu phần tử ngắn hơn viewport trừ đi navbar, căn giữa phần tử theo chiều dọc
+            if (elementHeight < viewportHeight - navHeight) {
+                targetScrollTop = absoluteTop - navHeight - (viewportHeight - navHeight - elementHeight) / 2;
+            }
+
+            // Cuộn window đến vị trí tối ưu
+            window.scrollTo({ top: Math.max(0, targetScrollTop), behavior: "smooth" });
 
             // Cũng thử cuộn container nếu trang nhúng trong div scrollable (Webcake iframe)
             const container = document.getElementById("tiemanh-container") || document.getElementById(CONFIG.targetId);
@@ -4766,11 +4774,18 @@
                     topPos += el.offsetTop;
                     el = el.offsetParent;
                 }
-                container.scrollTo({ top: Math.max(0, topPos - navHeight), behavior: "smooth" });
+                
+                const containerHeight = container.clientHeight;
+                const elHeight = targetEl.offsetHeight;
+                let containerScrollTop = topPos - navHeight;
+                if (elHeight < containerHeight - navHeight) {
+                    containerScrollTop = topPos - navHeight - (containerHeight - navHeight - elHeight) / 2;
+                }
+                container.scrollTo({ top: Math.max(0, containerScrollTop), behavior: "smooth" });
             }
 
-            // GẮN CHẶT MOBILE CAROUSEL GÓI TOẢ SÁNG
-            if (targetId === "banggiaSection" && window.innerWidth <= 991 && activePricingScrollFn) {
+            // GẮN CHẶT MOBILE CAROUSEL GÓI TOẢ SÁNG: Hỗ trợ cả targetId là pricingSlider hoặc banggiaSection
+            if ((targetId === "banggiaSection" || targetId === "pricingSlider") && window.innerWidth <= 991 && activePricingScrollFn) {
                 setTimeout(() => {
                     activePricingScrollFn(1);
                 }, 300);
@@ -4781,7 +4796,7 @@
         const menuScrollLinks = [
             { id: "menuTrangChu", targetId: null }, // null tức là cuộn lên top
             { id: "menuConcept", targetId: "filterBar" },
-            { id: "menuBangGia", targetId: "banggiaSection" },
+            { id: "menuBangGia", targetId: "pricingSlider" },
             { id: "menuQuyTrinh", targetId: "quytrinhSection" },
             { id: "menuChiNhanh", targetId: "chinhanhSection" },
             { id: "menuLienHe", targetId: "tiemanh-footer" }
@@ -4894,7 +4909,7 @@
                 if (href && href.startsWith("#")) {
                     e.preventDefault();
                     const targetId = href.substring(1);
-                    if (targetId === "banggiaSection") smoothScrollToSection("banggiaSection");
+                    if (targetId === "banggiaSection") smoothScrollToSection("pricingSlider");
                     else if (targetId === "quytrinhSection") smoothScrollToSection("quytrinhSection");
                     else if (targetId === "chinhanhSection") smoothScrollToSection("chinhanhSection");
                     else if (targetId === "filterBar") smoothScrollToSection("filterBar");
