@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Tiệm Ảnh Trái Thơm - Hệ thống Script giao diện và tính năng Concept nâng cao
  * Tác giả: NHATLAM
  * Chức năng: Tạo giao diện Landing Page chuyên nghiệp, lọc danh mục, xem album ảnh dạng Lightbox, đăng ký lịch tư vấn/chụp ảnh.
@@ -3844,7 +3844,7 @@
         createRibbonDevTools();
     }
 
-    // Công cụ Dev Tool nhỏ để hỗ trợ chủ tiệm tự kéo và căn chỉnh pixel ruy băng Best Seller realtime trên màn hình
+    // Công cụ Dev Tool nhỏ để hỗ trợ chủ tiệm tự kéo và căn chỉnh pixel ruy băng Best Seller & Bán Chạy realtime trên màn hình
     function createRibbonDevTools() {
         if (typeof window === 'undefined' || typeof document === 'undefined') return;
         const params = new URLSearchParams(window.location.search);
@@ -3857,42 +3857,76 @@
             position: fixed !important;
             bottom: 20px !important;
             right: 20px !important;
-            width: 320px !important;
-            background: rgba(25, 25, 25, 0.95) !important;
-            border: 1px solid rgba(255, 214, 0, 0.5) !important;
-            border-radius: 12px !important;
-            padding: 15px !important;
+            width: 340px !important;
+            background: rgba(25, 25, 25, 0.96) !important;
+            border: 1px solid rgba(255, 214, 0, 0.6) !important;
+            border-radius: 14px !important;
+            padding: 16px !important;
             color: #ffffff !important;
-            font-family: Arial, sans-serif !important;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
             font-size: 13px !important;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5) !important;
+            box-shadow: 0 12px 36px rgba(0,0,0,0.6) !important;
             z-index: 2147483647 !important;
-            backdrop-filter: blur(10px) !important;
+            backdrop-filter: blur(12px) !important;
         `;
 
         container.innerHTML = `
             <div style="font-weight: bold; margin-bottom: 12px; color: #ffd600; font-size: 14px; display: flex; justify-content: space-between; align-items: center;">
                 <span>🍇 Ribbon Developer Tool</span>
-                <span id="close-devtools" style="cursor: pointer; font-size: 16px;">&times;</span>
+                <span id="close-devtools" style="cursor: pointer; font-size: 18px; padding: 2px 6px;">&times;</span>
             </div>
-            <div style="margin-bottom: 10px;">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
-                    <span>Top: <strong id="top-val">0px</strong></span>
+            
+            <!-- Tab Buttons -->
+            <div style="display: flex; gap: 6px; margin-bottom: 14px; background: rgba(255,255,255,0.08); padding: 3px; border-radius: 8px;">
+                <button id="tab-left" style="flex: 1; background: #ffd600; color: #000; border: none; border-radius: 6px; padding: 6px; font-weight: bold; cursor: pointer; font-size: 12px; transition: all 0.2s;">Best Seller (Trái)</button>
+                <button id="tab-right" style="flex: 1; background: transparent; color: #fff; border: none; border-radius: 6px; padding: 6px; font-weight: bold; cursor: pointer; font-size: 12px; transition: all 0.2s;">Bán Chạy (Phải)</button>
+            </div>
+
+            <!-- Tab 1: Best Seller Left -->
+            <div id="panel-left">
+                <div style="margin-bottom: 10px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                        <span>Top: <strong id="left-top-val">0px</strong></span>
+                    </div>
+                    <input type="range" id="slider-left-top" min="-50" max="50" value="0" style="width: 100%; accent-color: #ffd600;">
                 </div>
-                <input type="range" id="slider-top" min="-50" max="50" value="0" style="width: 100%; accent-color: #ffd600;">
-            </div>
-            <div style="margin-bottom: 10px;">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
-                    <span>Left: <strong id="left-val">-22px</strong></span>
+                <div style="margin-bottom: 10px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                        <span>Left: <strong id="left-left-val">-20px</strong></span>
+                    </div>
+                    <input type="range" id="slider-left-left" min="-100" max="50" value="-20" style="width: 100%; accent-color: #ffd600;">
                 </div>
-                <input type="range" id="slider-left" min="-100" max="50" value="-22" style="width: 100%; accent-color: #ffd600;">
-            </div>
-            <div style="margin-bottom: 12px;">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
-                    <span>Width: <strong id="width-val">125px</strong></span>
+                <div style="margin-bottom: 12px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                        <span>Width: <strong id="left-width-val">125px</strong></span>
+                    </div>
+                    <input type="range" id="slider-left-width" min="80" max="200" value="125" style="width: 100%; accent-color: #ffd600;">
                 </div>
-                <input type="range" id="slider-width" min="80" max="200" value="125" style="width: 100%; accent-color: #ffd600;">
             </div>
+
+            <!-- Tab 2: Bán Chạy Right -->
+            <div id="panel-right" style="display: none;">
+                <div style="margin-bottom: 10px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                        <span>Top: <strong id="right-top-val">-14px</strong></span>
+                    </div>
+                    <input type="range" id="slider-right-top" min="-50" max="50" value="-14" style="width: 100%; accent-color: #ffd600;">
+                </div>
+                <div style="margin-bottom: 10px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                        <span>Right: <strong id="right-right-val">-14px</strong></span>
+                    </div>
+                    <input type="range" id="slider-right-right" min="-100" max="50" value="-14" style="width: 100%; accent-color: #ffd600;">
+                </div>
+                <div style="margin-bottom: 12px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                        <span>Width: <strong id="right-width-val">125px</strong></span>
+                    </div>
+                    <input type="range" id="slider-right-width" min="80" max="200" value="125" style="width: 100%; accent-color: #ffd600;">
+                </div>
+            </div>
+
+            <!-- Output & Action -->
             <div style="margin-top: 10px; background: rgba(0,0,0,0.3); padding: 8px; border-radius: 6px;">
                 <div style="font-size: 11px; color: #aaa; margin-bottom: 4px;">CSS Output:</div>
                 <code id="css-output" style="font-family: monospace; font-size: 11px; display: block; white-space: pre-wrap; word-break: break-all; color: #4ade80;"></code>
@@ -3902,13 +3936,25 @@
 
         document.body.appendChild(container);
 
-        const sliderTop = container.querySelector("#slider-top");
-        const sliderLeft = container.querySelector("#slider-left");
-        const sliderWidth = container.querySelector("#slider-width");
-        
-        const topLabel = container.querySelector("#top-val");
-        const leftLabel = container.querySelector("#left-val");
-        const widthLabel = container.querySelector("#width-val");
+        const tabLeft = container.querySelector("#tab-left");
+        const tabRight = container.querySelector("#tab-right");
+        const panelLeft = container.querySelector("#panel-left");
+        const panelRight = container.querySelector("#panel-right");
+
+        const sliderLeftTop = container.querySelector("#slider-left-top");
+        const sliderLeftLeft = container.querySelector("#slider-left-left");
+        const sliderLeftWidth = container.querySelector("#slider-left-width");
+        const leftTopVal = container.querySelector("#left-top-val");
+        const leftLeftVal = container.querySelector("#left-left-val");
+        const leftWidthVal = container.querySelector("#left-width-val");
+
+        const sliderRightTop = container.querySelector("#slider-right-top");
+        const sliderRightRight = container.querySelector("#slider-right-right");
+        const sliderRightWidth = container.querySelector("#slider-right-width");
+        const rightTopVal = container.querySelector("#right-top-val");
+        const rightRightVal = container.querySelector("#right-right-val");
+        const rightWidthVal = container.querySelector("#right-width-val");
+
         const cssOutput = container.querySelector("#css-output");
         const copyBtn = container.querySelector("#copy-css");
         const closeBtn = container.querySelector("#close-devtools");
@@ -3917,27 +3963,73 @@
         styleEl.id = "ribbon-temp-styles";
         document.head.appendChild(styleEl);
 
+        let activeTab = "left";
+
         function updateStyles() {
-            const topVal = sliderTop.value;
-            const leftVal = sliderLeft.value;
-            const widthVal = sliderWidth.value;
+            if (activeTab === "left") {
+                const topVal = sliderLeftTop.value;
+                const leftVal = sliderLeftLeft.value;
+                const widthVal = sliderLeftWidth.value;
 
-            topLabel.textContent = topVal + "px";
-            leftLabel.textContent = leftVal + "px";
-            widthLabel.textContent = widthVal + "px";
+                leftTopVal.textContent = topVal + "px";
+                leftLeftVal.textContent = leftVal + "px";
+                leftWidthVal.textContent = widthVal + "px";
 
-            const cssCode = `.concept-best-corner {
+                const cssCode = `.concept-best-corner {
     top: ${topVal}px !important;
     left: ${leftVal}px !important;
     width: ${widthVal}px !important;
 }`;
-            cssOutput.textContent = cssCode;
-            styleEl.innerHTML = cssCode;
+                cssOutput.textContent = cssCode;
+                styleEl.innerHTML = cssCode;
+            } else {
+                const topVal = sliderRightTop.value;
+                const rightVal = sliderRightRight.value;
+                const widthVal = sliderRightWidth.value;
+
+                rightTopVal.textContent = topVal + "px";
+                rightRightVal.textContent = rightVal + "px";
+                rightWidthVal.textContent = widthVal + "px";
+
+                const cssCode = `.tiemanh-price-badge-img {
+    top: ${topVal}px !important;
+    right: ${rightVal}px !important;
+    width: ${widthVal}px !important;
+}`;
+                cssOutput.textContent = cssCode;
+                styleEl.innerHTML = cssCode;
+            }
         }
 
-        sliderTop.addEventListener("input", updateStyles);
-        sliderLeft.addEventListener("input", updateStyles);
-        sliderWidth.addEventListener("input", updateStyles);
+        tabLeft.addEventListener("click", () => {
+            activeTab = "left";
+            tabLeft.style.background = "#ffd600";
+            tabLeft.style.color = "#000";
+            tabRight.style.background = "transparent";
+            tabRight.style.color = "#fff";
+            panelLeft.style.display = "block";
+            panelRight.style.display = "none";
+            updateStyles();
+        });
+
+        tabRight.addEventListener("click", () => {
+            activeTab = "right";
+            tabRight.style.background = "#ffd600";
+            tabRight.style.color = "#000";
+            tabLeft.style.background = "transparent";
+            tabLeft.style.color = "#fff";
+            panelLeft.style.display = "none";
+            panelRight.style.display = "block";
+            updateStyles();
+        });
+
+        sliderLeftTop.addEventListener("input", updateStyles);
+        sliderLeftLeft.addEventListener("input", updateStyles);
+        sliderLeftWidth.addEventListener("input", updateStyles);
+        
+        sliderRightTop.addEventListener("input", updateStyles);
+        sliderRightRight.addEventListener("input", updateStyles);
+        sliderRightWidth.addEventListener("input", updateStyles);
 
         copyBtn.addEventListener("click", () => {
             navigator.clipboard.writeText(cssOutput.textContent)
@@ -3957,14 +4049,14 @@
             styleEl.remove();
         });
 
-        // Set initial values from the current stylesheet values
-        const currentStyleTop = 0;
-        const currentStyleLeft = -22;
-        const currentStyleWidth = 125;
+        // Set initial values from active stylesheet values
+        sliderLeftTop.value = 0;
+        sliderLeftLeft.value = -20;
+        sliderLeftWidth.value = 125;
 
-        sliderTop.value = currentStyleTop;
-        sliderLeft.value = currentStyleLeft;
-        sliderWidth.value = currentStyleWidth;
+        sliderRightTop.value = -14;
+        sliderRightRight.value = -14;
+        sliderRightWidth.value = 125;
 
         updateStyles();
     }
