@@ -751,8 +751,8 @@
             background: #ffffff;
             padding: 12px 12px 16px 12px;
             border-radius: 18px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
-            border: 1.5px solid rgba(251, 192, 45, 0.25);
+            box-shadow: 0 8px 24px rgba(251, 192, 45, 0.12); /* Bóng đổ vàng nhạt cho card đề xuất ở herobaner */
+            border: 2px solid rgba(251, 192, 45, 0.7); /* Viền vàng cam nổi bật của card đề xuất ở herobaner */
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             cursor: pointer;
             display: flex;
@@ -834,7 +834,7 @@
             animation: none !important;
             transform: translateY(-12px) scale(1.04) !important;
             box-shadow: 0 20px 45px rgba(251, 192, 45, 0.45), 0 8px 20px rgba(0, 0, 0, 0.08) !important;
-            border-color: rgba(251, 192, 45, 0.95);
+            border-color: #ff8f00 !important; /* Viền vàng đậm rực rỡ hơn khi hover */
             z-index: 10;
         }
         .polaroid-card:hover .polaroid-caption {
@@ -968,7 +968,7 @@
             border-radius: 22px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
             overflow: visible; /* Để vương miện lòi ra ngoài góc card (nửa trong nửa ngoài) */
-            border: 1.5px solid rgba(251, 192, 45, 0.22);
+            border: 1.5px solid rgba(251, 192, 45, 0.12); /* Giảm nhẹ viền card thường để tôn vinh card Best Seller viền vàng */
             transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
             display: flex;
             flex-direction: column;
@@ -986,6 +986,16 @@
             transform: translateY(-4px); /* Giảm độ nảy lên để triệt tiêu lỗi flicker/jitter rung lắc */
             box-shadow: 0 16px 36px rgba(251, 192, 45, 0.22), 0 6px 16px rgba(0, 0, 0, 0.04);
             border-color: rgba(251, 192, 45, 0.8);
+        }
+        
+        /* Viền vàng nổi bật dành riêng cho các concept Best Seller */
+        .tiemanh-card.bestseller-featured {
+            border: 2.5px solid #ffb300 !important; /* Viền vàng cam Best Seller dày dặn, nổi bật hẳn lên */
+            box-shadow: 0 10px 30px rgba(251, 192, 45, 0.18) !important;
+        }
+        .tiemanh-card.bestseller-featured:hover {
+            border-color: #ff8f00 !important; /* Đổi màu vàng đậm tươi tắn khi hover */
+            box-shadow: 0 16px 36px rgba(255, 143, 0, 0.28) !important;
         }
 
         /* Collage inside card */
@@ -4240,7 +4250,7 @@
 
         pageConcepts.forEach((concept, index) => {
             const card = document.createElement("div");
-            card.className = "tiemanh-card";
+            card.className = concept.isBestSeller ? "tiemanh-card bestseller-featured" : "tiemanh-card";
             card.setAttribute("data-id", concept.id);
 
             const img0 = concept.images[0] || "";
