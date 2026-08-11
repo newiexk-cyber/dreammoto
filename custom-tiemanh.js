@@ -1052,12 +1052,23 @@
             -webkit-transform: translate3d(0, 0, 0);
             -webkit-mask-image: -webkit-radial-gradient(white, black);
         }
+        .collage-main-container {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            border-radius: 14px 4px 4px 14px;
+            position: relative;
+            /* Khắc phục lỗi vỡ góc bo tròn trên iOS Safari khi ảnh con transform scale */
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            transform: translate3d(0, 0, 0);
+            -webkit-transform: translate3d(0, 0, 0);
+        }
         .collage-main-img {
             display: block; /* Ép hiển thị dạng block để tính toán kích thước tuyệt đối chính xác */
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 14px 4px 4px 14px;
             transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
         .collage-side {
@@ -2867,7 +2878,8 @@
             .tiemanh-grid { grid-template-columns: 1fr; gap: 20px; }
             .tiemanh-card { border-radius: 18px; }
             .collage-wrapper { height: 285px; padding: 6px; border-radius: 16px 16px 0 0; gap: 5px; }
-            .collage-main-img { border-radius: 10px 3px 3px 10px; }
+            .collage-main-container { border-radius: 10px 3px 3px 10px; }
+            .collage-main-img { border-radius: 0; }
             .collage-side { gap: 5px; }
             .collage-side-img.top { border-radius: 3px 10px 3px 3px; }
             .collage-side-img.bottom { border-radius: 3px 3px 10px 3px; }
@@ -4328,7 +4340,9 @@
             card.innerHTML = `
                 ${bestSellerHtml}
                 <div class="collage-wrapper">
-                    <img data-src="${img0}" class="collage-main-img" alt="${concept.title}" style="${img0 ? placeholderStyle : 'display:none'}">
+                    <div class="collage-main-container">
+                        <img data-src="${img0}" class="collage-main-img" alt="${concept.title}" style="${img0 ? placeholderStyle : 'display:none'}">
+                    </div>
                     <div class="collage-side">
                         <img data-src="${img1}" class="collage-side-img top" alt="${concept.title}" style="${img1 ? placeholderStyle : 'display:none'}">
                         <img data-src="${img2}" class="collage-side-img bottom" alt="${concept.title}" style="${img2 ? placeholderStyle : 'display:none'}">
