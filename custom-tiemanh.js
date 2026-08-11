@@ -976,11 +976,16 @@
             cursor: pointer;
             position: relative;
             height: 100%;
+            /* Khắc phục lỗi tràn góc bo tròn của ảnh con trên trình duyệt Safari */
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            transform: translate3d(0, 0, 0);
+            -webkit-transform: translate3d(0, 0, 0);
         }
         .tiemanh-card:hover {
-            transform: translateY(-10px) scale(1.015);
-            box-shadow: 0 22px 45px rgba(251, 192, 45, 0.28), 0 8px 20px rgba(0, 0, 0, 0.06);
-            border-color: rgba(251, 192, 45, 0.85);
+            transform: translateY(-4px); /* Giảm độ nảy lên để triệt tiêu lỗi flicker/jitter rung lắc */
+            box-shadow: 0 16px 36px rgba(251, 192, 45, 0.22), 0 6px 16px rgba(0, 0, 0, 0.04);
+            border-color: rgba(251, 192, 45, 0.8);
         }
 
         /* Collage inside card */
@@ -994,6 +999,12 @@
             overflow: hidden;
             border-radius: 20px 20px 0 0;
             position: relative;
+            /* Khắc phục lỗi vỡ góc bo tròn trên iOS Safari khi ảnh con transform scale */
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            transform: translate3d(0, 0, 0);
+            -webkit-transform: translate3d(0, 0, 0);
+            -webkit-mask-image: -webkit-radial-gradient(white, black);
         }
         .collage-main-img {
             width: 100%;
@@ -1021,7 +1032,7 @@
         }
         .tiemanh-card:hover .collage-main-img, 
         .tiemanh-card:hover .collage-side-img {
-            transform: scale(1.05);
+            transform: scale(1.03); /* Giảm nhẹ tỉ lệ zoom từ 1.05 xuống 1.03 để mượt mà và sang trọng hơn */
         }
 
         /* Card Content footer - Balanced & Uniform Layout */
@@ -2673,6 +2684,30 @@
             .tiemanh-lightbox-container { grid-template-columns: 1fr; height: 90vh; }
             .tiemanh-lightbox-panel { border-left: none; border-top: 1px solid rgba(255,255,255,0.05); padding: 25px; }
             .tiemanh-lightbox-thumb-container { margin-bottom: 20px; }
+
+            /* Tắt hiệu ứng hover nảy lên và phóng to trên di động để tránh giật lag khi chạm */
+            .tiemanh-card:hover {
+                transform: none !important;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05) !important;
+                border-color: rgba(251, 192, 45, 0.22) !important;
+            }
+            .tiemanh-card:hover .collage-main-img, 
+            .tiemanh-card:hover .collage-side-img {
+                transform: none !important;
+            }
+            .tiemanh-card:hover .tiemanh-card-icon-box {
+                transform: none !important;
+            }
+            .tiemanh-card:hover .tiemanh-card-title {
+                color: var(--tiemanh-dark) !important;
+            }
+            .tiemanh-card:hover .tiemanh-card-arrow {
+                transform: none !important;
+            }
+            .tiemanh-card:hover .tiemanh-card-btn {
+                transform: none !important;
+                box-shadow: 0 3px 10px rgba(251, 192, 45, 0.28) !important;
+            }
         }
 
         @media (max-width: 768px) {
