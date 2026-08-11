@@ -4773,6 +4773,16 @@
             }
 
             if (zaloModal) zaloModal.classList.add("active");
+
+            // Tự động tắt và ẩn tooltip hướng dẫn khi modal Zalo mở ra
+            if (zaloGuideTooltip) {
+                zaloGuideTooltip.style.opacity = "0";
+                zaloGuideTooltip.style.transform = "translateY(15px) scale(0.9)";
+                zaloGuideTooltip.style.pointerEvents = "none";
+                setTimeout(() => {
+                    zaloGuideTooltip.style.display = "none";
+                }, 300);
+            }
         }
 
         function closeZaloModal() {
