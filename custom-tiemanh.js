@@ -2944,8 +2944,8 @@
         /* Khung viền góc Best Seller lấp lánh sang trọng */
         .concept-best-corner {
             position: absolute;
-            top: -1px; /* Dich xuong duoi de khit vien tren cua anh */
-            left: -24px; right: auto; /* Dich sang trai de khit vien trai cua anh */
+            top: -5px; /* Align top fold to image border */
+            left: -26px; right: auto; /* Align left fold to image border */
             width: 140px; /* Enlarge ribbon size */
             height: auto;
             z-index: 10; /* Nổi hẳn lên trên ảnh con (không bị ảnh che) */
