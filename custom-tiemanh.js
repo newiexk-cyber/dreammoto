@@ -2945,7 +2945,7 @@
         .concept-best-corner {
             position: absolute;
             top: -1px; /* Dich xuong duoi de khit vien tren cua anh */
-            left: -20px; right: auto; /* Dich sang trai de khit vien trai cua anh */
+            left: -24px; right: auto; /* Dich sang trai de khit vien trai cua anh */
             width: 140px; /* Enlarge ribbon size */
             height: auto;
             z-index: 10; /* Nổi hẳn lên trên ảnh con (không bị ảnh che) */
