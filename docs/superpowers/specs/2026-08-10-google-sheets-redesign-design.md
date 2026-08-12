@@ -56,6 +56,18 @@ function syncDriveToSheetsFull() {
   syncDriveToSheetsCore(false);
 }
 
+// Hàm tìm dòng cuối thực sự có chứa dữ liệu (bỏ qua các dòng chỉ có dropdown hoặc checkbox trống)
+function getLastRealRow(sheet, colIdx) {
+  const values = sheet.getDataRange().getValues();
+  for (let i = values.length - 1; i >= 0; i--) {
+    // Nếu dòng có STT hoặc có Chi nhánh hoặc có Tên concept hoặc có Folder ID
+    if (values[i][colIdx.stt] !== "" || values[i][colIdx.branch] !== "" || values[i][colIdx.title] !== "" || values[i][colIdx.folderId] !== "") {
+      return i + 1;
+    }
+  }
+  return 1;
+}
+
 // Hàm lõi xử lý đồng bộ dữ liệu
 function syncDriveToSheetsCore(isQuick) {
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
@@ -124,11 +136,12 @@ function syncDriveToSheetsCore(isQuick) {
     if (isQuick) {
       // ================= CHẾ ĐỘ ĐỒNG BỘ NHANH =================
       // conceptFoldersList lúc này chỉ chứa các concept mới chưa có trên Sheet
+      const lastRealRow = getLastRealRow(sheet, colIdx);
       const newRows = [];
       for (const concept of conceptFoldersList) {
         sttCounter++;
         const newRow = new Array(headers.length).fill("");
-        newRow[colIdx.stt] = values.length + newRows.length + 1; // Số STT tiếp theo
+        newRow[colIdx.stt] = lastRealRow + newRows.length + 1; // Số STT tiếp theo
         newRow[colIdx.branch] = concept.branchName;
         newRow[colIdx.theme] = "";
         newRow[colIdx.title] = concept.conceptName;
@@ -150,9 +163,9 @@ function syncDriveToSheetsCore(isQuick) {
       
       if (newRows.length > 0) {
         // Chỉ ghi chèn thêm các dòng mới vào cuối Sheet, KHÔNG ghi đè dòng cũ
-        sheet.getRange(values.length + 1, 1, newRows.length, headers.length).setValues(newRows);
+        sheet.getRange(lastRealRow + 1, 1, newRows.length, headers.length).setValues(newRows);
         // Chèn Checkbox cho các dòng mới thêm vào
-        applySheetFormatting(sheet, values.length + 1, values.length + newRows.length);
+        applySheetFormatting(sheet, lastRealRow + 1, lastRealRow + newRows.length);
       }
       
       ui.alert("Đồng bộ nhanh hoàn tất", `Đồng bộ thành công!\n- Đã thêm mới: ${newRows.length} concept chưa có.\n- Các concept cũ được giữ nguyên vẹn hoàn toàn.`, ui.ButtonSet.OK);
