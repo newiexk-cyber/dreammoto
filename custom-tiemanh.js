@@ -4392,6 +4392,12 @@
 
     // Phân tích dòng dữ liệu từ Google Sheets sang Object Concept chuẩn
     function parseSheetsRow(obj, rowIdx) {
+        // Bỏ qua các dòng trống hoàn toàn (chỉ có định dạng/dropdown rỗng trên Google Sheets)
+        const isEmpty = !obj['Chi nhánh'] && !obj['Tên concept'] && !obj['Folder ID'] && !obj['img1'];
+        if (isEmpty) {
+            return { isHidden: true };
+        }
+
         // Kiểm tra hộp kiểm Ẩn/Hiện (status/Ẩn === TRUE -> Ẩn concept khỏi web)
         const isHidden = (
             String(obj.status || obj['Ẩn'] || '').toUpperCase() === 'TRUE' ||
