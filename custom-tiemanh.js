@@ -2893,9 +2893,9 @@
             .collage-side-img.top { border-radius: 3px 10px 3px 3px; }
             .collage-side-img.bottom { border-radius: 3px 3px 10px 3px; }
             .concept-best-corner {
-                top: 0px !important;
-                left: -18px !important;
-                width: 100px !important;
+                top: 1px !important;
+                left: -14px !important;
+                width: 101px !important;
             }
             .tiemanh-card-footer { 
                 padding: 12px 14px 14px 14px; 
