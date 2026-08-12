@@ -368,21 +368,29 @@ function onEdit(e) {
       const normDropdown = dropdownValues.map(v => normalize(v).toLowerCase());
       const isFromDropdown = normDropdown.includes(normalize(newStr).toLowerCase());
       
-      // 2. Xử lý logic ghép hoặc xóa
+      // 2. Xử lý logic ghép hoặc xóa (Hỗ trợ Toggle: nếu đã có thì xóa, nếu chưa có thì thêm)
       if (isFromDropdown) {
-        // TRƯỜNG HỢP A: Chọn từ Dropdown để thêm -> Đọc giá trị hiện tại trên server và ghép thêm
-        // Nhờ có Lock nên getValue() ở đây luôn trả về giá trị mới nhất của luồng trước
-        const currentVal = String(range.getValue()).trim();
-        
-        // Nếu ô trống hoặc giá trị hiện tại trùng với giá trị mới (do ghi đè)
-        if (!currentVal || normalize(currentVal).toLowerCase() === normalize(newStr).toLowerCase()) {
-          const oldValue = e.oldValue;
-          if (oldValue) {
-            const oldParts = String(oldValue).split(",").map(p => p.trim()).filter(Boolean);
-            const combined = [...oldParts, newStr];
+        const oldValue = e.oldValue;
+        if (oldValue) {
+          const oldParts = String(oldValue).split(",").map(p => p.trim()).filter(Boolean);
+          const oldPartsNorm = oldParts.map(p => normalize(p).toLowerCase());
+          const normNewStr = normalize(newStr).toLowerCase();
+          const index = oldPartsNorm.indexOf(normNewStr);
+          
+          if (index !== -1) {
+            // A. Nếu tag đã tồn tại -> Xóa tag này (Toggle Off)
+            oldParts.splice(index, 1);
+            if (oldParts.length === 0) {
+              range.setValue("");
+            } else {
+              range.setValue(oldParts.join(", "));
+            }
+          } else {
+            // B. Nếu tag chưa tồn tại -> Thêm tag này vào cuối (Toggle On)
+            oldParts.push(newStr);
             const cleanCombined = [];
             const combinedSeen = new Set();
-            for (const part of combined) {
+            for (const part of oldParts) {
               const norm = normalize(part).toLowerCase();
               if (!combinedSeen.has(norm) && norm !== "") {
                 combinedSeen.add(norm);
@@ -390,26 +398,13 @@ function onEdit(e) {
               }
             }
             range.setValue(cleanCombined.join(", "));
-          } else {
-            range.setValue(newStr.replace(/&amp;/g, "&").trim());
           }
         } else {
-          // Nếu ô đã chứa các tag khác, tiến hành ghép thêm bình thường
-          const currentParts = currentVal.split(",").map(p => p.trim()).filter(Boolean);
-          const combined = [...currentParts, newStr];
-          const cleanCombined = [];
-          const combinedSeen = new Set();
-          for (const part of combined) {
-            const norm = normalize(part).toLowerCase();
-            if (!combinedSeen.has(norm) && norm !== "") {
-              combinedSeen.add(norm);
-              cleanCombined.push(part.replace(/&amp;/g, "&").trim());
-            }
-          }
-          range.setValue(cleanCombined.join(", "));
+          // Nếu ô trước đó trống -> Điền tag mới chọn
+          range.setValue(newStr.replace(/&amp;/g, "&").trim());
         }
       } else {
-        // TRƯỜNG HỢP B: Bấm dấu x xóa chip -> Lọc trùng chuỗi mới và lưu lại thoải mái
+        // TRƯỜNG HỢP B: Nhập thủ công hoặc xóa chip bằng dấu x -> Lọc trùng chuỗi mới và lưu lại
         const newParts = newStr.split(",").map(p => p.trim()).filter(Boolean);
         const uniqueNew = [];
         const seenNew = new Set();
