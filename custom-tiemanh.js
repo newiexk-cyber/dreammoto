@@ -3849,7 +3849,7 @@
         createRibbonDevTools();
     }
 
-    // Công cụ Dev Tool nhỏ để hỗ trợ chủ tiệm tự kéo và căn chỉnh pixel ruy băng Best Seller & Bán Chạy realtime trên màn hình
+    // Công cụ Dev Tool nhỏ để hỗ trợ chủ tiệm tự kéo và căn chỉnh pixel ruy băng Best Seller & Bán Chạy realtime trên màn hình (Hỗ trợ cả PC & Mobile)
     function createRibbonDevTools() {
         if (typeof window === 'undefined' || typeof document === 'undefined') return;
         const params = new URLSearchParams(window.location.search);
@@ -3860,182 +3860,306 @@
         container.id = "ribbon-devtools";
         container.style.cssText = `
             position: fixed !important;
-            bottom: 20px !important;
-            right: 20px !important;
-            width: 340px !important;
-            background: rgba(25, 25, 25, 0.96) !important;
-            border: 1px solid rgba(255, 214, 0, 0.6) !important;
-            border-radius: 14px !important;
-            padding: 16px !important;
+            bottom: 15px !important;
+            right: 15px !important;
+            width: 320px !important;
+            background: rgba(20, 20, 20, 0.98) !important;
+            border: 1px solid rgba(255, 214, 0, 0.7) !important;
+            border-radius: 12px !important;
+            padding: 12px !important;
             color: #ffffff !important;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
             font-size: 13px !important;
-            box-shadow: 0 12px 36px rgba(0,0,0,0.6) !important;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7) !important;
             z-index: 2147483647 !important;
-            backdrop-filter: blur(12px) !important;
+            backdrop-filter: blur(10px) !important;
+            transition: all 0.3s ease !important;
         `;
 
         container.innerHTML = `
-            <div style="font-weight: bold; margin-bottom: 12px; color: #ffd600; font-size: 14px; display: flex; justify-content: space-between; align-items: center;">
-                <span>🍇 Ribbon Developer Tool</span>
-                <span id="close-devtools" style="cursor: pointer; font-size: 18px; padding: 2px 6px;">&times;</span>
-            </div>
-            
-            <!-- Tab Buttons -->
-            <div style="display: flex; gap: 6px; margin-bottom: 14px; background: rgba(255,255,255,0.08); padding: 3px; border-radius: 8px;">
-                <button id="tab-left" style="flex: 1; background: #ffd600; color: #000; border: none; border-radius: 6px; padding: 6px; font-weight: bold; cursor: pointer; font-size: 12px; transition: all 0.2s;">Best Seller (Trái)</button>
-                <button id="tab-right" style="flex: 1; background: transparent; color: #fff; border: none; border-radius: 6px; padding: 6px; font-weight: bold; cursor: pointer; font-size: 12px; transition: all 0.2s;">Bán Chạy (Phải)</button>
-            </div>
-
-            <!-- Tab 1: Best Seller Left -->
-            <div id="panel-left">
-                <div style="margin-bottom: 10px;">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
-                        <span>Top: <strong id="left-top-val">0px</strong></span>
-                    </div>
-                    <input type="range" id="slider-left-top" min="-50" max="50" value="0" style="width: 100%; accent-color: #ffd600;">
-                </div>
-                <div style="margin-bottom: 10px;">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
-                        <span>Left: <strong id="left-left-val">-20px</strong></span>
-                    </div>
-                    <input type="range" id="slider-left-left" min="-100" max="50" value="-20" style="width: 100%; accent-color: #ffd600;">
-                </div>
-                <div style="margin-bottom: 12px;">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
-                        <span>Width: <strong id="left-width-val">125px</strong></span>
-                    </div>
-                    <input type="range" id="slider-left-width" min="80" max="200" value="125" style="width: 100%; accent-color: #ffd600;">
+            <!-- Tiêu đề + nút co giãn -->
+            <div style="font-weight: bold; margin-bottom: 10px; color: #ffd600; font-size: 13px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px;">
+                <span style="display: flex; align-items: center; gap: 4px;">🍇 Ribbon Tool <span id="tool-mode-badge" style="font-size: 9px; padding: 2px 6px; background: #e65100; border-radius: 4px; color: white;">PC</span></span>
+                <div style="display: flex; gap: 8px; align-items: center;">
+                    <span id="minimize-devtools" style="cursor: pointer; font-size: 16px; font-weight: bold; padding: 0 4px;" title="Thu nhỏ/Mở rộng">➖</span>
+                    <span id="close-devtools" style="cursor: pointer; font-size: 16px; font-weight: bold; padding: 0 4px;" title="Đóng">✕</span>
                 </div>
             </div>
 
-            <!-- Tab 2: Bán Chạy Right -->
-            <div id="panel-right" style="display: none;">
-                <div style="margin-bottom: 10px;">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
-                        <span>Top: <strong id="right-top-val">-14px</strong></span>
-                    </div>
-                    <input type="range" id="slider-right-top" min="-50" max="50" value="-14" style="width: 100%; accent-color: #ffd600;">
+            <!-- Content Area (Ẩn khi thu nhỏ) -->
+            <div id="devtools-content">
+                <!-- Chọn Thiết bị (PC / Mobile) -->
+                <div style="display: flex; gap: 4px; margin-bottom: 10px; background: rgba(255,255,255,0.06); padding: 2px; border-radius: 6px;">
+                    <button id="dev-device-pc" style="flex: 1; background: #ffd600; color: #000; border: none; border-radius: 4px; padding: 4px; font-weight: bold; cursor: pointer; font-size: 11px; transition: all 0.2s;">🖥️ PC Style</button>
+                    <button id="dev-device-mobile" style="flex: 1; background: transparent; color: #fff; border: none; border-radius: 4px; padding: 4px; font-weight: bold; cursor: pointer; font-size: 11px; transition: all 0.2s;">📱 Mobile Style</button>
                 </div>
-                <div style="margin-bottom: 10px;">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
-                        <span>Right: <strong id="right-right-val">-14px</strong></span>
-                    </div>
-                    <input type="range" id="slider-right-right" min="-100" max="50" value="-14" style="width: 100%; accent-color: #ffd600;">
+                
+                <!-- Tab Ruy băng (Trái / Phải) -->
+                <div style="display: flex; gap: 4px; margin-bottom: 12px; background: rgba(255,255,255,0.06); padding: 2px; border-radius: 6px;">
+                    <button id="tab-left" style="flex: 1; background: #ffd600; color: #000; border: none; border-radius: 4px; padding: 4px; font-weight: bold; cursor: pointer; font-size: 11px; transition: all 0.2s;">Best Seller (Trái)</button>
+                    <button id="tab-right" style="flex: 1; background: transparent; color: #fff; border: none; border-radius: 4px; padding: 4px; font-weight: bold; cursor: pointer; font-size: 11px; transition: all 0.2s;">Bán Chạy (Phải)</button>
                 </div>
-                <div style="margin-bottom: 12px;">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
-                        <span>Width: <strong id="right-width-val">125px</strong></span>
-                    </div>
-                    <input type="range" id="slider-right-width" min="80" max="200" value="125" style="width: 100%; accent-color: #ffd600;">
-                </div>
-            </div>
 
-            <!-- Output & Action -->
-            <div style="margin-top: 10px; background: rgba(0,0,0,0.3); padding: 8px; border-radius: 6px;">
-                <div style="font-size: 11px; color: #aaa; margin-bottom: 4px;">CSS Output:</div>
-                <code id="css-output" style="font-family: monospace; font-size: 11px; display: block; white-space: pre-wrap; word-break: break-all; color: #4ade80;"></code>
+                <!-- Slider Control Panel -->
+                <div id="slider-controls" style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px;">
+                    <!-- Row Top -->
+                    <div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 4px; font-size: 12px;">
+                            <span>Top: <strong id="lbl-top" style="color: #ffd600;">0px</strong></span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <button class="btn-step" id="btn-top-dec" style="width: 26px; height: 26px; background: #333; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px;">-</button>
+                            <input type="range" id="slider-top" min="-80" max="80" value="0" style="flex: 1; accent-color: #ffd600;">
+                            <button class="btn-step" id="btn-top-inc" style="width: 26px; height: 26px; background: #333; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px;">+</button>
+                        </div>
+                    </div>
+
+                    <!-- Row Left/Right -->
+                    <div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 4px; font-size: 12px;">
+                            <span id="lbl-side-title">Left: <strong id="lbl-side" style="color: #ffd600;">-20px</strong></span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <button class="btn-step" id="btn-side-dec" style="width: 26px; height: 26px; background: #333; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px;">-</button>
+                            <input type="range" id="slider-side" min="-120" max="80" value="-20" style="flex: 1; accent-color: #ffd600;">
+                            <button class="btn-step" id="btn-side-inc" style="width: 26px; height: 26px; background: #333; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px;">+</button>
+                        </div>
+                    </div>
+
+                    <!-- Row Width -->
+                    <div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 4px; font-size: 12px;">
+                            <span>Width: <strong id="lbl-width" style="color: #ffd600;">125px</strong></span>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <button class="btn-step" id="btn-width-dec" style="width: 26px; height: 26px; background: #333; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px;">-</button>
+                            <input type="range" id="slider-width" min="60" max="220" value="125" style="flex: 1; accent-color: #ffd600;">
+                            <button class="btn-step" id="btn-width-inc" style="width: 26px; height: 26px; background: #333; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 14px;">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Code Output -->
+                <div style="background: rgba(0,0,0,0.3); padding: 8px; border-radius: 6px; margin-bottom: 8px;">
+                    <div style="font-size: 10px; color: #aaa; margin-bottom: 4px;">CSS Output:</div>
+                    <code id="css-output" style="font-family: monospace; font-size: 11px; display: block; white-space: pre-wrap; word-break: break-all; color: #4ade80; max-height: 80px; overflow-y: auto;"></code>
+                </div>
+                
+                <button id="copy-css" style="width: 100%; background: #ffd600; color: #000; border: none; border-radius: 6px; padding: 6px; font-weight: bold; cursor: pointer; transition: background 0.2s; font-size: 12px;">📋 Copy CSS</button>
             </div>
-            <button id="copy-css" style="width: 100%; margin-top: 8px; background: #ffd600; color: #000; border: none; border-radius: 6px; padding: 6px; font-weight: bold; cursor: pointer; transition: background 0.2s;">Copy CSS</button>
         `;
 
         document.body.appendChild(container);
 
+        // State quản lý công cụ
+        let device = "pc"; // "pc" hoặc "mobile"
+        let side = "left"; // "left" (Best Seller) hoặc "right" (Bán Chạy)
+        let isMinimized = false;
+
+        // Các cấu hình ban đầu
+        const configValues = {
+            pc: {
+                left: { top: 0, side: -20, width: 125 },   // .concept-best-corner (top, left, width)
+                right: { top: -16, side: -13, width: 125 }  // .tiemanh-price-badge-img (top, right, width)
+            },
+            mobile: {
+                left: { top: 0, side: -18, width: 100 },   // .concept-best-corner mobile
+                right: { top: -14, side: -14, width: 125 }  // .tiemanh-price-badge-img mobile
+            }
+        };
+
+        // Cache DOM Elements
+        const devContent = container.querySelector("#devtools-content");
+        const minimizeBtn = container.querySelector("#minimize-devtools");
+        const closeBtn = container.querySelector("#close-devtools");
+        const modeBadge = container.querySelector("#tool-mode-badge");
+
+        const btnDevicePc = container.querySelector("#dev-device-pc");
+        const btnDeviceMobile = container.querySelector("#dev-device-mobile");
         const tabLeft = container.querySelector("#tab-left");
         const tabRight = container.querySelector("#tab-right");
-        const panelLeft = container.querySelector("#panel-left");
-        const panelRight = container.querySelector("#panel-right");
 
-        const sliderLeftTop = container.querySelector("#slider-left-top");
-        const sliderLeftLeft = container.querySelector("#slider-left-left");
-        const sliderLeftWidth = container.querySelector("#slider-left-width");
-        const leftTopVal = container.querySelector("#left-top-val");
-        const leftLeftVal = container.querySelector("#left-left-val");
-        const leftWidthVal = container.querySelector("#left-width-val");
+        const sliderTop = container.querySelector("#slider-top");
+        const sliderSide = container.querySelector("#slider-side");
+        const sliderWidth = container.querySelector("#slider-width");
 
-        const sliderRightTop = container.querySelector("#slider-right-top");
-        const sliderRightRight = container.querySelector("#slider-right-right");
-        const sliderRightWidth = container.querySelector("#slider-right-width");
-        const rightTopVal = container.querySelector("#right-top-val");
-        const rightRightVal = container.querySelector("#right-right-val");
-        const rightWidthVal = container.querySelector("#right-width-val");
+        const lblTop = container.querySelector("#lbl-top");
+        const lblSide = container.querySelector("#lbl-side");
+        const lblWidth = container.querySelector("#lbl-width");
+        const lblSideTitle = container.querySelector("#lbl-side-title");
+
+        const btnTopDec = container.querySelector("#btn-top-dec");
+        const btnTopInc = container.querySelector("#btn-top-inc");
+        const btnSideDec = container.querySelector("#btn-side-dec");
+        const btnSideInc = container.querySelector("#btn-side-inc");
+        const btnWidthDec = container.querySelector("#btn-width-dec");
+        const btnWidthInc = container.querySelector("#btn-width-inc");
 
         const cssOutput = container.querySelector("#css-output");
         const copyBtn = container.querySelector("#copy-css");
-        const closeBtn = container.querySelector("#close-devtools");
 
+        // Style tag dùng để cập nhật realtime
         const styleEl = document.createElement("style");
-        styleEl.id = "ribbon-temp-styles";
+        styleEl.id = "ribbon-temp-styles-new";
         document.head.appendChild(styleEl);
 
-        let activeTab = "left";
-
-        function updateStyles() {
-            if (activeTab === "left") {
-                const topVal = sliderLeftTop.value;
-                const leftVal = sliderLeftLeft.value;
-                const widthVal = sliderLeftWidth.value;
-
-                leftTopVal.textContent = topVal + "px";
-                leftLeftVal.textContent = leftVal + "px";
-                leftWidthVal.textContent = widthVal + "px";
-
-                const cssCode = `.concept-best-corner {
-    top: ${topVal}px !important;
-    left: ${leftVal}px !important;
-    width: ${widthVal}px !important;
-}`;
-                cssOutput.textContent = cssCode;
-                styleEl.innerHTML = cssCode;
-            } else {
-                const topVal = sliderRightTop.value;
-                const rightVal = sliderRightRight.value;
-                const widthVal = sliderRightWidth.value;
-
-                rightTopVal.textContent = topVal + "px";
-                rightRightVal.textContent = rightVal + "px";
-                rightWidthVal.textContent = widthVal + "px";
-
-                const cssCode = `.tiemanh-price-badge-img {
-    top: ${topVal}px !important;
-    right: ${rightVal}px !important;
-    width: ${widthVal}px !important;
-}`;
-                cssOutput.textContent = cssCode;
-                styleEl.innerHTML = cssCode;
-            }
+        // Đồng bộ dữ liệu hiện tại lên giao diện
+        function syncUIFromState() {
+            const current = configValues[device][side];
+            sliderTop.value = current.top;
+            sliderSide.value = current.side;
+            sliderWidth.value = current.width;
+            
+            lblSideTitle.innerHTML = `${side === "left" ? "Left" : "Right"}: <strong id="lbl-side" style="color: #ffd600;">${current.side}px</strong>`;
+            
+            updateStyles();
         }
 
+        // Cập nhật styles realtime
+        function updateStyles() {
+            const topVal = parseInt(sliderTop.value);
+            const sideVal = parseInt(sliderSide.value);
+            const widthVal = parseInt(sliderWidth.value);
+
+            // Lưu trữ lại state hiện tại
+            configValues[device][side].top = topVal;
+            configValues[device][side].side = sideVal;
+            configValues[device][side].width = widthVal;
+
+            lblTop.textContent = topVal + "px";
+            const sideSpan = container.querySelector("#lbl-side");
+            if (sideSpan) sideSpan.textContent = sideVal + "px";
+            lblWidth.textContent = widthVal + "px";
+
+            let cssCode = "";
+            let liveCSS = "";
+
+            if (device === "pc") {
+                if (side === "left") {
+                    cssCode = `.concept-best-corner {
+    top: ${topVal}px !important;
+    left: ${sideVal}px !important;
+    width: ${widthVal}px !important;
+}`;
+                } else {
+                    cssCode = `.tiemanh-price-badge-img {
+    top: ${topVal}px !important;
+    right: ${sideVal}px !important;
+    width: ${widthVal}px !important;
+}`;
+                }
+                liveCSS = cssCode; // PC style chèn trực tiếp không cần media query
+            } else {
+                // Mobile
+                if (side === "left") {
+                    cssCode = `@media (max-width: 768px) {
+    .concept-best-corner {
+        top: ${topVal}px !important;
+        left: ${sideVal}px !important;
+        width: ${widthVal}px !important;
+    }
+}`;
+                    liveCSS = `.concept-best-corner {
+    top: ${topVal}px !important;
+    left: ${sideVal}px !important;
+    width: ${widthVal}px !important;
+}`;
+                } else {
+                    cssCode = `@media (max-width: 768px) {
+    .tiemanh-price-badge-img {
+        top: ${topVal}px !important;
+        right: ${sideVal}px !important;
+        width: ${widthVal}px !important;
+    }
+}`;
+                    liveCSS = `.tiemanh-price-badge-img {
+    top: ${topVal}px !important;
+    right: ${sideVal}px !important;
+    width: ${widthVal}px !important;
+}`;
+                }
+            }
+
+            cssOutput.textContent = cssCode;
+            styleEl.innerHTML = liveCSS;
+        }
+
+        // Đăng ký các nút thiết bị
+        btnDevicePc.addEventListener("click", () => {
+            device = "pc";
+            modeBadge.textContent = "PC";
+            modeBadge.style.background = "#e65100";
+            btnDevicePc.style.background = "#ffd600";
+            btnDevicePc.style.color = "#000";
+            btnDeviceMobile.style.background = "transparent";
+            btnDeviceMobile.style.color = "#fff";
+            syncUIFromState();
+        });
+
+        btnDeviceMobile.addEventListener("click", () => {
+            device = "mobile";
+            modeBadge.textContent = "MOBILE";
+            modeBadge.style.background = "#1b5e20";
+            btnDeviceMobile.style.background = "#ffd600";
+            btnDeviceMobile.style.color = "#000";
+            btnDevicePc.style.background = "transparent";
+            btnDevicePc.style.color = "#fff";
+            syncUIFromState();
+        });
+
+        // Đăng ký các tab ruy băng
         tabLeft.addEventListener("click", () => {
-            activeTab = "left";
+            side = "left";
             tabLeft.style.background = "#ffd600";
             tabLeft.style.color = "#000";
             tabRight.style.background = "transparent";
             tabRight.style.color = "#fff";
-            panelLeft.style.display = "block";
-            panelRight.style.display = "none";
-            updateStyles();
+            syncUIFromState();
         });
 
         tabRight.addEventListener("click", () => {
-            activeTab = "right";
+            side = "right";
             tabRight.style.background = "#ffd600";
             tabRight.style.color = "#000";
             tabLeft.style.background = "transparent";
             tabLeft.style.color = "#fff";
-            panelLeft.style.display = "none";
-            panelRight.style.display = "block";
-            updateStyles();
+            syncUIFromState();
         });
 
-        sliderLeftTop.addEventListener("input", updateStyles);
-        sliderLeftLeft.addEventListener("input", updateStyles);
-        sliderLeftWidth.addEventListener("input", updateStyles);
-        
-        sliderRightTop.addEventListener("input", updateStyles);
-        sliderRightRight.addEventListener("input", updateStyles);
-        sliderRightWidth.addEventListener("input", updateStyles);
+        // Lắng nghe sự kiện trượt slider
+        sliderTop.addEventListener("input", updateStyles);
+        sliderSide.addEventListener("input", updateStyles);
+        sliderWidth.addEventListener("input", updateStyles);
 
+        // Đăng ký các nút tăng giảm pixel (+ / -)
+        btnTopDec.addEventListener("click", () => { sliderTop.value = parseInt(sliderTop.value) - 1; updateStyles(); });
+        btnTopInc.addEventListener("click", () => { sliderTop.value = parseInt(sliderTop.value) + 1; updateStyles(); });
+        btnSideDec.addEventListener("click", () => { sliderSide.value = parseInt(sliderSide.value) - 1; updateStyles(); });
+        btnSideInc.addEventListener("click", () => { sliderSide.value = parseInt(sliderSide.value) + 1; updateStyles(); });
+        btnWidthDec.addEventListener("click", () => { sliderWidth.value = parseInt(sliderWidth.value) - 1; updateStyles(); });
+        btnWidthInc.addEventListener("click", () => { sliderWidth.value = parseInt(sliderWidth.value) + 1; updateStyles(); });
+
+        // Thu nhỏ / mở rộng bảng
+        minimizeBtn.addEventListener("click", () => {
+            isMinimized = !isMinimized;
+            if (isMinimized) {
+                devContent.style.display = "none";
+                minimizeBtn.textContent = "➕";
+                container.style.width = "150px";
+            } else {
+                devContent.style.display = "block";
+                minimizeBtn.textContent = "➖";
+                container.style.width = "320px";
+            }
+        });
+
+        // Nút Đóng
+        closeBtn.addEventListener("click", () => {
+            container.remove();
+            styleEl.remove();
+        });
+
+        // Sao chép CSS
         copyBtn.addEventListener("click", () => {
             navigator.clipboard.writeText(cssOutput.textContent)
                 .then(() => {
@@ -4049,21 +4173,8 @@
                 });
         });
 
-        closeBtn.addEventListener("click", () => {
-            container.remove();
-            styleEl.remove();
-        });
-
-        // Set initial values from active stylesheet values
-        sliderLeftTop.value = 0;
-        sliderLeftLeft.value = -20;
-        sliderLeftWidth.value = 125;
-
-        sliderRightTop.value = -14;
-        sliderRightRight.value = -14;
-        sliderRightWidth.value = 125;
-
-        updateStyles();
+        // Chạy lần đầu tiên để đồng bộ hóa
+        syncUIFromState();
     }
 
     // Hàm chuyển Google Drive share link → thumbnail URL ổn định (không bị chặn cross-origin)
