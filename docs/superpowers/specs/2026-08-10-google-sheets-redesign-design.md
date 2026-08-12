@@ -352,60 +352,31 @@ function onEdit(e) {
       
       const newStr = String(newValue).trim();
       
-      // 1. Lấy danh sách các lựa chọn dropdown hợp lệ từ quy tắc xác thực của ô
-      let dropdownValues = [];
-      const rule = range.getDataValidation();
-      if (rule) {
-        const criteria = rule.getCriteriaType();
-        if (criteria === SpreadsheetApp.DataValidationCriteria.VALUE_IN_LIST) {
-          dropdownValues = rule.getCriteriaValues()[0];
-        } else if (criteria === SpreadsheetApp.DataValidationCriteria.VALUE_IN_RANGE) {
-          const validationRange = rule.getCriteriaValues()[0];
-          dropdownValues = validationRange.getValues().map(r => r[0]);
+      // 1. Phân tích danh sách các tag cũ trước khi chỉnh sửa
+      const oldParts = oldValue ? String(oldValue).split(",").map(p => p.trim()).filter(Boolean) : [];
+      const oldPartsNorm = oldParts.map(p => normalize(p).toLowerCase());
+      
+      // 2. Phân tích danh sách các tag mới nhận được sau chỉnh sửa
+      const newParts = newStr.split(",").map(p => p.trim()).filter(Boolean);
+      const newPartsNorm = newParts.map(p => normalize(p).toLowerCase());
+      
+      // 3. Kiểm tra xem đây là hành động THÊM hay XÓA:
+      // Nếu tất cả các tag mới đều đã tồn tại trong danh sách cũ -> Đây là hành động XÓA bớt tag (người dùng click dấu x trên chip hoặc xóa tay)
+      // Ta tôn trọng và GIỮ NGUYÊN giá trị mới (chỉ lọc trùng lặp nếu có)
+      let isDeleteAction = true;
+      if (oldPartsNorm.length === 0) {
+        isDeleteAction = false;
+      } else {
+        for (const normPart of newPartsNorm) {
+          if (!oldPartsNorm.includes(normPart)) {
+            isDeleteAction = false;
+            break;
+          }
         }
       }
       
-      const normDropdown = dropdownValues.map(v => normalize(v).toLowerCase());
-      const isFromDropdown = normDropdown.includes(normalize(newStr).toLowerCase());
-      
-      // 2. Xử lý logic ghép hoặc xóa (Hỗ trợ Toggle: nếu đã có thì xóa, nếu chưa có thì thêm)
-      if (isFromDropdown) {
-        const oldValue = e.oldValue;
-        if (oldValue) {
-          const oldParts = String(oldValue).split(",").map(p => p.trim()).filter(Boolean);
-          const oldPartsNorm = oldParts.map(p => normalize(p).toLowerCase());
-          const normNewStr = normalize(newStr).toLowerCase();
-          const index = oldPartsNorm.indexOf(normNewStr);
-          
-          if (index !== -1) {
-            // A. Nếu tag đã tồn tại -> Xóa tag này (Toggle Off)
-            oldParts.splice(index, 1);
-            if (oldParts.length === 0) {
-              range.setValue("");
-            } else {
-              range.setValue(oldParts.join(", "));
-            }
-          } else {
-            // B. Nếu tag chưa tồn tại -> Thêm tag này vào cuối (Toggle On)
-            oldParts.push(newStr);
-            const cleanCombined = [];
-            const combinedSeen = new Set();
-            for (const part of oldParts) {
-              const norm = normalize(part).toLowerCase();
-              if (!combinedSeen.has(norm) && norm !== "") {
-                combinedSeen.add(norm);
-                cleanCombined.push(part.replace(/&amp;/g, "&").trim());
-              }
-            }
-            range.setValue(cleanCombined.join(", "));
-          }
-        } else {
-          // Nếu ô trước đó trống -> Điền tag mới chọn
-          range.setValue(newStr.replace(/&amp;/g, "&").trim());
-        }
-      } else {
-        // TRƯỜNG HỢP B: Nhập thủ công hoặc xóa chip bằng dấu x -> Lọc trùng chuỗi mới và lưu lại
-        const newParts = newStr.split(",").map(p => p.trim()).filter(Boolean);
+      if (isDeleteAction) {
+        // Hành động xóa: Chỉ lọc trùng lặp danh sách mới và lưu lại
         const uniqueNew = [];
         const seenNew = new Set();
         for (const part of newParts) {
@@ -416,6 +387,19 @@ function onEdit(e) {
           }
         }
         range.setValue(uniqueNew.join(", "));
+      } else {
+        // Hành động thêm: Ghép tag mới chọn vào danh sách cũ và lọc trùng lặp
+        const combined = [...oldParts, ...newParts];
+        const cleanCombined = [];
+        const combinedSeen = new Set();
+        for (const part of combined) {
+          const norm = normalize(part).toLowerCase();
+          if (!combinedSeen.has(norm) && norm !== "") {
+            combinedSeen.add(norm);
+            cleanCombined.push(part.replace(/&amp;/g, "&").trim());
+          }
+        }
+        range.setValue(cleanCombined.join(", "));
       }
     } catch (err) {
       console.error("Lỗi onEdit: " + err.toString());
