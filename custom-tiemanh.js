@@ -1146,7 +1146,8 @@
             font-size: 16px;
             color: var(--tiemanh-dark);
             margin: 0;
-            line-height: 1.25;
+            line-height: 1.5;
+            padding: 4px 0;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -2906,7 +2907,7 @@
             }
             .tiemanh-card-meta { width: 100%; }
             .tiemanh-card-icon-box { width: 36px; height: 36px; font-size: 16px; border-radius: 10px; }
-            .tiemanh-card-title { font-size: 14.5px; }
+            .tiemanh-card-title { font-size: 14px; line-height: 1.5; padding: 4px 0; }
             .tiemanh-card-badge { font-size: 10.5px; padding: 2px 7px; }
             .tiemanh-card-btn { padding: 8px 10px; font-size: 12px; width: 100%; display: flex; justify-content: center; }
 
