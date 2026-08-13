@@ -384,148 +384,69 @@ async function syncRealtimeData() {
   }
 }
 
+// Render CÁC DỊCH VỤ DREAM MOTO (Chuẩn theo website dreammoto.vn)
+function renderServicesShowcase() {
+  const container = document.getElementById("servicesShowcaseList");
+  if (!container) return;
+
+  const list = (typeof DREAM_MOTO_DATA !== 'undefined' && DREAM_MOTO_DATA.servicesShowcase)
+    ? DREAM_MOTO_DATA.servicesShowcase
+    : [];
+
+  container.innerHTML = list.map((srv, idx) => `
+  <div class="service-showcase-card">
+    <div class="service-media-side">
+      <video autoplay loop muted playsinline controls class="service-video-player">
+        <source src="${srv.videoUrl}" type="video/mp4">
+      </video>
+    </div>
+    <div class="service-text-side">
+      <div class="service-num">${srv.num || `# ${idx + 1}`}</div>
+      <h3 class="service-item-title">${srv.title}</h3>
+      <p class="service-item-desc">${srv.desc}</p>
+      <ul class="service-feature-checklist">
+        ${(srv.features || []).map(feat => `
+          <li><i class="fa-solid fa-check text-gold"></i> ${feat}</li>
+        `).join("")}
+      </ul>
+      <a href="#calculator" class="btn btn-primary btn-glow btn-service-action">
+        <i class="fa-solid fa-calendar-check"></i> TƯ VẤN & ĐẶT LỊCH
+      </a>
+    </div>
+  </div>
+`).join("");
+}
+
 // Initialize Event Listeners when DOM is ready
 document.addEventListener("DOMContentLoaded", () => {
+  // Render initial static content instantly
+  applyShopInfo();
+  renderBikers();
+  renderBikesInCalc();
+  renderServicesInCalc();
+  renderServicesShowcase();
 
+  // Trigger async realtime sync from cloud
+  syncRealtimeData();
 
-  // Dynamic Hero Video Background Autoloop Loader & Text Content Loader
-  if (typeof DREAM_MOTO_DATA !== 'undefined' && DREAM_MOTO_DATA.shopInfo) {
-    const info = DREAM_MOTO_DATA.shopInfo;
-
-    // Video Background
-    if (info.heroVideoUrl) {
-      const videoSource = document.getElementById("heroVideoSource");
-      const videoElem = document.getElementById("heroVideoBg");
-      if (videoSource && videoElem) {
-        videoSource.src = info.heroVideoUrl;
-        videoElem.load();
-      }
-    }
-
-    // Hero Title & Subtitle
-    const heroTitleElem = document.getElementById("heroTitle");
-    const heroSubtitleElem = document.getElementById("heroSubtitle");
-    if (heroTitleElem && info.heroTitle) heroTitleElem.innerHTML = info.heroTitle;
-    if (heroSubtitleElem && info.heroSubtitle) heroSubtitleElem.innerHTML = info.heroSubtitle;
-
-    // Hero Stats
-    if (info.stats && info.stats.length >= 3) {
-      const s1n = document.getElementById("stat1Num");
-      const s1t = document.getElementById("stat1Txt");
-      const s2n = document.getElementById("stat2Num");
-      const s2t = document.getElementById("stat2Txt");
-      const s3n = document.getElementById("stat3Num");
-      const s3t = document.getElementById("stat3Txt");
-
-      if (s1n) s1n.innerHTML = info.stats[0].number;
-      if (s1t) s1t.innerHTML = info.stats[0].text;
-      if (s2n) s2n.innerHTML = info.stats[1].number;
-      if (s2t) s2t.innerHTML = info.stats[1].text;
-      if (s3n) s3n.innerHTML = info.stats[2].number;
-      if (s3t) s3t.innerHTML = info.stats[2].text;
-    }
-
-    // Credit Contact Information & 3-Column Footer Loader
-    const credWeb = document.getElementById("creditWebsite");
-    const credTik = document.getElementById("creditTiktok");
-    const credHot = document.getElementById("creditHotline");
-    const credAdr = document.getElementById("creditAddress");
-
-    if (credWeb && info.websiteUrl) {
-      credWeb.textContent = info.websiteUrl;
-      credWeb.href = info.websiteUrl;
-    }
-    if (credTik && info.tiktokId) credTik.textContent = info.tiktokId;
-    if (credHot && info.hotline) {
-      credHot.textContent = info.hotline;
-      credHot.href = `tel:${info.hotline.replace(/[^0-9]/g, '')}`;
-    }
-    if (credAdr && info.address) credAdr.textContent = info.address;
-
-    // Premium 3-Column Footer Loader
-    const bioElem = document.getElementById("footerBioText");
-    const hotElem = document.getElementById("footerHotline");
-    const emailElem = document.getElementById("footerEmail");
-    const cs1Elem = document.getElementById("footerCS1");
-    const cs2Elem = document.getElementById("footerCS2");
-    const cs3Elem = document.getElementById("footerCS3");
-
-    if (bioElem && info.footerBio) bioElem.textContent = info.footerBio;
-    if (hotElem && info.hotline) hotElem.textContent = info.hotline;
-    if (emailElem && info.email) emailElem.textContent = info.email;
-
-    if (info.branches && info.branches.length >= 1) {
-      if (cs1Elem && info.branches[0]) cs1Elem.textContent = info.branches[0].name;
-      if (cs2Elem) cs2Elem.style.display = info.branches[1] ? 'inline' : 'none';
-      if (cs3Elem) cs3Elem.style.display = info.branches[2] ? 'inline' : 'none';
-    }
-  }
-
-  // Render CÁC DỊCH VỤ DREAM MOTO (Chuẩn theo website dreammoto.vn)
-  function renderServicesShowcase() {
-    const container = document.getElementById("servicesShowcaseList");
-    if (!container) return;
-
-    const list = (typeof DREAM_MOTO_DATA !== 'undefined' && DREAM_MOTO_DATA.servicesShowcase)
-      ? DREAM_MOTO_DATA.servicesShowcase
-      : [];
-
-    container.innerHTML = list.map((srv, idx) => `
-    <div class="service-showcase-card">
-      <div class="service-media-side">
-        <video autoplay loop muted playsinline controls class="service-video-player">
-          <source src="${srv.videoUrl}" type="video/mp4">
-        </video>
-      </div>
-      <div class="service-text-side">
-        <div class="service-num">${srv.num || `# ${idx + 1}`}</div>
-        <h3 class="service-item-title">${srv.title}</h3>
-        <p class="service-item-desc">${srv.desc}</p>
-        <ul class="service-feature-checklist">
-          ${(srv.features || []).map(feat => `
-            <li><i class="fa-solid fa-check text-gold"></i> ${feat}</li>
-          `).join("")}
-        </ul>
-        <a href="#calculator" class="btn btn-primary btn-glow btn-service-action">
-          <i class="fa-solid fa-calendar-check"></i> TƯ VẤN & ĐẶT LỊCH
-        </a>
-      </div>
-    </div>
-  `).join("");
-  }
-
-  // Initialize Event Listeners when DOM is ready
-  document.addEventListener("DOMContentLoaded", () => {
-    // Render initial static content instantly
-    applyShopInfo();
-    renderBikers();
-    renderBikesInCalc();
-    renderServicesInCalc();
-    renderServicesShowcase();
-
-    // Trigger async realtime sync from cloud
-    syncRealtimeData();
-
-    // FAQ Accordions
-    const faqQuestions = document.querySelectorAll('.faq-question');
-    faqQuestions.forEach(q => {
-      q.addEventListener('click', () => {
-        const parent = q.parentElement;
-        parent.classList.toggle('active');
-      });
+  // FAQ Accordions
+  const faqQuestions = document.querySelectorAll('.faq-question');
+  faqQuestions.forEach(q => {
+    q.addEventListener('click', () => {
+      const parent = q.parentElement;
+      parent.classList.toggle('active');
     });
-
-    // Initialize new interactive engines
-    initBikerQuickSelect();
-    initVideoModal();
-
-    // Initial calculation
-    updatePrice();
   });
 
+  // Initialize new interactive engines
+  initBikerQuickSelect();
+  initVideoModal();
 
+  // Initial calculation
+  updatePrice();
+});
 
-  // Export functions for node/python testing if required
-  if (typeof module !== 'undefined' && module.exports) {
-    module.exports = { calculatePrice, generateZaloLink, getShopConfig };
-  }
+// Export functions for node/python testing if required
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { calculatePrice, generateZaloLink, getShopConfig };
+}
