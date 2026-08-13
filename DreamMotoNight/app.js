@@ -89,20 +89,14 @@ function updatePrice() {
   if (sumService) sumService.innerText = selectedService.name;
   if (sumBiker) sumBiker.innerText = selectedBiker;
 
-  // Update Zalo deep link & Auto Clipboard text
+  // Update Zalo deep link (Tự động nạp sẵn 100% nội dung vào ô chat Zalo, mở ra bấm Gửi ngay!)
   if (zaloBtn) {
     const bookingMsg = generateZaloBookingText(selectedBike.name, selectedService.name, selectedSlot, totalPrice, selectedBiker);
     const cfg = getShopConfig();
     const cleanPhone = (cfg.hotline || cfg.zaloPhone || "0908447308").replace(/[^0-9]/g, '');
     zaloBtn.href = `https://zalo.me/${cleanPhone}?text=${encodeURIComponent(bookingMsg)}`;
-
-    zaloBtn.onclick = function() {
-      if (navigator.clipboard) {
-        navigator.clipboard.writeText(bookingMsg).then(() => {
-          alert("📋 ĐÃ TỰ ĐỘNG SAO CHÉP ĐƠN ĐẶT LỊCH!\n\nNội dung đặt lịch đã được ghi nhớ. Bạn chỉ cần nhấn Dán (Ctrl+V / Paste) vào ô chat Zalo để gửi cho shop ngay nhé!");
-        }).catch(() => {});
-      }
-    };
+    zaloBtn.target = "_blank";
+    zaloBtn.onclick = null;
   }
 }
 
