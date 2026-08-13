@@ -9,7 +9,7 @@
 const DREAM_MOTO_CONFIG = {
   zaloPhone: "0900000000",
   shopName: "Dream Moto Sài Gòn",
-  spotLocation: "Cầu Ba Sơn - Thủ Thiêm",
+  spotLocation: "Cầu Ba Son - Thủ Thiêm",
   defaultSlot: "21:30",
   defaultBiker: "Rider Tuấn Motor",
   

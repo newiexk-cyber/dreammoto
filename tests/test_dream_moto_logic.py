@@ -10,7 +10,7 @@ def calculate_price_python(bike_extra, service_price, addons_price):
 def generate_zalo_link_python(phone_number, bike_name, service_name, slot_time, total_price, biker_name=None):
     formatted_price = f"{total_price:,}đ".replace(",", ".")
     biker_str = f"\n- Biker Yêu Thích: {biker_name}" if biker_name else ""
-    message = f"Chào Dream Moto! Tôi muốn đặt dịch vụ Quay Video Moto Đêm Cầu Ba Sơn:\n- Dòng Xe: {bike_name}\n- Gói Dịch Vụ: {service_name}{biker_str}\n- Khung Giờ: {slot_time} Tối Nay\n- Tổng Giá Dự Kiến: {formatted_price}\n\nTư vấn và giữ slot giúp tôi nhé!"
+    message = f"Chào Dream Moto! Tôi muốn đặt dịch vụ Quay Video Moto Đêm Cầu Ba Son:\n- Dòng Xe: {bike_name}\n- Gói Dịch Vụ: {service_name}{biker_str}\n- Khung Giờ: {slot_time} Tối Nay\n- Tổng Giá Dự Kiến: {formatted_price}\n\nTư vấn và giữ slot giúp tôi nhé!"
     encoded = urllib.parse.quote(message)
     return f"https://zalo.me/{phone_number}?text={encoded}"
 

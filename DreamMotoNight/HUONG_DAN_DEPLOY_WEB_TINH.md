@@ -18,7 +18,7 @@ Bạn chỉ cần mở file [app.js](file:///c:/memay/DreamMotoNight/app.js) và
 const DREAM_MOTO_CONFIG = {
   zaloPhone: "0900000000", // <-- Đổi số điện thoại Zalo chốt đơn tại đây
   shopName: "Dream Moto Sài Gòn",
-  spotLocation: "Cầu Ba Sơn - Thủ Thiêm",
+  spotLocation: "Cầu Ba Son - Thủ Thiêm",
   // ...
 };
 ```
@@ -38,7 +38,7 @@ const DREAM_MOTO_CONFIG = {
 3. Nhận ngay 1 link chạy công khai trên mạng cực xịn!
 
 ### 📲 Cách Dùng Làm "Digital Sales Kit" (Menu gửi qua Inbox):
-Khi có khách nhắn inbox hỏi: *"Shop ơi cho mình xin bảng giá / thông tin gói quay mô tô Cầu Ba Sơn với ạ"*.
+Khi có khách nhắn inbox hỏi: *"Shop ơi cho mình xin bảng giá / thông tin gói quay mô tô Cầu Ba Son với ạ"*.
 Nhân viên chỉ cần copy duy nhất link web đã upload trên và gửi cho khách:
 > *"Dạ chào bạn, bạn xem menu clip mẫu 4K, 5 trend hot nhất, bảng giá và chọn giờ ở đây giúp shop nha: [Link Web Tĩnh Của Bạn]"*
 Khách tự xem, tự tính tiền và bấm nút Đặt qua Zalo!
