@@ -799,11 +799,12 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
+  aspect-ratio: 9/16;
 }
 
 .biker-card-video, .biker-card-image {
   width: 100%;
-  height: 180px;
+  height: 100%;
   object-fit: cover;
   display: block;
 }
