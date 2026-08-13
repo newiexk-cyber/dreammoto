@@ -27,20 +27,35 @@ function calculatePrice(bikeExtra, servicePrice, addonsPrice) {
   return bike + service + addons;
 }
 
-function generateZaloLink(bikeName, serviceName, slotTime, totalPrice, bikerName) {
+function generateZaloBookingText(bikeName, serviceName, slotTime, totalPrice, bikerName) {
   const cfg = getShopConfig();
   const formattedPrice = totalPrice.toLocaleString('vi-VN') + "đ";
-  const bikerText = bikerName ? `\n- Biker Yêu Thích: ${bikerName}` : '';
   
-  const message = `Chào ${cfg.name}! Tôi muốn đặt dịch vụ Quay Video Moto Đêm ${cfg.spotLocation}:
-- Dòng Xe: ${bikeName}
-- Gói Dịch Vụ: ${serviceName}${bikerText}
-- Khung Giờ: ${slotTime} Tối Nay
-- Tổng Giá Dự Kiến: ${formattedPrice}
+  const helmetAddon = document.getElementById("addonHelmet");
+  const jacketAddon = document.getElementById("addonJacket");
+  const addons = [];
+  if (helmetAddon && helmetAddon.checked) addons.push("Nón Fullface AGV/Shoei (+30k)");
+  if (jacketAddon && jacketAddon.checked) addons.push("Áo khoác da Biker Style (+50k)");
+  const addonText = addons.length > 0 ? addons.join(", ") : "Không có";
 
-Tư vấn và giữ slot giúp tôi nhé!`;
+  return `🏍️ ĐẶT LỊCH VI VU MÔ TÔ ĐÊM SÀI GÒN - DREAM MOTO 🏍️
+-----------------------------------
+▪ Dòng xe chọn: ${bikeName}
+▪ Gói dịch vụ: ${serviceName}
+▪ Biker đồng hành: ${bikerName || 'Rider Tuấn Motor'}
+▪ Khung giờ chọn: ${slotTime || '21:30'} Đêm nay
+▪ Phụ kiện kèm: ${addonText}
+▪ Tổng chi phí dự kiến: ${formattedPrice}
+-----------------------------------
+📌 Điểm đón: ${cfg.spotLocation || 'Cầu Ba Son'} (${cfg.address || '214/19/21 Nguyễn Văn Nguyễn, Q.1'})
+Tôi muốn đặt lịch giờ này, shop tư vấn giữ chỗ cho tôi nhé!`;
+}
 
-  return `https://zalo.me/${cfg.zaloPhone}?text=${encodeURIComponent(message)}`;
+function generateZaloLink(bikeName, serviceName, slotTime, totalPrice, bikerName) {
+  const cfg = getShopConfig();
+  const message = generateZaloBookingText(bikeName, serviceName, slotTime, totalPrice, bikerName);
+  const cleanPhone = (cfg.hotline || cfg.zaloPhone || "0908447308").replace(/[^0-9]/g, '');
+  return `https://zalo.me/${cleanPhone}?text=${encodeURIComponent(message)}`;
 }
 
 // Global State
@@ -74,9 +89,20 @@ function updatePrice() {
   if (sumService) sumService.innerText = selectedService.name;
   if (sumBiker) sumBiker.innerText = selectedBiker;
 
-  // Update Zalo deep link
+  // Update Zalo deep link & Auto Clipboard text
   if (zaloBtn) {
-    zaloBtn.href = generateZaloLink(selectedBike.name, selectedService.name, selectedSlot, totalPrice, selectedBiker);
+    const bookingMsg = generateZaloBookingText(selectedBike.name, selectedService.name, selectedSlot, totalPrice, selectedBiker);
+    const cfg = getShopConfig();
+    const cleanPhone = (cfg.hotline || cfg.zaloPhone || "0908447308").replace(/[^0-9]/g, '');
+    zaloBtn.href = `https://zalo.me/${cleanPhone}?text=${encodeURIComponent(bookingMsg)}`;
+
+    zaloBtn.onclick = function() {
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(bookingMsg).then(() => {
+          alert("📋 ĐÃ TỰ ĐỘNG SAO CHÉP ĐƠN ĐẶT LỊCH!\n\nNội dung đặt lịch đã được ghi nhớ. Bạn chỉ cần nhấn Dán (Ctrl+V / Paste) vào ô chat Zalo để gửi cho shop ngay nhé!");
+        }).catch(() => {});
+      }
+    };
   }
 }
 
