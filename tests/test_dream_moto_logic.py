@@ -33,14 +33,15 @@ class TestDreamMotoWebsite(unittest.TestCase):
         self.assertTrue(os.path.exists(webcake_path), "dream-moto-webcake.js should exist")
         self.assertTrue(os.path.exists(sheet_sync_path), "google-sheets-sync.js should exist")
 
-    def test_admin_hero_title_subtitle_stats_fields(self):
+    def test_admin_credit_contact_fields(self):
         admin_path = os.path.join(PROJECT_DIR, "admin", "index.html")
         with open(admin_path, "r", encoding="utf-8") as f:
             content = f.read()
 
-        self.assertIn("cfgHeroTitle", content)
-        self.assertIn("cfgHeroSubtitle", content)
-        self.assertIn("cfgStat1Num", content)
+        self.assertIn("cfgWebsiteUrl", content)
+        self.assertIn("cfgTiktokId", content)
+        self.assertIn("cfgHotline", content)
+        self.assertIn("cfgAddress", content)
 
     def test_admin_pure_drag_drop_clean_ui(self):
         admin_path = os.path.join(PROJECT_DIR, "admin", "index.html")
@@ -50,16 +51,16 @@ class TestDreamMotoWebsite(unittest.TestCase):
         self.assertIn("media-dropzone", content)
         self.assertIn("handleDropMedia", content)
         self.assertIn("processMediaFile", content)
-        self.assertIn("PURE DRAG & DROP", content)
 
-    def test_data_config_hero_title_subtitle_stats(self):
+    def test_data_config_credit_contact_info(self):
         config_path = os.path.join(PROJECT_DIR, "data-config.js")
         with open(config_path, "r", encoding="utf-8") as f:
             content = f.read()
 
-        self.assertIn("heroTitle", content)
-        self.assertIn("heroSubtitle", content)
-        self.assertIn("stats", content)
+        self.assertIn("websiteUrl", content)
+        self.assertIn("tiktokId", content)
+        self.assertIn("hotline", content)
+        self.assertIn("address", content)
 
     def test_google_sheet_sync_script(self):
         sheet_sync_path = os.path.join(PROJECT_DIR, "google-sheets-sync.js")
@@ -77,21 +78,19 @@ class TestDreamMotoWebsite(unittest.TestCase):
         self.assertIn("DREAM_MOTO_CONFIG", content)
         self.assertIn("dream-moto-root", content)
 
-    def test_index_html_content(self):
+    def test_index_html_credit_section(self):
         index_path = os.path.join(PROJECT_DIR, "index.html")
         with open(index_path, "r", encoding="utf-8") as f:
             content = f.read()
 
-        self.assertIn('id="heroTitle"', content)
-        self.assertIn('id="heroSubtitle"', content)
-        self.assertIn('id="stat1Num"', content)
-        self.assertIn('id="trends"', content)
-        self.assertIn('id="spots"', content)
-        self.assertIn('id="bikers"', content)
+        self.assertIn('id="creditWebsite"', content)
+        self.assertIn('id="creditTiktok"', content)
+        self.assertIn('id="creditHotline"', content)
+        self.assertIn('id="creditAddress"', content)
 
     def test_biker_profiles_rendered(self):
-        index_path = os.path.join(PROJECT_DIR, "index.html")
-        with open(index_path, "r", encoding="utf-8") as f:
+        config_path = os.path.join(PROJECT_DIR, "data-config.js")
+        with open(config_path, "r", encoding="utf-8") as f:
             content = f.read()
 
         self.assertIn("Rider Tuấn Motor", content)
@@ -105,7 +104,8 @@ class TestDreamMotoWebsite(unittest.TestCase):
 
         self.assertIn("--neon-gold", content)
         self.assertIn("--neon-cyan", content)
-        self.assertIn("--bg-dark", content)
+        self.assertIn("--bg-card", content)
+        self.assertIn(".credit-section", content)
 
     def test_app_js_functions(self):
         app_path = os.path.join(PROJECT_DIR, "app.js")
@@ -114,6 +114,7 @@ class TestDreamMotoWebsite(unittest.TestCase):
 
         self.assertIn("calculatePrice", content)
         self.assertIn("generateZaloLink", content)
+        self.assertIn("creditWebsite", content)
 
     def test_price_calculator_logic(self):
         self.assertEqual(calculate_price_python(0, 299000, 0), 299000)

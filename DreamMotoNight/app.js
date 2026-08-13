@@ -139,6 +139,23 @@ document.addEventListener("DOMContentLoaded", () => {
       if (s3n) s3n.innerHTML = info.stats[2].number;
       if (s3t) s3t.innerHTML = info.stats[2].text;
     }
+
+    // Credit Contact Information
+    const credWeb = document.getElementById("creditWebsite");
+    const credTik = document.getElementById("creditTiktok");
+    const credHot = document.getElementById("creditHotline");
+    const credAdr = document.getElementById("creditAddress");
+
+    if (credWeb && info.websiteUrl) {
+      credWeb.textContent = info.websiteUrl;
+      credWeb.href = info.websiteUrl;
+    }
+    if (credTik && info.tiktokId) credTik.textContent = info.tiktokId;
+    if (credHot && info.hotline) {
+      credHot.textContent = info.hotline;
+      credHot.href = `tel:${info.hotline.replace(/[^0-9]/g, '')}`;
+    }
+    if (credAdr && info.address) credAdr.textContent = info.address;
   }
 
   // Render TikTok Trends (Chỉ phát 1 video active duy nhất khi bấm chọn, tránh nặng 4G & giật lag)

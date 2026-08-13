@@ -1130,6 +1130,68 @@ button {
   color: var(--neon-gold);
 }
 
+/* Footer & Credit Section */
+.footer.credit-section, .credit-section {
+  background: var(--bg-card);
+  border-top: 1px solid var(--border);
+  padding: 50px 0 25px;
+  margin-top: 60px;
+}
+
+.credit-container {
+  max-width: 750px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.credit-title {
+  font-family: var(--font-head);
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  margin-bottom: 16px;
+  letter-spacing: 0.5px;
+}
+
+.credit-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.credit-list li {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+}
+
+.credit-label {
+  font-weight: 800;
+  color: #FFFFFF;
+  min-width: 115px;
+  display: inline-block;
+}
+
+.credit-link, .credit-val {
+  color: #E2E8F0;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.credit-link:hover {
+  color: var(--neon-cyan);
+}
+
+.credit-address {
+  font-size: 1.1rem;
+  color: #E2E8F0;
+  line-height: 1.6;
+  font-weight: 500;
+}
+
 /* Footer */
 .main-footer {
   background: #04060B;

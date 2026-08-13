@@ -215,6 +215,29 @@
         </div>
       </div>
 
+      <!-- CREDIT CONTACT INFO FIELDS -->
+      <h4 style="color: var(--neon-gold); margin-top: 25px; margin-bottom: 15px;"><i class="fa-solid fa-address-card"></i> Thông Tin Liên Hệ & Địa Chỉ Credit (Cuối Trang):</h4>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+        <div class="form-group">
+          <label class="form-label">Website URL:</label>
+          <input type="text" id="cfgWebsiteUrl" class="form-control" value="https://dreammoto.vn">
+        </div>
+        <div class="form-group">
+          <label class="form-label">TikTok ID:</label>
+          <input type="text" id="cfgTiktokId" class="form-control" value="Dreammoto.vn">
+        </div>
+      </div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+        <div class="form-group">
+          <label class="form-label">Hotline:</label>
+          <input type="text" id="cfgHotline" class="form-control" value="090.7777.482">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Địa Chỉ Chi Tiết:</label>
+          <input type="text" id="cfgAddress" class="form-control" value="Nguyễn Văn Nguyễn, Tân Định, Quận 1, Tp.HCM">
+        </div>
+      </div>
+
       <!-- Pure Drag & Drop Hero Media (No Text URL Input) -->
       <div class="form-group">
         <label class="form-label"><i class="fa-solid fa-photo-film"></i> Upload File Ảnh/Video Hero Banner (Kéo - Thả Trực Tiếp):</label>
@@ -395,6 +418,11 @@
         document.getElementById("cfgStat3Num").value = info.stats[2].number || "4.9/5 ⭐";
         document.getElementById("cfgStat3Txt").value = info.stats[2].text || "Đánh Giá Hài Lòng";
       }
+
+      document.getElementById("cfgWebsiteUrl").value = info.websiteUrl || "https://dreammoto.vn";
+      document.getElementById("cfgTiktokId").value = info.tiktokId || "Dreammoto.vn";
+      document.getElementById("cfgHotline").value = info.hotline || "090.7777.482";
+      document.getElementById("cfgAddress").value = info.address || "Nguyễn Văn Nguyễn, Tân Định, Quận 1, Tp.HCM";
 
       heroVideoVal = info.heroVideoUrl || "https://assets.mixkit.co/videos/preview/mixkit-top-view-of-motorcycles-driving-on-a-highway-41551-large.mp4";
 
@@ -585,6 +613,10 @@
             { number: document.getElementById("cfgStat2Num").value, text: document.getElementById("cfgStat2Txt").value },
             { number: document.getElementById("cfgStat3Num").value, text: document.getElementById("cfgStat3Txt").value }
           ],
+          websiteUrl: document.getElementById("cfgWebsiteUrl").value,
+          tiktokId: document.getElementById("cfgTiktokId").value,
+          hotline: document.getElementById("cfgHotline").value,
+          address: document.getElementById("cfgAddress").value,
           defaultSlot: "21:30",
           heroVideoUrl: heroVideoVal
         },
