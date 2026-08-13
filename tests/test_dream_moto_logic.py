@@ -23,13 +23,23 @@ class TestDreamMotoWebsite(unittest.TestCase):
         config_path = os.path.join(PROJECT_DIR, "data-config.js")
         admin_path = os.path.join(PROJECT_DIR, "admin", "index.html")
         webcake_path = os.path.join(PROJECT_DIR, "dream-moto-webcake.js")
+        sheet_sync_path = os.path.join(PROJECT_DIR, "google-sheets-sync.js")
         
         self.assertTrue(os.path.exists(index_path), "index.html should exist")
         self.assertTrue(os.path.exists(style_path), "style.css should exist")
         self.assertTrue(os.path.exists(app_path), "app.js should exist")
         self.assertTrue(os.path.exists(config_path), "data-config.js should exist")
         self.assertTrue(os.path.exists(admin_path), "admin/index.html should exist")
-        self.assertTrue(os.path.exists(webcake_path), "dream-moto-webcake.js should exist for Webcake integration")
+        self.assertTrue(os.path.exists(webcake_path), "dream-moto-webcake.js should exist")
+        self.assertTrue(os.path.exists(sheet_sync_path), "google-sheets-sync.js should exist for Option 2")
+
+    def test_google_sheet_sync_script(self):
+        sheet_sync_path = os.path.join(PROJECT_DIR, "google-sheets-sync.js")
+        with open(sheet_sync_path, "r", encoding="utf-8") as f:
+            content = f.read()
+
+        self.assertIn("DREAM_MOTO_SHEET_CONFIG", content)
+        self.assertIn("fetchGoogleSheetData", content)
 
     def test_webcake_script_content(self):
         webcake_path = os.path.join(PROJECT_DIR, "dream-moto-webcake.js")
