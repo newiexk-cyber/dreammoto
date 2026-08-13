@@ -499,25 +499,48 @@
     }
 
     function renderTrendsUI() {
-          </div>
+      const container = document.getElementById("trendsList");
+      if (!container) return;
 
+      const list = localServicesShowcase || [];
+      container.innerHTML = list.map((srv, idx) => `
+        <div class="item-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+            <strong style="color: var(--neon-gold); font-size: 1.1rem;">Dịch Vụ ${srv.num || `# ${idx + 1}`}: ${srv.title}</strong>
+            <button class="btn-danger" style="padding: 4px 10px; font-size: 0.85rem;" onclick="localServicesShowcase.splice(${idx},1); renderTrendsUI();"><i class="fa-solid fa-trash"></i> Xóa</button>
+          </div>
           <div class="form-group">
-            <label class="form-label">Mô Tả Ngắn:</label>
-            <input type="text" class="form-control" value="${t.desc || ''}" onchange="localTrends[${idx}].desc=this.value">
+            <label class="form-label">Tên Dịch Vụ:</label>
+            <input type="text" class="form-control" value="${srv.title || ''}" onchange="localServicesShowcase[${idx}].title = this.value">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Mô Tả Chi Tiết:</label>
+            <textarea class="form-control" rows="2" onchange="localServicesShowcase[${idx}].desc = this.value">${srv.desc || ''}</textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label"><i class="fa-solid fa-photo-film"></i> Upload File Ảnh/Video Dịch Vụ (Kéo - Thả Direct):</label>
+            <div class="media-dropzone" onclick="triggerFileInput('srvFile_${idx}')" ondragover="event.preventDefault(); this.classList.add('dragover');" ondragleave="this.classList.remove('dragover');" ondrop="handleDropMedia(event, 'srvPreview_${idx}', (fn)=>localServicesShowcase[${idx}].videoUrl=fn)">
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+              <p>Kéo & thả file Ảnh (PNG/JPG) hoặc Video (MP4) vào đây</p>
+              <input type="file" id="srvFile_${idx}" accept="image/*, video/*" style="display:none" onchange="handleSelectedFile(this, 'srvPreview_${idx}', (fn)=>localServicesShowcase[${idx}].videoUrl=fn)">
+            </div>
+            <div id="srvPreview_${idx}" class="media-preview-container">
+              ${srv.videoUrl ? `<video class="media-preview-box" autoplay loop muted playsinline controls><source src="${srv.videoUrl}" type="video/mp4"></video>` : ''}
+            </div>
           </div>
         </div>
       `).join('');
     }
 
     function addNewTrend() {
-      localTrends.push({
-        id: "trend-" + Date.now(),
-        title: "Phong Cách Mới Đêm Cầu Ba Son",
-        style: "New Trend Vibe",
-        badge: "NEW",
-        views: "500K views",
-        videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-top-view-of-motorcycles-driving-on-a-highway-41551-large.mp4",
-        desc: "Mô tả phong cách mới..."
+      if (!localServicesShowcase) localServicesShowcase = [];
+      localServicesShowcase.push({
+        id: "service-" + Date.now(),
+        num: "# " + (localServicesShowcase.length + 1),
+        title: "Dịch Vụ Mới Dream Moto",
+        desc: "Mô tả dịch vụ mới...",
+        features: ["Tính năng 1", "Tính năng 2"],
+        videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-top-view-of-motorcycles-driving-on-a-highway-41551-large.mp4"
       });
       renderTrendsUI();
     }
