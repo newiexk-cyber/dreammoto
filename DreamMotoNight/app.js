@@ -169,6 +169,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if (hotElem && info.hotline) hotElem.textContent = info.hotline;
     if (emailElem && info.email) emailElem.textContent = info.email;
 
+    if (info.branches && info.branches.length >= 1) {
+      if (cs1Elem && info.branches[0]) cs1Elem.textContent = info.branches[0].name;
+      if (cs2Elem) cs2Elem.style.display = info.branches[1] ? 'inline' : 'none';
+      if (cs3Elem) cs3Elem.style.display = info.branches[2] ? 'inline' : 'none';
+    }
+  }
+
   // Render CÁC DỊCH VỤ DREAM MOTO (Chuẩn theo website dreammoto.vn)
   function renderServicesShowcase() {
     const container = document.getElementById("servicesShowcaseList");
