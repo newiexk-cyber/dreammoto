@@ -242,6 +242,25 @@ function applyShopInfo() {
   }
 }
 
+function getBikerAvatarHtml(url) {
+  if (!url) {
+    return `<i class="fa-solid fa-user-ninja"></i>`;
+  }
+  if (url.startsWith("data:")) {
+    if (url.includes("data:video/")) {
+      return `<video src="${url}" autoplay loop muted playsinline class="biker-avatar-media"></video>`;
+    } else {
+      return `<img src="${url}" alt="Avatar" class="biker-avatar-media">`;
+    }
+  }
+  const isVideo = /\.(mp4|webm|ogg|mov)(\?.*)?$/i.test(url);
+  if (isVideo) {
+    return `<video src="${url}" autoplay loop muted playsinline class="biker-avatar-media"></video>`;
+  } else {
+    return `<img src="${url}" alt="Avatar" class="biker-avatar-media">`;
+  }
+}
+
 function renderBikers() {
   const container = document.getElementById("bikersGrid");
   if (!container || typeof DREAM_MOTO_DATA === 'undefined' || !DREAM_MOTO_DATA.bikers) return;
@@ -251,7 +270,7 @@ function renderBikers() {
       <div class="biker-header">
         <div class="biker-avatar-box">
           <div class="biker-avatar-ring ${b.ringColorClass || ''}"></div>
-          <div class="biker-avatar-icon ${b.iconClass || ''}"><i class="fa-solid fa-user-ninja"></i></div>
+          <div class="biker-avatar-icon ${b.iconClass || ''}">${getBikerAvatarHtml(b.videoUrl)}</div>
         </div>
       </div>
       <div class="biker-body">
