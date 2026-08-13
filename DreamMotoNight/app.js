@@ -253,18 +253,11 @@ function renderBikers() {
           <div class="biker-avatar-ring ${b.ringColorClass || ''}"></div>
           <div class="biker-avatar-icon ${b.iconClass || ''}"><i class="fa-solid fa-user-ninja"></i></div>
         </div>
-        <div class="biker-status ${b.statusClass || ''}"><i class="fa-solid fa-shield-halved"></i> ${b.expBadge || 'PKL Biker'}</div>
       </div>
       <div class="biker-body">
         <h3>${b.name}</h3>
         <span class="biker-role">${b.role}</span>
         <p class="biker-bio">${b.bio}</p>
-        
-        <div class="biker-tags">
-          ${(b.tags || []).map(t => `
-            <span class="biker-tag"><i class="fa-solid ${t.icon || 'fa-motorcycle'}"></i> ${t.text}</span>
-          `).join('')}
-        </div>
       </div>
       <div class="biker-footer">
         <button class="btn-select-biker">
