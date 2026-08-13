@@ -295,12 +295,18 @@
     <!-- Tab 5: Package & Bike Prices -->
     <div id="pricesTab" class="admin-panel">
       <h3 style="margin-bottom: 20px; color: var(--neon-gold);"><i class="fa-solid fa-coins"></i> Cấu Hình Gói Dịch Vụ & Xe Mô Tô</h3>
-      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Thay đổi giá gói cơ bản & phụ phí xe siêu dễ dàng.</p>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Thay đổi tên xe, mô tả phụ, phụ phí và gói dịch vụ siêu dễ dàng.</p>
       
-      <h4 style="color: var(--neon-cyan); margin-bottom: 15px;">Các Dòng Xe Mô Tô:</h4>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <h4 style="color: var(--neon-cyan); margin: 0;">🏍️ Các Dòng Xe Mô Tô:</h4>
+        <button class="btn-admin btn-add" onclick="addNewBike()"><i class="fa-solid fa-plus"></i> Thêm Xe Mới</button>
+      </div>
       <div id="bikesList"></div>
 
-      <h4 style="color: var(--neon-cyan); margin-top: 25px; margin-bottom: 15px;">Các Gói Dịch Vụ:</h4>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 30px; margin-bottom: 15px;">
+        <h4 style="color: var(--neon-cyan); margin: 0;">📦 Các Gói Dịch Vụ:</h4>
+        <button class="btn-admin btn-add" onclick="addNewService()"><i class="fa-solid fa-plus"></i> Thêm Gói Mới</button>
+      </div>
       <div id="servicesList"></div>
     </div>
 
@@ -764,20 +770,82 @@
 
     function renderPricesUI() {
       const bikesContainer = document.getElementById("bikesList");
-      bikesContainer.innerHTML = localBikes.map((bk, idx) => `
-        <div class="item-card" style="flex-direction:row; align-items:center;">
-          <input type="text" class="form-control" value="${bk.name}" onchange="localBikes[${idx}].name=this.value" style="flex:2; margin-right:10px;">
-          <input type="number" class="form-control" value="${bk.extraPrice}" onchange="localBikes[${idx}].extraPrice=parseInt(this.value)" style="flex:1; margin-right:10px;" placeholder="+ Phụ phí">
-        </div>
-      `).join('');
+      if (bikesContainer) {
+        bikesContainer.innerHTML = localBikes.map((bk, idx) => `
+          <div class="item-card">
+            <div class="item-header">
+              <strong>🏍️ Xe #${idx + 1}: ${bk.name}</strong>
+              <button class="btn-danger" style="padding: 4px 10px; font-size: 0.85rem;" onclick="localBikes.splice(${idx},1); renderPricesUI();"><i class="fa-solid fa-trash"></i> Xóa</button>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Tên Dòng Xe:</label>
+              <input type="text" class="form-control" value="${bk.name || ''}" onchange="localBikes[${idx}].name=this.value">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Mô Tả Phụ (hiển thị dưới tên xe):</label>
+              <input type="text" class="form-control" value="${bk.sub || ''}" onchange="localBikes[${idx}].sub=this.value" placeholder="VD: Superbike cá mập kiệt tác công nghệ (+50k)">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Phụ Phí Thêm (VNĐ, 0 = miễn phí):</label>
+              <input type="number" class="form-control" value="${bk.extraPrice || 0}" onchange="localBikes[${idx}].extraPrice=parseInt(this.value)||0" placeholder="VD: 50000">
+            </div>
+          </div>
+        `).join('');
+      }
 
       const servicesContainer = document.getElementById("servicesList");
-      servicesContainer.innerHTML = localServices.map((s, idx) => `
-        <div class="item-card" style="flex-direction:row; align-items:center;">
-          <input type="text" class="form-control" value="${s.name}" onchange="localServices[${idx}].name=this.value" style="flex:2; margin-right:10px;">
-          <input type="number" class="form-control" value="${s.price}" onchange="localServices[${idx}].price=parseInt(this.value)" style="flex:1; margin-right:10px;" placeholder="Giá VNĐ">
-        </div>
-      `).join('');
+      if (servicesContainer) {
+        servicesContainer.innerHTML = localServices.map((s, idx) => `
+          <div class="item-card">
+            <div class="item-header">
+              <strong>📦 Gói #${idx + 1}: ${s.name}</strong>
+              <button class="btn-danger" style="padding: 4px 10px; font-size: 0.85rem;" onclick="localServices.splice(${idx},1); renderPricesUI();"><i class="fa-solid fa-trash"></i> Xóa</button>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Tên Gói Dịch Vụ:</label>
+              <input type="text" class="form-control" value="${s.name || ''}" onchange="localServices[${idx}].name=this.value">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Mô Tả Gói (hiển thị dưới tên gói):</label>
+              <input type="text" class="form-control" value="${s.sub || ''}" onchange="localServices[${idx}].sub=this.value" placeholder="VD: Video 4K Chỉnh Màu Chuyên Nghiệp + 10 Ảnh...">
+            </div>
+            <div style="display: flex; gap: 10px;">
+              <div class="form-group" style="flex: 1;">
+                <label class="form-label">Giá (VNĐ):</label>
+                <input type="number" class="form-control" value="${s.price || 0}" onchange="localServices[${idx}].price=parseInt(this.value)||0" placeholder="VD: 299000">
+              </div>
+              <div class="form-group" style="flex: 0 0 140px;">
+                <label class="form-label">Nổi Bật (Popular):</label>
+                <select class="form-control" onchange="localServices[${idx}].isPopular=(this.value==='true')">
+                  <option value="false" ${!s.isPopular ? 'selected' : ''}>Bình thường</option>
+                  <option value="true" ${s.isPopular ? 'selected' : ''}>⭐ Nổi bật</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      }
+    }
+
+    function addNewBike() {
+      localBikes.push({
+        id: "bike-" + Date.now(),
+        name: "Tên Dòng Xe Mới",
+        extraPrice: 0,
+        sub: "Mô tả ngắn về dòng xe này"
+      });
+      renderPricesUI();
+    }
+
+    function addNewService() {
+      localServices.push({
+        id: "goi-" + Date.now(),
+        name: "Gói Dịch Vụ Mới",
+        price: 299000,
+        isPopular: false,
+        sub: "Mô tả chi tiết gói dịch vụ mới..."
+      });
+      renderPricesUI();
     }
 
     function gatherAllData() {
