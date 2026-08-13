@@ -1,22 +1,23 @@
 /**
  * DREAM MOTO NIGHT RIDE - PURE STATIC WEBSITE ENGINE
  * 
- * BẢNG CẤU HÌNH TRANG WEB TĨNH (STATIC CONFIGURATION):
- * Bạn có thể chỉnh sửa giá, số điện thoại Zalo, danh sách xe, gói dịch vụ
- * và danh sách Bikers ngay tại đây mà không cần can thiệp vào code HTML phức tạp.
+ * Nguồn dữ liệu tĩnh được nạp tự động từ `data-config.js` (DREAM_MOTO_DATA).
+ * Giúp bạn quản lý toàn bộ video trend, bảng giá, danh sách dòng xe & bikers
+ * chỉ bằng cách chỉnh sửa file `data-config.js` cực kỳ đơn giản!
  */
 
-const DREAM_MOTO_CONFIG = {
-  zaloPhone: "0900000000",
-  shopName: "Dream Moto Sài Gòn",
-  spotLocation: "Cầu Ba Son - Thủ Thiêm",
-  defaultSlot: "21:30",
-  defaultBiker: "Rider Tuấn Motor",
-  
-  // Cấu hình bảng giá mặc định
-  defaultBike: { name: "Kawasaki Z1000", extraPrice: 0 },
-  defaultService: { name: "Gói 1: TikTok Basic", price: 299000 }
-};
+// Safe reference to static data config
+function getShopConfig() {
+  if (typeof DREAM_MOTO_DATA !== 'undefined' && DREAM_MOTO_DATA.shopInfo) {
+    return DREAM_MOTO_DATA.shopInfo;
+  }
+  return {
+    name: "Dream Moto Sài Gòn",
+    zaloPhone: "0900000000",
+    spotLocation: "Cầu Ba Son - Thủ Thiêm",
+    defaultSlot: "21:30"
+  };
+}
 
 // Core Calculation Logic Functions (Pure Static Functions)
 function calculatePrice(bikeExtra, servicePrice, addonsPrice) {
@@ -27,11 +28,11 @@ function calculatePrice(bikeExtra, servicePrice, addonsPrice) {
 }
 
 function generateZaloLink(bikeName, serviceName, slotTime, totalPrice, bikerName) {
-  const phoneNumber = DREAM_MOTO_CONFIG.zaloPhone || "0900000000";
+  const cfg = getShopConfig();
   const formattedPrice = totalPrice.toLocaleString('vi-VN') + "đ";
   const bikerText = bikerName ? `\n- Biker Yêu Thích: ${bikerName}` : '';
   
-  const message = `Chào ${DREAM_MOTO_CONFIG.shopName}! Tôi muốn đặt dịch vụ Quay Video Moto Đêm ${DREAM_MOTO_CONFIG.spotLocation}:
+  const message = `Chào ${cfg.name}! Tôi muốn đặt dịch vụ Quay Video Moto Đêm ${cfg.spotLocation}:
 - Dòng Xe: ${bikeName}
 - Gói Dịch Vụ: ${serviceName}${bikerText}
 - Khung Giờ: ${slotTime} Tối Nay
@@ -39,14 +40,14 @@ function generateZaloLink(bikeName, serviceName, slotTime, totalPrice, bikerName
 
 Tư vấn và giữ slot giúp tôi nhé!`;
 
-  return `https://zalo.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+  return `https://zalo.me/${cfg.zaloPhone}?text=${encodeURIComponent(message)}`;
 }
 
 // Global State
-let selectedBike = { ...DREAM_MOTO_CONFIG.defaultBike };
-let selectedService = { ...DREAM_MOTO_CONFIG.defaultService };
-let selectedSlot = DREAM_MOTO_CONFIG.defaultSlot;
-let selectedBiker = DREAM_MOTO_CONFIG.defaultBiker;
+let selectedBike = { name: "Kawasaki Z1000", extraPrice: 0 };
+let selectedService = { name: "Gói 1: TikTok Basic", price: 299000 };
+let selectedSlot = "21:30";
+let selectedBiker = "Rider Tuấn Motor";
 
 function updatePrice() {
   const helmetAddon = document.getElementById("addonHelmet");
@@ -171,5 +172,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Export functions for node/python testing if required
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { calculatePrice, generateZaloLink, DREAM_MOTO_CONFIG };
+  module.exports = { calculatePrice, generateZaloLink, getShopConfig };
 }

@@ -20,10 +20,22 @@ class TestDreamMotoWebsite(unittest.TestCase):
         index_path = os.path.join(PROJECT_DIR, "index.html")
         style_path = os.path.join(PROJECT_DIR, "style.css")
         app_path = os.path.join(PROJECT_DIR, "app.js")
+        config_path = os.path.join(PROJECT_DIR, "data-config.js")
         
         self.assertTrue(os.path.exists(index_path), "index.html should exist")
         self.assertTrue(os.path.exists(style_path), "style.css should exist")
         self.assertTrue(os.path.exists(app_path), "app.js should exist")
+        self.assertTrue(os.path.exists(config_path), "data-config.js should exist")
+
+    def test_data_config_content(self):
+        config_path = os.path.join(PROJECT_DIR, "data-config.js")
+        with open(config_path, "r", encoding="utf-8") as f:
+            content = f.read()
+
+        self.assertIn("DREAM_MOTO_DATA", content)
+        self.assertIn("zaloPhone", content)
+        self.assertIn("trends", content)
+        self.assertIn("bikers", content)
 
     def test_index_html_content(self):
         index_path = os.path.join(PROJECT_DIR, "index.html")
@@ -33,7 +45,7 @@ class TestDreamMotoWebsite(unittest.TestCase):
         self.assertIn('id="hero"', content)
         self.assertIn('id="trends"', content)
         self.assertIn('id="spots"', content)
-        self.assertIn('id="bikers"', content, "Should have Biker Profiles section")
+        self.assertIn('id="bikers"', content)
         self.assertIn('id="calculator"', content)
         self.assertIn('id="slots"', content)
         self.assertIn('id="faq"', content)
