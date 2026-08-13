@@ -566,30 +566,38 @@
           
           <div class="form-group">
             <label class="form-label"><i class="fa-solid fa-user-circle"></i> Ảnh Đại Diện Biker (Avatar tròn ở đầu thẻ):</label>
-            <div class="media-dropzone" onclick="triggerFileInput('bikerAvatar_${idx}')" ondragover="event.preventDefault(); this.classList.add('dragover');" ondragleave="this.classList.remove('dragover');" ondrop="handleDropMedia(event, 'bikerAvatarPreviewContainer_${idx}', (fn)=>{localBikers[${idx}].avatarUrl=fn;})">
+            <div class="media-dropzone" onclick="triggerFileInput('bikerAvatar_${idx}')" ondragover="event.preventDefault(); this.classList.add('dragover');" ondragleave="this.classList.remove('dragover');" ondrop="handleDropMedia(event, 'bikerAvatarPreviewContainer_${idx}', (fn)=>{localBikers[${idx}].avatarUrl=fn; renderBikersUI();})">
               <i class="fa-solid fa-image"></i>
               <p>Kéo & thả file Ảnh (PNG/JPG) làm Avatar</p>
-              <input type="file" id="bikerAvatar_${idx}" accept="image/*" style="display:none" onchange="handleSelectedFile(this, 'bikerAvatarPreviewContainer_${idx}', (fn)=>{localBikers[${idx}].avatarUrl=fn;})">
+              <input type="file" id="bikerAvatar_${idx}" accept="image/*" style="display:none" onchange="handleSelectedFile(this, 'bikerAvatarPreviewContainer_${idx}', (fn)=>{localBikers[${idx}].avatarUrl=fn; renderBikersUI();})">
             </div>
             <div id="bikerAvatarPreviewContainer_${idx}" class="media-preview-container" style="margin-top: 10px;">
-              ${b.avatarUrl ? `<img class="media-preview-box" src="${b.avatarUrl}" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;">` : ''}
+              ${b.avatarUrl ? `<img id="bikerAvatarPreview_${idx}" class="media-preview-box" src="${b.avatarUrl}" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; object-position: center ${b.avatarY !== undefined ? b.avatarY : 50}%;">` : ''}
             </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Căn dọc Avatar (Nhấn giữ & kéo thanh trượt để chỉnh mặt):</label>
+            <input type="range" class="form-range" min="0" max="100" value="${b.avatarY !== undefined ? b.avatarY : 50}" oninput="localBikers[${idx}].avatarY=this.value; const img = document.getElementById('bikerAvatarPreview_${idx}'); if(img) img.style.objectPosition='center ' + this.value + '%';" style="width: 100%; accent-color: var(--neon-gold); cursor: pointer;">
           </div>
           
           <div class="form-group">
             <label class="form-label"><i class="fa-solid fa-photo-film"></i> Video/Ảnh Giới Thiệu Biker (Hiển thị ở dưới thẻ):</label>
-            <div class="media-dropzone" onclick="triggerFileInput('bikerFile_${idx}')" ondragover="event.preventDefault(); this.classList.add('dragover');" ondragleave="this.classList.remove('dragover');" ondrop="handleDropMedia(event, 'bikerPreviewContainer_${idx}', (fn)=>{localBikers[${idx}].videoUrl=fn;})">
+            <div class="media-dropzone" onclick="triggerFileInput('bikerFile_${idx}')" ondragover="event.preventDefault(); this.classList.add('dragover');" ondragleave="this.classList.remove('dragover');" ondrop="handleDropMedia(event, 'bikerPreviewContainer_${idx}', (fn)=>{localBikers[${idx}].videoUrl=fn; renderBikersUI();})">
               <i class="fa-solid fa-cloud-arrow-up"></i>
               <p>Kéo & thả file Ảnh (PNG/JPG) hoặc Video (MP4) giới thiệu</p>
-              <input type="file" id="bikerFile_${idx}" accept="image/*, video/*" style="display:none" onchange="handleSelectedFile(this, 'bikerPreviewContainer_${idx}', (fn)=>{localBikers[${idx}].videoUrl=fn;})">
+              <input type="file" id="bikerFile_${idx}" accept="image/*, video/*" style="display:none" onchange="handleSelectedFile(this, 'bikerPreviewContainer_${idx}', (fn)=>{localBikers[${idx}].videoUrl=fn; renderBikersUI();})">
             </div>
             <div id="bikerPreviewContainer_${idx}" class="media-preview-container">
               ${b.videoUrl ? (
                 /\.(mp4|webm|ogg|mov)(\?.*)?$/i.test(b.videoUrl) || b.videoUrl.includes("data:video/") ?
-                `<video class="media-preview-box" autoplay loop muted playsinline controls><source src="${b.videoUrl}" type="video/mp4"></video>` :
-                `<img class="media-preview-box" src="${b.videoUrl}" style="max-height: 150px; object-fit: cover;">`
+                `<video id="bikerShowcasePreview_${idx}" class="media-preview-box" autoplay loop muted playsinline controls style="object-fit: cover; object-position: center ${b.videoY !== undefined ? b.videoY : 50}%;"><source src="${b.videoUrl}" type="video/mp4"></video>` :
+                `<img id="bikerShowcasePreview_${idx}" class="media-preview-box" src="${b.videoUrl}" style="max-height: 150px; object-fit: cover; object-position: center ${b.videoY !== undefined ? b.videoY : 50}%;">`
               ) : ''}
             </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Căn dọc Ảnh/Video dưới (Nhấn giữ & kéo thanh trượt để chỉnh):</label>
+            <input type="range" class="form-range" min="0" max="100" value="${b.videoY !== undefined ? b.videoY : 50}" oninput="localBikers[${idx}].videoY=this.value; const preview = document.getElementById('bikerShowcasePreview_${idx}'); if(preview) preview.style.objectPosition='center ' + this.value + '%';" style="width: 100%; accent-color: var(--neon-gold); cursor: pointer;">
           </div>
 
           <div class="form-group">
