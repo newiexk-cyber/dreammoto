@@ -15,7 +15,7 @@ const DREAM_MOTO_DATA = {
     announcementText: "⚡ <strong>HOT:</strong> Tối nay chỉ còn <span class=\"highlight-badge\">3 slot trống</span> tại Cầu Ba Son! Đặt lịch ngay để giữ giờ đẹp.",
     
     // Tiêu Đề & Mô Tả Hero Banner (Hiển thị nổi bật đầu trang)
-    heroTitle: "CHỞ KHÁCH NGẮM CẢNH & <span class=\"highlight-gold\">QUAY VIDEO MÔ TÔ ĐÊM</span> TẠI CẦU BA SON",
+    heroTitle: "CHỞ KHÁCH NGẮM CẢNH &<br><span class=\"highlight-gold\">QUAY VIDEO MÔ TÔ ĐÊM</span><br>TẠI CẦU BA SON",
     heroSubtitle: "Trải nghiệm cảm giác vi vu mô tô phân khối lớn lướt qua ánh đèn lung linh Cầu Ba Son & Landmark 81. Sở hữu ngay video 4K chất lượng chuẩn TikTok viral!",
     
     // 3 Con Số Thống Kê Nổi Bật (Khách trải nghiệm, Views TikTok, Rating)
