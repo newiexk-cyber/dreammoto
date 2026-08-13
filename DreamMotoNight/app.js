@@ -171,8 +171,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (info.branches && info.branches.length >= 1) {
       if (cs1Elem && info.branches[0]) cs1Elem.textContent = info.branches[0].name;
-      if (cs2Elem && info.branches[1]) cs2Elem.textContent = info.branches[1].name;
-      if (cs3Elem && info.branches[2]) cs3Elem.textContent = info.branches[2].name;
+      if (cs2Elem) cs2Elem.style.display = info.branches[1] ? 'inline' : 'none';
+      if (cs3Elem) cs3Elem.style.display = info.branches[2] ? 'inline' : 'none';
     }
   }
 

@@ -29,9 +29,7 @@ const DREAM_MOTO_DATA = {
     
     // Danh sách Hệ thống Chi nhánh / Điểm đón
     branches: [
-      { id: "cs1", name: "CS Quận 1: 214/19/21 Nguyễn Văn Nguyễn, P. Tân Định, Q. 1, TP.HCM" },
-      { id: "cs2", name: "CS Thủ Đức: Chân Cầu Ba Son - Đại Lộ Thủ Thiêm, TP. Thủ Đức" },
-      { id: "cs3", name: "CS Bạch Đằng: 1 Tôn Đức Thắng, P. Bến Nghé, Quận 1, TP.HCM" }
+      { id: "cs1", name: "CS Quận 1: 214/19/21 Nguyễn Văn Nguyễn, P. Tân Định, Q. 1, TP.HCM" }
     ],
 
     // 3 Con Số Thống Kê Nổi Bật
