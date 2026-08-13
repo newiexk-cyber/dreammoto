@@ -103,13 +103,41 @@ function selectTrendInCalc(trendName) {
 // Initialize Event Listeners when DOM is ready
 document.addEventListener("DOMContentLoaded", () => {
 
-  // Dynamic Hero Video Background Autoloop Loader
-  if (typeof DREAM_MOTO_DATA !== 'undefined' && DREAM_MOTO_DATA.shopInfo && DREAM_MOTO_DATA.shopInfo.heroVideoUrl) {
-    const videoSource = document.getElementById("heroVideoSource");
-    const videoElem = document.getElementById("heroVideoBg");
-    if (videoSource && videoElem) {
-      videoSource.src = DREAM_MOTO_DATA.shopInfo.heroVideoUrl;
-      videoElem.load();
+  // Dynamic Hero Video Background Autoloop Loader & Text Content Loader
+  if (typeof DREAM_MOTO_DATA !== 'undefined' && DREAM_MOTO_DATA.shopInfo) {
+    const info = DREAM_MOTO_DATA.shopInfo;
+    
+    // Video Background
+    if (info.heroVideoUrl) {
+      const videoSource = document.getElementById("heroVideoSource");
+      const videoElem = document.getElementById("heroVideoBg");
+      if (videoSource && videoElem) {
+        videoSource.src = info.heroVideoUrl;
+        videoElem.load();
+      }
+    }
+
+    // Hero Title & Subtitle
+    const heroTitleElem = document.getElementById("heroTitle");
+    const heroSubtitleElem = document.getElementById("heroSubtitle");
+    if (heroTitleElem && info.heroTitle) heroTitleElem.innerHTML = info.heroTitle;
+    if (heroSubtitleElem && info.heroSubtitle) heroSubtitleElem.innerHTML = info.heroSubtitle;
+
+    // Hero Stats
+    if (info.stats && info.stats.length >= 3) {
+      const s1n = document.getElementById("stat1Num");
+      const s1t = document.getElementById("stat1Txt");
+      const s2n = document.getElementById("stat2Num");
+      const s2t = document.getElementById("stat2Txt");
+      const s3n = document.getElementById("stat3Num");
+      const s3t = document.getElementById("stat3Txt");
+
+      if (s1n) s1n.innerHTML = info.stats[0].number;
+      if (s1t) s1t.innerHTML = info.stats[0].text;
+      if (s2n) s2n.innerHTML = info.stats[1].number;
+      if (s2t) s2t.innerHTML = info.stats[1].text;
+      if (s3n) s3n.innerHTML = info.stats[2].number;
+      if (s3t) s3t.innerHTML = info.stats[2].text;
     }
   }
 

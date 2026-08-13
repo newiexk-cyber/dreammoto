@@ -162,15 +162,19 @@
 
     <!-- Tab 1: Shop & Zalo Config -->
     <div id="shopTab" class="admin-panel active">
-      <h3 style="margin-bottom: 20px; color: var(--neon-gold);"><i class="fa-solid fa-store"></i> Thông Tin Shop & Video Hero Background</h3>
-      <div class="form-group">
-        <label class="form-label">Tên Thương Hiệu Shop:</label>
-        <input type="text" id="cfgShopName" class="form-control" value="Dream Moto Sài Gòn">
+      <h3 style="margin-bottom: 20px; color: var(--neon-gold);"><i class="fa-solid fa-store"></i> Thông Tin Shop & Nội Dung Hero Banner</h3>
+      
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+        <div class="form-group">
+          <label class="form-label">Tên Thương Hiệu Shop:</label>
+          <input type="text" id="cfgShopName" class="form-control" value="Dream Moto Sài Gòn">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Số Điện Thoại Zalo Nhận Đơn (09xxx):</label>
+          <input type="text" id="cfgZaloPhone" class="form-control" value="0900000000">
+        </div>
       </div>
-      <div class="form-group">
-        <label class="form-label">Số Điện Thoại Zalo Nhận Đơn (Dạng 09xxx):</label>
-        <input type="text" id="cfgZaloPhone" class="form-control" value="0900000000">
-      </div>
+
       <div class="form-group">
         <label class="form-label">Địa Điểm Đón & Quay Đêm:</label>
         <input type="text" id="cfgSpotLocation" class="form-control" value="Cầu Ba Son - Thủ Thiêm">
@@ -179,7 +183,38 @@
         <label class="form-label">Thông Báo Live Banner (Top Page):</label>
         <input type="text" id="cfgAnnouncement" class="form-control" value="⚡ HOT: Tối nay chỉ còn 3 slot trống tại Cầu Ba Son! Đặt lịch ngay để giữ giờ đẹp.">
       </div>
-      
+
+      <!-- HERO TITLE & SUBTITLE FIELDS -->
+      <div class="form-group">
+        <label class="form-label"><i class="fa-solid fa-heading"></i> Tiêu Đề Hero Banner (Đầu Trang):</label>
+        <textarea id="cfgHeroTitle" class="form-control" rows="2">CHỞ KHÁCH NGẮM CẢNH & QUAY VIDEO MÔ TÔ ĐÊM TẠI CẦU BA SON</textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label"><i class="fa-solid fa-align-left"></i> Mô Tả Ngắn Hero Banner:</label>
+        <textarea id="cfgHeroSubtitle" class="form-control" rows="3">Trải nghiệm cảm giác vi vu mô tô phân khối lớn lướt qua ánh đèn lung linh Cầu Ba Son & Landmark 81. Sở hữu ngay video 4K chất lượng chuẩn TikTok viral!</textarea>
+      </div>
+
+      <!-- 3 HERO STATS BOXES -->
+      <h4 style="color: var(--neon-cyan); margin-top: 20px; margin-bottom: 12px;"><i class="fa-solid fa-chart-simple"></i> 3 Con Số Thống Kê Nổi Bật (Stats Box):</h4>
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; margin-bottom: 20px;">
+        <div class="item-card" style="margin-bottom:0;">
+          <label class="form-label">Thống Kê 1:</label>
+          <input type="text" id="cfgStat1Num" class="form-control" value="500+" placeholder="Ví dụ: 500+">
+          <input type="text" id="cfgStat1Txt" class="form-control" value="Khách Đã Trải Nghiệm" placeholder="Mô tả" style="margin-top:8px;">
+        </div>
+        <div class="item-card" style="margin-bottom:0;">
+          <label class="form-label">Thống Kê 2:</label>
+          <input type="text" id="cfgStat2Num" class="form-control" value="10M+" placeholder="Ví dụ: 10M+">
+          <input type="text" id="cfgStat2Txt" class="form-control" value="Lượt View TikTok" placeholder="Mô tả" style="margin-top:8px;">
+        </div>
+        <div class="item-card" style="margin-bottom:0;">
+          <label class="form-label">Thống Kê 3:</label>
+          <input type="text" id="cfgStat3Num" class="form-control" value="4.9/5 ⭐" placeholder="Ví dụ: 4.9/5 ⭐">
+          <input type="text" id="cfgStat3Txt" class="form-control" value="Đánh Giá Hài Lòng" placeholder="Mô tả" style="margin-top:8px;">
+        </div>
+      </div>
+
       <!-- Pure Drag & Drop Hero Media (No Text URL Input) -->
       <div class="form-group">
         <label class="form-label"><i class="fa-solid fa-photo-film"></i> Upload File Ảnh/Video Hero Banner (Kéo - Thả Trực Tiếp):</label>
@@ -348,6 +383,19 @@
       document.getElementById("cfgShopName").value = info.name || "Dream Moto Sài Gòn";
       document.getElementById("cfgZaloPhone").value = info.zaloPhone || "0900000000";
       document.getElementById("cfgSpotLocation").value = info.spotLocation || "Cầu Ba Son - Thủ Thiêm";
+      document.getElementById("cfgAnnouncement").value = info.announcementText || "";
+      document.getElementById("cfgHeroTitle").value = info.heroTitle || "CHỞ KHÁCH NGẮM CẢNH & QUAY VIDEO MÔ TÔ ĐÊM TẠI CẦU BA SON";
+      document.getElementById("cfgHeroSubtitle").value = info.heroSubtitle || "Trải nghiệm cảm giác vi vu mô tô phân khối lớn lướt qua ánh đèn lung linh Cầu Ba Son & Landmark 81. Sở hữu ngay video 4K chất lượng chuẩn TikTok viral!";
+
+      if (info.stats && info.stats.length >= 3) {
+        document.getElementById("cfgStat1Num").value = info.stats[0].number || "500+";
+        document.getElementById("cfgStat1Txt").value = info.stats[0].text || "Khách Đã Trải Nghiệm";
+        document.getElementById("cfgStat2Num").value = info.stats[1].number || "10M+";
+        document.getElementById("cfgStat2Txt").value = info.stats[1].text || "Lượt View TikTok";
+        document.getElementById("cfgStat3Num").value = info.stats[2].number || "4.9/5 ⭐";
+        document.getElementById("cfgStat3Txt").value = info.stats[2].text || "Đánh Giá Hài Lòng";
+      }
+
       heroVideoVal = info.heroVideoUrl || "https://assets.mixkit.co/videos/preview/mixkit-top-view-of-motorcycles-driving-on-a-highway-41551-large.mp4";
 
       localBikers = JSON.parse(JSON.stringify(DREAM_MOTO_DATA.bikers || []));
@@ -530,6 +578,13 @@
           zaloPhone: document.getElementById("cfgZaloPhone").value,
           spotLocation: document.getElementById("cfgSpotLocation").value,
           announcementText: document.getElementById("cfgAnnouncement").value,
+          heroTitle: document.getElementById("cfgHeroTitle").value,
+          heroSubtitle: document.getElementById("cfgHeroSubtitle").value,
+          stats: [
+            { number: document.getElementById("cfgStat1Num").value, text: document.getElementById("cfgStat1Txt").value },
+            { number: document.getElementById("cfgStat2Num").value, text: document.getElementById("cfgStat2Txt").value },
+            { number: document.getElementById("cfgStat3Num").value, text: document.getElementById("cfgStat3Txt").value }
+          ],
           defaultSlot: "21:30",
           heroVideoUrl: heroVideoVal
         },

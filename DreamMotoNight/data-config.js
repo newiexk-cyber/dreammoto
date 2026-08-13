@@ -2,23 +2,35 @@
  * DREAM MOTO NIGHT RIDE - CẤU HÌNH DỮ LIỆU TĨNH (DATA CONFIGURATION)
  * 
  * ĐÂY LÀ KHU VỰC QUẢN LÝ NỘI DUNG CỦA WEBSITE:
- * Bạn hoặc nhân viên có thể thay đổi link video, hình ảnh, thông tin biker, 
- * góc quay Cầu Ba Son & bảng giá công khai dễ dàng.
+ * Bạn hoặc nhân viên có thể thay đổi Tiêu đề Hero, Mô tả, Các con số Thống kê, 
+ * link video, hình ảnh, thông tin biker & bảng giá dễ dàng.
  */
 
 const DREAM_MOTO_DATA = {
-  // 1. THÔNG TIN CHUNG, ZALO & VIDEO HERO BACKGROUND
+  // 1. THÔNG TIN CHUNG, HERO BANNER & THỐNG KÊ (HỖ TRỢ CHỈNH SỬA TRONG ADMIN)
   shopInfo: {
     name: "Dream Moto Sài Gòn",
     zaloPhone: "0900000000",
     spotLocation: "Cầu Ba Son - Thủ Thiêm",
     announcementText: "⚡ <strong>HOT:</strong> Tối nay chỉ còn <span class=\"highlight-badge\">3 slot trống</span> tại Cầu Ba Son! Đặt lịch ngay để giữ giờ đẹp.",
+    
+    // Tiêu Đề & Mô Tả Hero Banner (Hiển thị nổi bật đầu trang)
+    heroTitle: "CHỞ KHÁCH NGẮM CẢNH & QUAY VIDEO MÔ TÔ ĐÊM TẠI CẦU BA SON",
+    heroSubtitle: "Trải nghiệm cảm giác vi vu mô tô phân khối lớn lướt qua ánh đèn lung linh Cầu Ba Son & Landmark 81. Sở hữu ngay video 4K chất lượng chuẩn TikTok viral!",
+    
+    // 3 Con Số Thống Kê Nổi Bật (Khách trải nghiệm, Views TikTok, Rating)
+    stats: [
+      { number: "500+", text: "Khách Đã Trải Nghiệm" },
+      { number: "10M+", text: "Lượt View TikTok" },
+      { number: "4.9/5 ⭐", text: "Đánh Giá Hài Lòng" }
+    ],
+
     defaultSlot: "21:30",
-    // Video chạy nền Hero Banner
+    // Video/Ảnh chạy nền Hero Banner
     heroVideoUrl: "https://assets.mixkit.co/videos/preview/mixkit-top-view-of-motorcycles-driving-on-a-highway-41551-large.mp4"
   },
 
-  // 2. DANH SÁCH 5 HOT TRENDS TIKTOK (Chèn link video mp4/embed cho từng trend)
+  // 2. DANH SÁCH 5 HOT TRENDS TIKTOK
   trends: [
     {
       id: "trend-1",
@@ -97,7 +109,7 @@ const DREAM_MOTO_DATA = {
     }
   ],
 
-  // 4. DANH SÁCH ĐỘI NGŨ BIKERS (Chèn link video demo / avatar)
+  // 4. DANH SÁCH ĐỘI NGŨ BIKERS
   bikers: [
     {
       id: "biker-tuan",
