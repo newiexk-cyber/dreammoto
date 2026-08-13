@@ -140,7 +140,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (s3t) s3t.innerHTML = info.stats[2].text;
     }
 
-    // Credit Contact Information
+    // Credit Contact Information & 3-Column Footer Loader
     const credWeb = document.getElementById("creditWebsite");
     const credTik = document.getElementById("creditTiktok");
     const credHot = document.getElementById("creditHotline");
@@ -156,6 +156,24 @@ document.addEventListener("DOMContentLoaded", () => {
       credHot.href = `tel:${info.hotline.replace(/[^0-9]/g, '')}`;
     }
     if (credAdr && info.address) credAdr.textContent = info.address;
+
+    // Premium 3-Column Footer Loader
+    const bioElem = document.getElementById("footerBioText");
+    const hotElem = document.getElementById("footerHotline");
+    const emailElem = document.getElementById("footerEmail");
+    const cs1Elem = document.getElementById("footerCS1");
+    const cs2Elem = document.getElementById("footerCS2");
+    const cs3Elem = document.getElementById("footerCS3");
+
+    if (bioElem && info.footerBio) bioElem.textContent = info.footerBio;
+    if (hotElem && info.hotline) hotElem.textContent = info.hotline;
+    if (emailElem && info.email) emailElem.textContent = info.email;
+
+    if (info.branches && info.branches.length >= 1) {
+      if (cs1Elem && info.branches[0]) cs1Elem.textContent = info.branches[0].name;
+      if (cs2Elem && info.branches[1]) cs2Elem.textContent = info.branches[1].name;
+      if (cs3Elem && info.branches[2]) cs3Elem.textContent = info.branches[2].name;
+    }
   }
 
   // Render TikTok Trends (Chỉ phát 1 video active duy nhất khi bấm chọn, tránh nặng 4G & giật lag)

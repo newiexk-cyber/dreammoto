@@ -2,12 +2,12 @@
  * DREAM MOTO NIGHT RIDE - CẤU HÌNH DỮ LIỆU TĨNH (DATA CONFIGURATION)
  * 
  * ĐÂY LÀ KHU VỰC QUẢN LÝ NỘI DUNG CỦA WEBSITE:
- * Bạn hoặc nhân viên có thể thay đổi Tiêu đề Hero, Mô tả, Thông tin Liên hệ Credit, 
+ * Bạn hoặc nhân viên có thể thay đổi Tiêu đề Hero, Mô tả, Thông tin Liên hệ, Hệ thống Chi nhánh, 
  * Hotline, Địa chỉ, link video, hình ảnh, thông tin biker & bảng giá dễ dàng.
  */
 
 const DREAM_MOTO_DATA = {
-  // 1. THÔNG TIN CHUNG, HERO BANNER & THÔNG TIN LIÊN HỆ CREDIT
+  // 1. THÔNG TIN CHUNG, HERO BANNER & HỆ THỐNG CHI NHÁNH / FOOTER CREDIT
   shopInfo: {
     name: "Dream Moto Sài Gòn",
     zaloPhone: "0900000000",
@@ -18,11 +18,21 @@ const DREAM_MOTO_DATA = {
     heroTitle: "CHỞ KHÁCH NGẮM CẢNH & QUAY VIDEO MÔ TÔ ĐÊM TẠI CẦU BA SON",
     heroSubtitle: "Trải nghiệm cảm giác vi vu mô tô phân khối lớn lướt qua ánh đèn lung linh Cầu Ba Son & Landmark 81. Sở hữu ngay video 4K chất lượng chuẩn TikTok viral!",
     
-    // Thông Tin Liên Hệ Credit Cuối Trang
+    // Thông Tin Liên Hệ & Footer Credit 3 Cột
+    footerBio: "Chụp lại ước mơ và lưu giữ từng khoảnh khắc vi vu đêm rực rỡ trọn vẹn của bạn. Dịch vụ quay video mô tô 4K nghệ thuật chỉn chu, tận tâm và chuyên nghiệp hàng đầu.",
     websiteUrl: "https://dreammoto.vn",
     tiktokId: "Dreammoto.vn",
-    hotline: "090.7777.482",
-    address: "Nguyễn Văn Nguyễn, Tân Định, Quận 1, Tp.HCM",
+    hotline: "0908 447 308",
+    email: "contact@dreammoto.vn",
+    zaloOaText: "Nhắn tin qua Zalo OA",
+    address: "214/19/21 Nguyễn Văn Nguyễn, P. Tân Định, Q. 1, TP.HCM",
+    
+    // Danh sách Hệ thống Chi nhánh / Điểm đón
+    branches: [
+      { id: "cs1", name: "CS Quận 1: 214/19/21 Nguyễn Văn Nguyễn, P. Tân Định, Q. 1, TP.HCM" },
+      { id: "cs2", name: "CS Thủ Đức: Chân Cầu Ba Son - Đại Lộ Thủ Thiêm, TP. Thủ Đức" },
+      { id: "cs3", name: "CS Bạch Đằng: 1 Tôn Đức Thắng, P. Bến Nghé, Quận 1, TP.HCM" }
+    ],
 
     // 3 Con Số Thống Kê Nổi Bật
     stats: [

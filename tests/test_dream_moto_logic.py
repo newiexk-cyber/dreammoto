@@ -83,10 +83,10 @@ class TestDreamMotoWebsite(unittest.TestCase):
         with open(index_path, "r", encoding="utf-8") as f:
             content = f.read()
 
-        self.assertIn('id="creditWebsite"', content)
-        self.assertIn('id="creditTiktok"', content)
-        self.assertIn('id="creditHotline"', content)
-        self.assertIn('id="creditAddress"', content)
+        self.assertIn('id="footerBioText"', content)
+        self.assertIn('id="footerHotline"', content)
+        self.assertIn('id="footerEmail"', content)
+        self.assertIn('id="footerCS1"', content)
 
     def test_biker_profiles_rendered(self):
         config_path = os.path.join(PROJECT_DIR, "data-config.js")
