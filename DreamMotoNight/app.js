@@ -242,23 +242,22 @@ function applyShopInfo() {
   }
 }
 
-function getBikerAvatarHtml(url, avatarY) {
-  const y = avatarY !== undefined ? avatarY : 50;
+function getBikerAvatarHtml(url) {
   if (!url) {
     return `<i class="fa-solid fa-user-ninja"></i>`;
   }
   if (url.startsWith("data:")) {
     if (url.includes("data:video/")) {
-      return `<video src="${url}" autoplay loop muted playsinline class="biker-avatar-media" style="object-position: center ${y}%;"></video>`;
+      return `<video src="${url}" autoplay loop muted playsinline class="biker-avatar-media"></video>`;
     } else {
-      return `<img src="${url}" alt="Avatar" class="biker-avatar-media" style="object-position: center ${y}%;">`;
+      return `<img src="${url}" alt="Avatar" class="biker-avatar-media">`;
     }
   }
   const isVideo = /\.(mp4|webm|ogg|mov)(\?.*)?$/i.test(url);
   if (isVideo) {
-    return `<video src="${url}" autoplay loop muted playsinline class="biker-avatar-media" style="object-position: center ${y}%;"></video>`;
+    return `<video src="${url}" autoplay loop muted playsinline class="biker-avatar-media"></video>`;
   } else {
-    return `<img src="${url}" alt="Avatar" class="biker-avatar-media" style="object-position: center ${y}%;">`;
+    return `<img src="${url}" alt="Avatar" class="biker-avatar-media">`;
   }
 }
 
@@ -270,16 +269,15 @@ function renderBikers() {
     let showcaseMediaHtml = "";
     if (b.videoUrl) {
       const isVideo = /\.(mp4|webm|ogg|mov)(\?.*)?$/i.test(b.videoUrl) || b.videoUrl.includes("data:video/");
-      const y = b.videoY !== undefined ? b.videoY : 50;
       if (isVideo) {
         showcaseMediaHtml = `
           <div class="biker-video-box">
-            <video src="${b.videoUrl}" controls loop muted playsinline class="biker-card-video" style="object-position: center ${y}%;"></video>
+            <video src="${b.videoUrl}" controls loop muted playsinline class="biker-card-video"></video>
           </div>`;
       } else {
         showcaseMediaHtml = `
           <div class="biker-video-box">
-            <img src="${b.videoUrl}" alt="Showcase" class="biker-card-image" style="object-position: center ${y}%;">
+            <img src="${b.videoUrl}" alt="Showcase" class="biker-card-image">
           </div>`;
       }
     }
@@ -289,7 +287,7 @@ function renderBikers() {
         <div class="biker-header">
           <div class="biker-avatar-box">
             <div class="biker-avatar-ring ${b.ringColorClass || ''}"></div>
-            <div class="biker-avatar-icon ${b.iconClass || ''}">${getBikerAvatarHtml(b.avatarUrl, b.avatarY)}</div>
+            <div class="biker-avatar-icon ${b.iconClass || ''}">${getBikerAvatarHtml(b.avatarUrl)}</div>
           </div>
         </div>
         <div class="biker-body">
