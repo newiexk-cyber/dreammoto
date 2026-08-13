@@ -458,8 +458,14 @@
     let hasAutoLoadedFromCloud = false;
 
     async function autoLoadFromCloud(syncUrl) {
+      let headers = {};
+      const provider = DREAM_MOTO_DATA.shopInfo.cloudProvider || "kvdb";
+      const apiKey = DREAM_MOTO_DATA.shopInfo.realtimeApiKey;
+      if (provider === "jsonbin" && apiKey) {
+        headers["X-Master-Key"] = apiKey;
+      }
       try {
-        const res = await fetch(syncUrl);
+        const res = await fetch(syncUrl, { headers: headers });
         if (!res.ok) throw new Error("Cloud load failed");
         let remoteData = await res.json();
         
@@ -828,6 +834,7 @@ if (typeof module !== 'undefined' && module.exports) {
       const provider = document.getElementById("cfgCloudProvider").value;
       const bucketId = document.getElementById("cfgRealtimeBucketId").value;
       let syncUrl = "";
+      let headers = {};
       
       if (provider === "jsonbin") {
         if (!bucketId) {
@@ -835,6 +842,10 @@ if (typeof module !== 'undefined' && module.exports) {
           return;
         }
         syncUrl = `https://api.jsonbin.io/v3/b/${bucketId}/latest`;
+        const apiKey = document.getElementById("cfgRealtimeApiKey").value;
+        if (apiKey) {
+          headers["X-Master-Key"] = apiKey;
+        }
       } else {
         syncUrl = document.getElementById("cfgRealtimeSyncUrl").value;
         if (!syncUrl) {
@@ -844,7 +855,7 @@ if (typeof module !== 'undefined' && module.exports) {
       }
 
       try {
-        const res = await fetch(syncUrl);
+        const res = await fetch(syncUrl, { headers: headers });
         if (!res.ok) throw new Error("Cloud load failed");
         let remoteData = await res.json();
         

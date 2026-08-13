@@ -342,15 +342,20 @@ async function syncRealtimeData() {
   let syncUrl = DREAM_MOTO_DATA.shopInfo.realtimeSyncUrl;
   const provider = DREAM_MOTO_DATA.shopInfo.cloudProvider || "kvdb";
   const bucketId = DREAM_MOTO_DATA.shopInfo.realtimeBucketId;
+  const apiKey = DREAM_MOTO_DATA.shopInfo.realtimeApiKey;
   
+  let headers = {};
   if (provider === "jsonbin" && bucketId) {
     syncUrl = `https://api.jsonbin.io/v3/b/${bucketId}/latest`;
+    if (apiKey) {
+      headers["X-Master-Key"] = apiKey;
+    }
   }
   
   if (!syncUrl) return;
 
   try {
-    const res = await fetch(syncUrl);
+    const res = await fetch(syncUrl, { headers: headers });
     if (!res.ok) throw new Error("Fetch failed");
     let remoteData = await res.json();
     
