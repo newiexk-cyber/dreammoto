@@ -19,6 +19,38 @@
     spotLocation: "Cầu Ba Son - Thủ Thiêm"
   };
 
+  async function syncRealtimeData() {
+    if (typeof DREAM_MOTO_DATA === 'undefined' || !DREAM_MOTO_DATA.shopInfo) return;
+    const syncUrl = DREAM_MOTO_DATA.shopInfo.realtimeSyncUrl;
+    if (!syncUrl) return;
+
+    try {
+      const res = await fetch(syncUrl);
+      if (!res.ok) throw new Error("Fetch failed");
+      const remoteData = await res.json();
+      
+      if (remoteData && remoteData.shopInfo) {
+        DREAM_MOTO_DATA.shopInfo = remoteData.shopInfo;
+        if (remoteData.servicesShowcase) DREAM_MOTO_DATA.servicesShowcase = remoteData.servicesShowcase;
+        if (remoteData.spots) DREAM_MOTO_DATA.spots = remoteData.spots;
+        if (remoteData.bikers) DREAM_MOTO_DATA.bikers = remoteData.bikers;
+        if (remoteData.bikes) DREAM_MOTO_DATA.bikes = remoteData.bikes;
+        if (remoteData.services) DREAM_MOTO_DATA.services = remoteData.services;
+
+        console.log("⚡ Webcake Realtime Sync: Dynamic config loaded from cloud!");
+        if (typeof applyShopInfo === 'function') applyShopInfo();
+        if (typeof renderBikers === 'function') renderBikers();
+        if (typeof renderBikesInCalc === 'function') renderBikesInCalc();
+        if (typeof renderServicesInCalc === 'function') renderServicesInCalc();
+        if (typeof renderServicesShowcase === 'function') renderServicesShowcase();
+        if (typeof updatePrice === 'function') updatePrice();
+      }
+    } catch (err) {
+      console.warn("⚠️ Webcake Fallback: Could not sync realtime data:", err);
+    }
+  }
+
+
   // 1. Tự động chèn Google Fonts & CSS Cyberpunk
   function injectStyles() {
     if (document.getElementById("dream-moto-fonts")) return;
@@ -42,8 +74,12 @@
     const targetElem = document.getElementById(window.DREAM_MOTO_CONFIG.targetId) || document.body;
     if (!targetElem) return;
 
+    // Trigger async realtime sync
+    syncRealtimeData();
+
     console.log("🚀 Dream Moto Webcake Script Loaded Successfully!");
   }
+
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", initWebcakeApp);

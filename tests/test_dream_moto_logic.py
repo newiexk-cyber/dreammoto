@@ -157,6 +157,29 @@ class TestDreamMotoWebsite(unittest.TestCase):
 
         self.assertIn(".video-modal", content)
 
+    def test_realtime_sync_fields_in_data_config(self):
+        config_path = os.path.join(PROJECT_DIR, "data-config.js")
+        with open(config_path, "r", encoding="utf-8") as f:
+            content = f.read()
+
+        self.assertIn("realtimeBucketId", content)
+        self.assertIn("realtimeSyncUrl", content)
+
+    def test_app_js_has_sync_realtime_data_function(self):
+        app_path = os.path.join(PROJECT_DIR, "app.js")
+        with open(app_path, "r", encoding="utf-8") as f:
+            content = f.read()
+
+        self.assertIn("syncRealtimeData", content)
+
+    def test_webcake_js_has_sync_realtime_data_function(self):
+        webcake_path = os.path.join(PROJECT_DIR, "dream-moto-webcake.js")
+        with open(webcake_path, "r", encoding="utf-8") as f:
+            content = f.read()
+
+        self.assertIn("syncRealtimeData", content)
+
 if __name__ == "__main__":
     unittest.main()
+
 

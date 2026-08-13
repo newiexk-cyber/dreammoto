@@ -158,7 +158,9 @@
       <button class="admin-tab-btn" onclick="switchTab('trendsTab')"><i class="fa-solid fa-film"></i> 3. Quản Lý TikTok Trends</button>
       <button class="admin-tab-btn" onclick="switchTab('spotsTab')"><i class="fa-solid fa-location-dot"></i> 4. Quản Lý Góc Quay</button>
       <button class="admin-tab-btn" onclick="switchTab('pricesTab')"><i class="fa-solid fa-tag"></i> 5. Quản Lý Gói Giá & Xe</button>
+      <button class="admin-tab-btn" onclick="switchTab('realtimeTab')"><i class="fa-solid fa-cloud-arrow-up"></i> 6. Đồng Bộ Realtime</button>
     </div>
+
 
     <!-- Tab 1: Shop & Zalo Config -->
     <div id="shopTab" class="admin-panel active">
@@ -301,6 +303,33 @@
       <div id="servicesList"></div>
     </div>
 
+    <!-- Tab 6: Realtime Cloud Sync -->
+    <div id="realtimeTab" class="admin-panel">
+      <h3 style="margin-bottom: 20px; color: var(--neon-gold);"><i class="fa-solid fa-cloud-arrow-up"></i> Cấu Hình Đồng Bộ Realtime Không Dùng Git</h3>
+      <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Giúp cập nhật bảng giá và hình ảnh trực tuyến tức thì lên trang Webcake của bạn mà không cần xuất tải file hay push Git thủ công.</p>
+      
+      <div class="form-group">
+        <label class="form-label">Cloud Key-Value REST URL:</label>
+        <input type="text" id="cfgRealtimeSyncUrl" class="form-control" placeholder="Ví dụ: https://kvdb.io/9k8Kx4z8X3s7s6s9/dream_moto_config">
+        <small style="color: var(--text-muted); margin-top: 4px; display: block;">Mặc định hệ thống tự động sinh cấu hình mây bảo mật KVdb.io cho bạn.</small>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Bucket ID:</label>
+        <input type="text" id="cfgRealtimeBucketId" class="form-control" placeholder="Ví dụ: dream-moto-night-default-key">
+      </div>
+
+      <div style="display: flex; gap: 15px; margin-top: 25px;">
+        <button class="btn-admin btn-save" onclick="saveRealtimeDataCloud()">
+          <i class="fa-solid fa-cloud-arrow-up"></i> ĐẨY LÊN MÂY (LƯU REALTIME)
+        </button>
+        <button class="btn-admin" onclick="loadRealtimeDataCloud()" style="background: rgba(255,255,255,0.06); border: 1px solid var(--border); color: #fff;">
+          <i class="fa-solid fa-cloud-arrow-down"></i> TẢI DỮ LIỆU TỪ MÂY
+        </button>
+      </div>
+    </div>
+
+
     <!-- Save & Export Actions Bar -->
     <div style="background: var(--bg-card); border: 2px solid var(--neon-green); padding: 20px 30px; border-radius: 16px; display: flex; align-items: center; justify-content: space-between;">
       <div>
@@ -432,8 +461,11 @@
       document.getElementById("cfgTiktokId").value = info.tiktokId || "Dreammoto.vn";
       document.getElementById("cfgHotline").value = info.hotline || "0908 447 308";
       document.getElementById("cfgAddress").value = info.address || "214/19/21 Nguyễn Văn Nguyễn, P. Tân Định, Q. 1, TP.HCM";
+      document.getElementById("cfgRealtimeSyncUrl").value = info.realtimeSyncUrl || "https://kvdb.io/9k8Kx4z8X3s7s6s9/dream_moto_config";
+      document.getElementById("cfgRealtimeBucketId").value = info.realtimeBucketId || "dream-moto-night-default-key";
 
       heroVideoVal = info.heroVideoUrl || "https://assets.mixkit.co/videos/preview/mixkit-top-view-of-motorcycles-driving-on-a-highway-41551-large.mp4";
+
 
       localBikers = JSON.parse(JSON.stringify(DREAM_MOTO_DATA.bikers || []));
       localServicesShowcase = JSON.parse(JSON.stringify(DREAM_MOTO_DATA.servicesShowcase || []));
@@ -608,8 +640,8 @@
       `).join('');
     }
 
-    function saveAndExportConfig() {
-      const data = {
+    function gatherAllData() {
+      return {
         shopInfo: {
           name: document.getElementById("cfgShopName").value,
           zaloPhone: document.getElementById("cfgZaloPhone").value,
@@ -627,7 +659,9 @@
           hotline: document.getElementById("cfgHotline").value,
           address: document.getElementById("cfgAddress").value,
           defaultSlot: "21:30",
-          heroVideoUrl: heroVideoVal
+          heroVideoUrl: heroVideoVal,
+          realtimeSyncUrl: document.getElementById("cfgRealtimeSyncUrl").value,
+          realtimeBucketId: document.getElementById("cfgRealtimeBucketId").value
         },
         servicesShowcase: localServicesShowcase,
         spots: localSpots,
@@ -635,6 +669,10 @@
         bikes: localBikes,
         services: localServices
       };
+    }
+
+    function saveAndExportConfig() {
+      const data = gatherAllData();
 
       const fileContent = `/**
  * DREAM MOTO NIGHT RIDE - CẤU HÌNH DỮ LIỆU TĨNH (PHASE 3 CMS EXPORTED)
@@ -656,6 +694,58 @@ if (typeof module !== 'undefined' && module.exports) {
 
       alert("🎉 Đã xuất file data-config.js lưu trữ toàn bộ file Kéo - Thả thành công! Hãy chép đè file này vào thư mục dự án nhé.");
     }
+
+    async function saveRealtimeDataCloud() {
+      const data = gatherAllData();
+      const syncUrl = data.shopInfo.realtimeSyncUrl;
+      if (!syncUrl) {
+        alert("Vui lòng điền REST URL để thực hiện đồng bộ!");
+        return;
+      }
+
+      try {
+        const res = await fetch(syncUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        if (!res.ok) throw new Error("Cloud save failed");
+        alert("🎉 ĐÃ LƯU DỮ LIỆU REALTIME LÊN MÂY THÀNH CÔNG!\nWebcake và trang chính của bạn đã tự động cập nhật ngay lập tức!");
+      } catch (err) {
+        console.error(err);
+        alert("❌ Lỗi đồng bộ: Không thể lưu lên mây. Vui lòng kiểm tra lại URL hoặc kết nối mạng!");
+      }
+    }
+
+    async function loadRealtimeDataCloud() {
+      const syncUrl = document.getElementById("cfgRealtimeSyncUrl").value;
+      if (!syncUrl) {
+        alert("Vui lòng điền REST URL để tải cấu hình!");
+        return;
+      }
+
+      try {
+        const res = await fetch(syncUrl);
+        if (!res.ok) throw new Error("Cloud load failed");
+        const remoteData = await res.json();
+        
+        if (remoteData && remoteData.shopInfo) {
+          DREAM_MOTO_DATA.shopInfo = remoteData.shopInfo;
+          if (remoteData.servicesShowcase) DREAM_MOTO_DATA.servicesShowcase = remoteData.servicesShowcase;
+          if (remoteData.spots) DREAM_MOTO_DATA.spots = remoteData.spots;
+          if (remoteData.bikers) DREAM_MOTO_DATA.bikers = remoteData.bikers;
+          if (remoteData.bikes) DREAM_MOTO_DATA.bikes = remoteData.bikes;
+          if (remoteData.services) DREAM_MOTO_DATA.services = remoteData.services;
+
+          loadAdminData();
+          alert("✅ Đã tải và đồng bộ dữ liệu mới nhất từ mây xuống trang quản trị!");
+        }
+      } catch (err) {
+        console.error(err);
+        alert("❌ Không thể tải dữ liệu từ mây. Vui lòng kiểm tra lại REST URL!");
+      }
+    }
+
   </script>
 
   <!-- Decap CMS Script for Netlify/GitHub hosting -->

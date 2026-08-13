@@ -40,8 +40,11 @@ const DREAM_MOTO_DATA = {
     ],
 
     defaultSlot: "21:30",
-    heroVideoUrl: "https://assets.mixkit.co/videos/preview/mixkit-top-view-of-motorcycles-driving-on-a-highway-41551-large.mp4"
+    heroVideoUrl: "https://assets.mixkit.co/videos/preview/mixkit-top-view-of-motorcycles-driving-on-a-highway-41551-large.mp4",
+    realtimeBucketId: "dream-moto-night-default-key",
+    realtimeSyncUrl: "https://kvdb.io/9k8Kx4z8X3s7s6s9/dream_moto_config"
   },
+
 
   // 2. CÁC DỊCH VỤ DREAM MOTO (CHUẨN THEO WEBSITE CHÍNH THỨC DREAMMOTO.VN)
   servicesShowcase: [

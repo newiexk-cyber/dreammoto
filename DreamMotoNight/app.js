@@ -179,9 +179,214 @@ function selectTrendInCalc(trendName) {
   updatePrice();
 }
 
+// Dynamic UI Renderers for Realtime Sync
+function applyShopInfo() {
+  if (typeof DREAM_MOTO_DATA === 'undefined' || !DREAM_MOTO_DATA.shopInfo) return;
+  const info = DREAM_MOTO_DATA.shopInfo;
+
+  // Announcement Bar
+  const announceText = document.querySelector(".announcement-text");
+  if (announceText && info.announcementText) announceText.innerHTML = info.announcementText;
+  
+  // Video Background
+  if (info.heroVideoUrl) {
+    const videoSource = document.getElementById("heroVideoSource");
+    const videoElem = document.getElementById("heroVideoBg");
+    if (videoSource && videoElem) {
+      videoSource.src = info.heroVideoUrl;
+      videoElem.load();
+    }
+  }
+
+  // Hero Title & Subtitle
+  const heroTitleElem = document.getElementById("heroTitle");
+  const heroSubtitleElem = document.getElementById("heroSubtitle");
+  if (heroTitleElem && info.heroTitle) heroTitleElem.innerHTML = info.heroTitle;
+  if (heroSubtitleElem && info.heroSubtitle) heroSubtitleElem.innerHTML = info.heroSubtitle;
+
+  // Hero Stats
+  if (info.stats && info.stats.length >= 3) {
+    const s1n = document.getElementById("stat1Num");
+    const s1t = document.getElementById("stat1Txt");
+    const s2n = document.getElementById("stat2Num");
+    const s2t = document.getElementById("stat2Txt");
+    const s3n = document.getElementById("stat3Num");
+    const s3t = document.getElementById("stat3Txt");
+
+    if (s1n) s1n.innerHTML = info.stats[0].number;
+    if (s1t) s1t.innerHTML = info.stats[0].text;
+    if (s2n) s2n.innerHTML = info.stats[1].number;
+    if (s2t) s2t.innerHTML = info.stats[1].text;
+    if (s3n) s3n.innerHTML = info.stats[2].number;
+    if (s3t) s3t.innerHTML = info.stats[2].text;
+  }
+
+  // Credit Contact Information & 3-Column Footer Loader
+  const credWeb = document.getElementById("creditWebsite");
+  const credTik = document.getElementById("creditTiktok");
+  const credHot = document.getElementById("creditHotline");
+  const credAdr = document.getElementById("creditAddress");
+
+  if (credWeb && info.websiteUrl) {
+    credWeb.textContent = info.websiteUrl;
+    credWeb.href = info.websiteUrl;
+  }
+  if (credTik && info.tiktokId) credTik.textContent = info.tiktokId;
+  if (credHot && info.hotline) {
+    credHot.textContent = info.hotline;
+    credHot.href = `tel:${info.hotline.replace(/[^0-9]/g, '')}`;
+  }
+  if (credAdr && info.address) credAdr.textContent = info.address;
+
+  // Premium 3-Column Footer Loader
+  const bioElem = document.getElementById("footerBioText");
+  const hotElem = document.getElementById("footerHotline");
+  const emailElem = document.getElementById("footerEmail");
+  const cs1Elem = document.getElementById("footerCS1");
+  const cs2Elem = document.getElementById("footerCS2");
+  const cs3Elem = document.getElementById("footerCS3");
+
+  if (bioElem && info.footerBio) bioElem.textContent = info.footerBio;
+  if (hotElem && info.hotline) hotElem.textContent = info.hotline;
+  if (emailElem && info.email) emailElem.textContent = info.email;
+
+  if (info.branches && info.branches.length >= 1) {
+    if (cs1Elem && info.branches[0]) cs1Elem.textContent = info.branches[0].name;
+    if (cs2Elem) cs2Elem.style.display = info.branches[1] ? 'inline' : 'none';
+    if (cs3Elem) cs3Elem.style.display = info.branches[2] ? 'inline' : 'none';
+  }
+}
+
+function renderBikers() {
+  const container = document.getElementById("bikersGrid");
+  if (!container || typeof DREAM_MOTO_DATA === 'undefined' || !DREAM_MOTO_DATA.bikers) return;
+
+  container.innerHTML = DREAM_MOTO_DATA.bikers.map(b => `
+    <div class="biker-card">
+      <div class="biker-header">
+        <div class="biker-avatar-box">
+          <div class="biker-avatar-ring ${b.ringColorClass || ''}"></div>
+          <div class="biker-avatar-icon ${b.iconClass || ''}"><i class="fa-solid fa-user-ninja"></i></div>
+        </div>
+        <div class="biker-status ${b.statusClass || ''}"><i class="fa-solid fa-shield-halved"></i> ${b.expBadge || 'PKL Biker'}</div>
+      </div>
+      <div class="biker-body">
+        <h3>${b.name}</h3>
+        <span class="biker-role">${b.role}</span>
+        <p class="biker-bio">${b.bio}</p>
+        
+        <div class="biker-tags">
+          ${(b.tags || []).map(t => `
+            <span class="biker-tag"><i class="fa-solid ${t.icon || 'fa-motorcycle'}"></i> ${t.text}</span>
+          `).join('')}
+        </div>
+      </div>
+      <div class="biker-footer">
+        <button class="btn-select-biker">
+          <i class="fa-solid fa-check"></i> Chọn Đồng Hành Với ${b.name.replace("Rider ", "")}
+        </button>
+      </div>
+    </div>
+  `).join('');
+
+  initBikerQuickSelect();
+}
+
+function renderBikesInCalc() {
+  const container = document.getElementById("bikeOptions");
+  if (!container || typeof DREAM_MOTO_DATA === 'undefined' || !DREAM_MOTO_DATA.bikes) return;
+
+  container.innerHTML = DREAM_MOTO_DATA.bikes.map((bk, idx) => `
+    <div class="option-card ${idx === 0 ? 'active' : ''}" data-type="bike" data-value="${bk.id}" data-price="${bk.extraPrice}">
+      <div class="opt-name">${bk.name}</div>
+      <div class="opt-sub">${bk.sub}</div>
+    </div>
+  `).join('');
+
+  const bikeOptions = container.querySelectorAll('.option-card');
+  bikeOptions.forEach(card => {
+    card.addEventListener('click', () => {
+      bikeOptions.forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+
+      const name = card.querySelector('.opt-name').innerText;
+      const extraPrice = parseInt(card.getAttribute('data-price'), 10) || 0;
+      selectedBike = { name, extraPrice };
+      updatePrice();
+    });
+  });
+
+  if (DREAM_MOTO_DATA.bikes[0]) {
+    selectedBike = { name: DREAM_MOTO_DATA.bikes[0].name, extraPrice: DREAM_MOTO_DATA.bikes[0].extraPrice };
+  }
+}
+
+function renderServicesInCalc() {
+  const container = document.getElementById("serviceOptions");
+  if (!container || typeof DREAM_MOTO_DATA === 'undefined' || !DREAM_MOTO_DATA.services) return;
+
+  container.innerHTML = DREAM_MOTO_DATA.services.map((s, idx) => `
+    <div class="option-card ${idx === 0 ? 'active' : ''}" data-type="service" data-value="${s.id}" data-price="${s.price}">
+      ${s.isPopular ? `<div class="opt-badge">KHUYÊN DÙNG</div>` : ''}
+      <div class="opt-name">${s.name}</div>
+      <div class="opt-price">${s.price.toLocaleString('vi-VN')}đ</div>
+      <div class="opt-sub">${s.sub}</div>
+    </div>
+  `).join('');
+
+  const serviceOptions = container.querySelectorAll('.option-card');
+  serviceOptions.forEach(card => {
+    card.addEventListener('click', () => {
+      serviceOptions.forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+
+      const name = card.querySelector('.opt-name').innerText;
+      const price = parseInt(card.getAttribute('data-price'), 10) || 299000;
+      selectedService = { name, price };
+      updatePrice();
+    });
+  });
+
+  if (DREAM_MOTO_DATA.services[0]) {
+    selectedService = { name: DREAM_MOTO_DATA.services[0].name, price: DREAM_MOTO_DATA.services[0].price };
+  }
+}
+
+async function syncRealtimeData() {
+  if (typeof DREAM_MOTO_DATA === 'undefined' || !DREAM_MOTO_DATA.shopInfo) return;
+  const syncUrl = DREAM_MOTO_DATA.shopInfo.realtimeSyncUrl;
+  if (!syncUrl) return;
+
+  try {
+    const res = await fetch(syncUrl);
+    if (!res.ok) throw new Error("Fetch failed");
+    const remoteData = await res.json();
+    
+    if (remoteData && remoteData.shopInfo) {
+      DREAM_MOTO_DATA.shopInfo = remoteData.shopInfo;
+      if (remoteData.servicesShowcase) DREAM_MOTO_DATA.servicesShowcase = remoteData.servicesShowcase;
+      if (remoteData.spots) DREAM_MOTO_DATA.spots = remoteData.spots;
+      if (remoteData.bikers) DREAM_MOTO_DATA.bikers = remoteData.bikers;
+      if (remoteData.bikes) DREAM_MOTO_DATA.bikes = remoteData.bikes;
+      if (remoteData.services) DREAM_MOTO_DATA.services = remoteData.services;
+
+      console.log("⚡ Realtime Sync: Dynamic config loaded from cloud!");
+      
+      applyShopInfo();
+      renderBikers();
+      renderBikesInCalc();
+      renderServicesInCalc();
+      if (typeof renderServicesShowcase === 'function') renderServicesShowcase();
+      updatePrice();
+    }
+  } catch (err) {
+    console.warn("⚠️ Fallback: Could not sync realtime data, using local static data-config.js:", err);
+  }
+}
 
 // Initialize Event Listeners when DOM is ready
 document.addEventListener("DOMContentLoaded", () => {
+
 
   // Dynamic Hero Video Background Autoloop Loader & Text Content Loader
   if (typeof DREAM_MOTO_DATA !== 'undefined' && DREAM_MOTO_DATA.shopInfo) {
@@ -256,144 +461,50 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Render CÁC DỊCH VỤ DREAM MOTO (Chuẩn theo website dreammoto.vn)
-  function renderServicesShowcase() {
-    const container = document.getElementById("servicesShowcaseList");
-    if (!container) return;
+// Render CÁC DỊCH VỤ DREAM MOTO (Chuẩn theo website dreammoto.vn)
+function renderServicesShowcase() {
+  const container = document.getElementById("servicesShowcaseList");
+  if (!container) return;
 
-    const list = (typeof DREAM_MOTO_DATA !== 'undefined' && DREAM_MOTO_DATA.servicesShowcase) 
-                 ? DREAM_MOTO_DATA.servicesShowcase 
-                 : [];
+  const list = (typeof DREAM_MOTO_DATA !== 'undefined' && DREAM_MOTO_DATA.servicesShowcase) 
+               ? DREAM_MOTO_DATA.servicesShowcase 
+               : [];
 
-    container.innerHTML = list.map((srv, idx) => `
-      <div class="service-showcase-card">
-        <div class="service-media-side">
-          <video autoplay loop muted playsinline controls class="service-video-player">
-            <source src="${srv.videoUrl}" type="video/mp4">
-          </video>
-        </div>
-        <div class="service-text-side">
-          <div class="service-num">${srv.num || `# ${idx + 1}`}</div>
-          <h3 class="service-item-title">${srv.title}</h3>
-          <p class="service-item-desc">${srv.desc}</p>
-          <ul class="service-feature-checklist">
-            ${(srv.features || []).map(feat => `
-              <li><i class="fa-solid fa-check text-gold"></i> ${feat}</li>
-            `).join("")}
-          </ul>
-          <a href="#calculator" class="btn btn-primary btn-glow btn-service-action">
-            <i class="fa-solid fa-calendar-check"></i> TƯ VẤN & ĐẶT LỊCH
-          </a>
-        </div>
+  container.innerHTML = list.map((srv, idx) => `
+    <div class="service-showcase-card">
+      <div class="service-media-side">
+        <video autoplay loop muted playsinline controls class="service-video-player">
+          <source src="${srv.videoUrl}" type="video/mp4">
+        </video>
       </div>
-    `).join("");
-  }
+      <div class="service-text-side">
+        <div class="service-num">${srv.num || `# ${idx + 1}`}</div>
+        <h3 class="service-item-title">${srv.title}</h3>
+        <p class="service-item-desc">${srv.desc}</p>
+        <ul class="service-feature-checklist">
+          ${(srv.features || []).map(feat => `
+            <li><i class="fa-solid fa-check text-gold"></i> ${feat}</li>
+          `).join("")}
+        </ul>
+        <a href="#calculator" class="btn btn-primary btn-glow btn-service-action">
+          <i class="fa-solid fa-calendar-check"></i> TƯ VẤN & ĐẶT LỊCH
+        </a>
+      </div>
+    </div>
+  `).join("");
+}
 
-  // Gọi render khi nạp trang
+// Initialize Event Listeners when DOM is ready
+document.addEventListener("DOMContentLoaded", () => {
+  // Render initial static content instantly
+  applyShopInfo();
+  renderBikers();
+  renderBikesInCalc();
+  renderServicesInCalc();
   renderServicesShowcase();
 
-  // Render TikTok Trends (Chỉ phát 1 video active duy nhất khi bấm chọn, tránh nặng 4G & giật lag)
-  function renderTrends() {
-    const grid = document.getElementById("trendsGrid");
-    if (!grid || typeof DREAM_MOTO_DATA === 'undefined') return;
-
-    grid.innerHTML = DREAM_MOTO_DATA.trends.map((t, idx) => `
-      <div class="trend-card ${t.gradientClass} ${idx === 0 ? 'active' : ''}" id="card-${t.id}" onclick="selectTrendCard('${t.id}')">
-        <span class="trend-badge">${t.badge}</span>
-        
-        <!-- Background Media Preview -->
-        <div class="trend-video-wrapper">
-          ${t.videoUrl ? `
-            <video class="trend-video-elem" id="vid-${t.id}" ${idx === 0 ? 'autoplay' : ''} loop muted playsinline>
-              <source src="${t.videoUrl}" type="video/mp4">
-            </video>
-          ` : ''}
-          <div class="trend-video-overlay"></div>
-        </div>
-
-        <div class="trend-card-content">
-          <span class="trend-style">${t.style}</span>
-          <h3 class="trend-title">${t.title}</h3>
-          <p class="trend-desc">${t.desc}</p>
-          <div class="trend-card-footer">
-            <span class="trend-views"><i class="fa-solid fa-fire text-gold"></i> ${t.views}</span>
-            <button class="btn-select-trend">
-              <i class="fa-solid fa-play"></i> Xem Trend
-            </button>
-          </div>
-        </div>
-      </div>
-    `).join('');
-  }
-
-  window.selectTrendCard = function(trendId) {
-    document.querySelectorAll('.trend-card').forEach(c => c.classList.remove('active'));
-    document.querySelectorAll('.trend-video-elem').forEach(v => {
-      v.pause();
-    });
-
-    const activeCard = document.getElementById(`card-${trendId}`);
-    const activeVid = document.getElementById(`vid-${trendId}`);
-
-    if (activeCard) activeCard.classList.add('active');
-    if (activeVid) {
-      activeVid.play().catch(()=>{});
-    }
-  };
-
-  // Option Cards Selection (Bike & Service)
-  const bikeOptions = document.querySelectorAll('#bikeOptions .option-card');
-  bikeOptions.forEach(card => {
-    card.addEventListener('click', () => {
-      bikeOptions.forEach(c => c.classList.remove('active'));
-      card.classList.add('active');
-
-      const name = card.querySelector('.opt-name').innerText;
-      const extraPrice = parseInt(card.getAttribute('data-price'), 10) || 0;
-      selectedBike = { name, extraPrice };
-      updatePrice();
-    });
-  });
-
-  const serviceOptions = document.querySelectorAll('#serviceOptions .option-card');
-  serviceOptions.forEach(card => {
-    card.addEventListener('click', () => {
-      serviceOptions.forEach(c => c.classList.remove('active'));
-      card.classList.add('active');
-
-      const name = card.querySelector('.opt-name').innerText;
-      const price = parseInt(card.getAttribute('data-price'), 10) || 299000;
-      selectedService = { name, price };
-      updatePrice();
-    });
-  });
-
-  // Slot Picker Chips
-  const slotChips = document.querySelectorAll('#slotChips .slot-chip');
-  slotChips.forEach(chip => {
-    chip.addEventListener('click', () => {
-      slotChips.forEach(s => s.classList.remove('active'));
-      chip.classList.add('active');
-      selectedSlot = chip.getAttribute('data-slot') || "21:30";
-      updatePrice();
-    });
-  });
-
-  // Trend Tabs Switcher
-  const trendTabs = document.querySelectorAll('#trendTabs .tab-btn');
-  const trendCards = document.querySelectorAll('#trendsGrid .trend-card');
-  
-  trendTabs.forEach((tab, idx) => {
-    tab.addEventListener('click', () => {
-      trendTabs.forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-
-      trendCards.forEach(c => c.style.display = 'none');
-      if (trendCards[idx]) {
-        trendCards[idx].style.display = 'block';
-      }
-    });
-  });
+  // Trigger async realtime sync from cloud
+  syncRealtimeData();
 
   // FAQ Accordions
   const faqQuestions = document.querySelectorAll('.faq-question');
@@ -411,6 +522,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Initial calculation
   updatePrice();
 });
+
 
 
 // Export functions for node/python testing if required
