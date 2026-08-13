@@ -127,5 +127,36 @@ class TestDreamMotoWebsite(unittest.TestCase):
         self.assertTrue(link.startswith("https://zalo.me/0900000000?text="))
         self.assertIn("Rider%20Tu%E1%BA%A5n%20Motor", link)
 
+    def test_video_modal_html_structure(self):
+        index_path = os.path.join(PROJECT_DIR, "index.html")
+        with open(index_path, "r", encoding="utf-8") as f:
+            content = f.read()
+
+        self.assertIn('id="videoModal"', content)
+        self.assertIn('id="modalVideoPlayer"', content)
+
+    def test_biker_quick_select_buttons_in_html(self):
+        index_path = os.path.join(PROJECT_DIR, "index.html")
+        with open(index_path, "r", encoding="utf-8") as f:
+            content = f.read()
+
+        self.assertIn('btn-select-biker', content)
+
+    def test_app_js_new_interactive_handlers(self):
+        app_path = os.path.join(PROJECT_DIR, "app.js")
+        with open(app_path, "r", encoding="utf-8") as f:
+            content = f.read()
+
+        self.assertIn("initBikerQuickSelect", content)
+        self.assertIn("initVideoModal", content)
+
+    def test_style_css_modal_styles(self):
+        style_path = os.path.join(PROJECT_DIR, "style.css")
+        with open(style_path, "r", encoding="utf-8") as f:
+            content = f.read()
+
+        self.assertIn(".video-modal", content)
+
 if __name__ == "__main__":
     unittest.main()
+

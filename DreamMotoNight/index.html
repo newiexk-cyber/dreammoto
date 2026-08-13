@@ -523,7 +523,24 @@
     </a>
   </div>
 
+  <!-- Video Lightbox Modal -->
+  <div id="videoModal" class="video-modal" aria-hidden="true">
+    <div class="video-modal-overlay" onclick="closeVideoModal()"></div>
+    <div class="video-modal-container">
+      <button class="video-modal-close" onclick="closeVideoModal()" aria-label="Close modal">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div class="video-modal-wrapper">
+        <video id="modalVideoPlayer" controls autoplay loop playsinline>
+          <source src="" type="video/mp4">
+        </video>
+      </div>
+      <div class="video-modal-caption" id="modalVideoCaption">Preview Clip Dream Moto</div>
+    </div>
+  </div>
+
   <script src="data-config.js"></script>
   <script src="app.js"></script>
 </body>
+
 </html>

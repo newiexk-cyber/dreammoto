@@ -110,6 +110,65 @@ function selectBikerInCalc(bikerName) {
   updatePrice();
 }
 
+function initBikerQuickSelect() {
+  const bikerButtons = document.querySelectorAll(".btn-select-biker");
+  bikerButtons.forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      const card = btn.closest(".biker-card");
+      if (card) {
+        const nameElem = card.querySelector("h3");
+        if (nameElem) {
+          selectBikerInCalc(nameElem.innerText.trim());
+        }
+      }
+    });
+  });
+}
+
+// Cyberpunk Video Lightbox Engine
+function openVideoModal(videoUrl, caption) {
+  const modal = document.getElementById("videoModal");
+  const player = document.getElementById("modalVideoPlayer");
+  const captionElem = document.getElementById("modalVideoCaption");
+  
+  if (!modal || !player) return;
+  
+  player.src = videoUrl;
+  if (captionElem) captionElem.innerText = caption || "Preview Clip Dream Moto";
+  
+  modal.classList.add("active");
+  modal.setAttribute("aria-hidden", "false");
+  player.play().catch(() => {});
+}
+
+function closeVideoModal() {
+  const modal = document.getElementById("videoModal");
+  const player = document.getElementById("modalVideoPlayer");
+  
+  if (!modal || !player) return;
+  
+  player.pause();
+  player.src = "";
+  modal.classList.remove("active");
+  modal.setAttribute("aria-hidden", "true");
+}
+
+function initVideoModal() {
+  const modal = document.getElementById("videoModal");
+  if (!modal) return;
+  
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && modal.classList.contains("active")) {
+      closeVideoModal();
+    }
+  });
+}
+
+function creditWebsite() {
+  const cfg = getShopConfig();
+  return cfg.websiteUrl || "https://dreammoto.vn";
+}
+
 // Helper function to select trend from card click
 function selectTrendInCalc(trendName) {
   selectedService.name = `Gói TikTok: ${trendName}`;
@@ -119,6 +178,7 @@ function selectTrendInCalc(trendName) {
   }
   updatePrice();
 }
+
 
 // Initialize Event Listeners when DOM is ready
 document.addEventListener("DOMContentLoaded", () => {
@@ -344,9 +404,14 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  // Initialize new interactive engines
+  initBikerQuickSelect();
+  initVideoModal();
+
   // Initial calculation
   updatePrice();
 });
+
 
 // Export functions for node/python testing if required
 if (typeof module !== 'undefined' && module.exports) {

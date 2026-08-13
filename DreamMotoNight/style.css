@@ -1555,3 +1555,100 @@ button {
   font-weight: 900;
   color: var(--neon-gold);
 }
+
+/* Cyberpunk Video Modal Lightbox */
+.video-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+.video-modal.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.video-modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(4, 6, 11, 0.88);
+  backdrop-filter: blur(12px);
+}
+
+.video-modal-container {
+  position: relative;
+  z-index: 2;
+  width: 90%;
+  max-width: 420px;
+  background: #090E1B;
+  border: 2px solid var(--neon-gold);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  box-shadow: 0 0 40px rgba(255, 184, 0, 0.4);
+  transform: scale(0.9);
+  transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.video-modal.active .video-modal-container {
+  transform: scale(1);
+}
+
+.video-modal-close {
+  position: absolute;
+  top: -16px;
+  right: -16px;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--neon-gold);
+  border: none;
+  color: var(--text-dark);
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 15px var(--neon-gold-glow);
+  transition: transform 0.2s ease;
+}
+
+.video-modal-close:hover {
+  transform: scale(1.15) rotate(90deg);
+}
+
+.video-modal-wrapper {
+  width: 100%;
+  aspect-ratio: 9/16;
+  max-height: 70vh;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: #000;
+}
+
+.video-modal-wrapper video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.video-modal-caption {
+  text-align: center;
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--neon-cyan);
+  margin-top: 14px;
+}
+
