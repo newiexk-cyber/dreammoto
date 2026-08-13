@@ -10,13 +10,14 @@ function calculatePrice(bikeExtra, servicePrice, addonsPrice) {
   return bike + service + addons;
 }
 
-function generateZaloLink(bikeName, serviceName, slotTime, totalPrice) {
+function generateZaloLink(bikeName, serviceName, slotTime, totalPrice, bikerName) {
   const phoneNumber = "0900000000"; // Dream Moto Hotline / Zalo
   const formattedPrice = totalPrice.toLocaleString('vi-VN') + "đ";
+  const bikerText = bikerName ? `\n- Biker Yêu Thích: ${bikerName}` : '';
   
   const message = `Chào Dream Moto! Tôi muốn đặt dịch vụ Quay Video Moto Đêm Cầu Ba Sơn:
 - Dòng Xe: ${bikeName}
-- Gói Dịch Vụ: ${serviceName}
+- Gói Dịch Vụ: ${serviceName}${bikerText}
 - Khung Giờ: ${slotTime} Tối Nay
 - Tổng Giá Dự Kiến: ${formattedPrice}
 
@@ -29,6 +30,7 @@ Tư vấn và giữ slot giúp tôi nhé!`;
 let selectedBike = { name: "Kawasaki Z1000", extraPrice: 0 };
 let selectedService = { name: "Gói 1: TikTok Basic", price: 299000 };
 let selectedSlot = "21:30";
+let selectedBiker = "Rider Tuấn Motor";
 
 function updatePrice() {
   const helmetAddon = document.getElementById("addonHelmet");
@@ -46,17 +48,39 @@ function updatePrice() {
   const mobilePriceDisplay = document.getElementById("mobilePriceDisplay");
   const sumBike = document.getElementById("sumBike");
   const sumService = document.getElementById("sumService");
+  const sumBiker = document.getElementById("sumBiker");
   const zaloBtn = document.getElementById("zaloBookingBtn");
 
   if (priceDisplay) priceDisplay.innerText = formattedPrice;
   if (mobilePriceDisplay) mobilePriceDisplay.innerText = formattedPrice;
   if (sumBike) sumBike.innerText = selectedBike.name;
   if (sumService) sumService.innerText = selectedService.name;
+  if (sumBiker) sumBiker.innerText = selectedBiker;
 
   // Update Zalo deep link
   if (zaloBtn) {
-    zaloBtn.href = generateZaloLink(selectedBike.name, selectedService.name, selectedSlot, totalPrice);
+    zaloBtn.href = generateZaloLink(selectedBike.name, selectedService.name, selectedSlot, totalPrice, selectedBiker);
   }
+}
+
+// Helper function to select Biker from Profile card
+function selectBikerInCalc(bikerName) {
+  selectedBiker = bikerName;
+  const calcSec = document.getElementById('calculator');
+  if (calcSec) {
+    calcSec.scrollIntoView({ behavior: 'smooth' });
+  }
+  updatePrice();
+}
+
+// Helper function to select trend from card click
+function selectTrendInCalc(trendName) {
+  selectedService.name = `Gói TikTok: ${trendName}`;
+  const calcSec = document.getElementById('calculator');
+  if (calcSec) {
+    calcSec.scrollIntoView({ behavior: 'smooth' });
+  }
+  updatePrice();
 }
 
 // Initialize Event Listeners
@@ -128,16 +152,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // Initial calculation
   updatePrice();
 });
-
-// Helper function to select trend from card click
-function selectTrendInCalc(trendName) {
-  selectedService.name = `Gói TikTok: ${trendName}`;
-  const calcSec = document.getElementById('calculator');
-  if (calcSec) {
-    calcSec.scrollIntoView({ behavior: 'smooth' });
-  }
-  updatePrice();
-}
 
 // Export functions for node/python testing if required
 if (typeof module !== 'undefined' && module.exports) {

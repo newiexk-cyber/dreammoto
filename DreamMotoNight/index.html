@@ -36,6 +36,7 @@
       <nav class="desktop-nav">
         <a href="#trends">5 Hot Trends</a>
         <a href="#spots">Góc Quay</a>
+        <a href="#bikers">Đội Ngũ Bikers</a>
         <a href="#calculator">Bảng Giá & Gói</a>
         <a href="#slots">Đặt Giờ</a>
         <a href="#faq">FAQ</a>
@@ -259,6 +260,102 @@
     </div>
   </section>
 
+  <!-- Biker Team Profile Section (NEW) -->
+  <section id="bikers" class="bikers-section">
+    <div class="container">
+      <div class="section-header text-center">
+        <span class="sub-title">MEET OUR CAPTAINS</span>
+        <h2 class="section-title">Đội Ngũ <span class="gold-text">Bikers Đêm Chuyên Nghiệp</span></h2>
+        <p class="section-desc">100% tài xế có trên 4 năm kinh nghiệm lái PKL, vững tay lái, tận tâm hướng dẫn bạn tạo dáng ngầu nhất!</p>
+      </div>
+
+      <div class="bikers-grid">
+        
+        <!-- Biker 1 -->
+        <div class="biker-card">
+          <div class="biker-header">
+            <div class="biker-avatar-box">
+              <div class="biker-avatar-ring"></div>
+              <div class="biker-avatar-icon"><i class="fa-solid fa-user-ninja"></i></div>
+            </div>
+            <div class="biker-status"><i class="fa-solid fa-shield-halved"></i> 6 Năm PKL</div>
+          </div>
+          <div class="biker-body">
+            <h3>Rider Tuấn Motor</h3>
+            <span class="biker-role">Captain & Chuyên Gia Phân Khối Lớn</span>
+            <p class="biker-bio">Kinh nghiệm lái Kawasaki Z1000 & BMW S1000RR lướt đêm. Kỹ năng hướng dẫn bạn góc đứng & góc ngồi chuẩn nam thần/mỹ nữ.</p>
+            
+            <div class="biker-tags">
+              <span class="biker-tag"><i class="fa-solid fa-motorcycle"></i> Kawasaki Z1000</span>
+              <span class="biker-tag"><i class="fa-solid fa-star text-gold"></i> 4.9/5 (210+ Lượt)</span>
+              <span class="biker-tag"><i class="fa-solid fa-video"></i> Edit TikTok Fast</span>
+            </div>
+          </div>
+          <div class="biker-footer">
+            <button class="btn-select-biker" onclick="selectBikerInCalc('Rider Tuấn Motor')">
+              <i class="fa-solid fa-check"></i> Chọn Đồng Hành Với Tuấn
+            </button>
+          </div>
+        </div>
+
+        <!-- Biker 2 -->
+        <div class="biker-card">
+          <div class="biker-header">
+            <div class="biker-avatar-box">
+              <div class="biker-avatar-ring cyan-ring"></div>
+              <div class="biker-avatar-icon cyan-bg"><i class="fa-solid fa-camera-retro"></i></div>
+            </div>
+            <div class="biker-status cyan-status"><i class="fa-solid fa-video"></i> Cameraman VIP</div>
+          </div>
+          <div class="biker-body">
+            <h3>Rider Hoàng Speed</h3>
+            <span class="biker-role">Đạo Diễn Góc Quay Slow-Mo & Tracking</span>
+            <p class="biker-bio">5 năm chinh phục các cung đường đêm Sài Gòn. Chuyên gia bắt trọn góc mặt thần thái & hiệu ứng vệt sáng Cyberpunk đỉnh cao.</p>
+            
+            <div class="biker-tags">
+              <span class="biker-tag"><i class="fa-solid fa-motorcycle"></i> BMW S1000RR</span>
+              <span class="biker-tag"><i class="fa-solid fa-star text-gold"></i> 5.0/5 (180+ Lượt)</span>
+              <span class="biker-tag"><i class="fa-solid fa-wand-magic-sparkles"></i> Color Colorist</span>
+            </div>
+          </div>
+          <div class="biker-footer">
+            <button class="btn-select-biker" onclick="selectBikerInCalc('Rider Hoàng Speed')">
+              <i class="fa-solid fa-check"></i> Chọn Đồng Hành Với Hoàng
+            </button>
+          </div>
+        </div>
+
+        <!-- Biker 3 -->
+        <div class="biker-card">
+          <div class="biker-header">
+            <div class="biker-avatar-box">
+              <div class="biker-avatar-ring red-ring"></div>
+              <div class="biker-avatar-icon red-bg"><i class="fa-solid fa-heart-pulse"></i></div>
+            </div>
+            <div class="biker-status red-status"><i class="fa-solid fa-heart"></i> Chuyên Gói Đôi</div>
+          </div>
+          <div class="biker-body">
+            <h3>Rider Bảo Ducati</h3>
+            <span class="biker-role">Specialist Couple & Romantic Ride</span>
+            <p class="biker-bio">Thân thiện, lịch sự và cực kỳ tâm lý với khách nữ & các cặp đôi. Xe Ducati Panigale đỏ nổi bật nhất Cầu Ba Sơn đêm.</p>
+            
+            <div class="biker-tags">
+              <span class="biker-tag"><i class="fa-solid fa-motorcycle"></i> Ducati Panigale</span>
+              <span class="biker-tag"><i class="fa-solid fa-star text-gold"></i> 4.9/5 (150+ Lượt)</span>
+              <span class="biker-tag"><i class="fa-solid fa-users"></i> Couple Favorite</span>
+            </div>
+          </div>
+          <div class="biker-footer">
+            <button class="btn-select-biker" onclick="selectBikerInCalc('Rider Bảo Ducati')">
+              <i class="fa-solid fa-check"></i> Chọn Đồng Hành Với Bảo
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
   <!-- Interactive Price Calculator Section -->
   <section id="calculator" class="calculator-section">
     <div class="container">
@@ -344,6 +441,7 @@
           <div class="summary-details" id="summaryDetails">
             <p><strong>Xe:</strong> <span id="sumBike">Kawasaki Z1000</span></p>
             <p><strong>Gói:</strong> <span id="sumService">Gói 1: TikTok Basic</span></p>
+            <p><strong>Biker Đồng Hành:</strong> <span id="sumBiker" class="gold-text">Rider Tuấn Motor (Mặc Định)</span></p>
             <p><strong>Quà Tặng:</strong> <span class="gold-text">🎁 Tặng File Video Gốc HD ngay trong đêm</span></p>
           </div>
 
