@@ -1,0 +1,27 @@
+# DREAM MOTO NIGHT RIDE - DECAP CMS / NETLIFY CMS CONFIGURATION (PHASE 3)
+backend:
+  name: git-gateway
+  branch: feat/dream-moto-night-landingpage
+
+media_folder: "DreamMotoNight/uploads"
+public_folder: "/uploads"
+
+collections:
+  - name: "config"
+    label: "Cấu Hình Website & Dịch Vụ"
+    files:
+      - file: "DreamMotoNight/data-config.json"
+        label: "Dữ Liệu Shop & Bảng Giá"
+        name: "data"
+        fields:
+          - { label: "Tên Shop", name: "shopName", widget: "string" }
+          - { label: "Số Điện Thoại Zalo", name: "zaloPhone", widget: "string" }
+          - { label: "Địa Điểm Quay Đêm", name: "spotLocation", widget: "string" }
+          - label: "Danh Sách Bikers"
+            name: "bikers"
+            widget: "list"
+            fields:
+              - { label: "Tên Biker", name: "name", widget: "string" }
+              - { label: "Vai Trò", name: "role", widget: "string" }
+              - { label: "Kinh Nghiệm", name: "expBadge", widget: "string" }
+              - { label: "Giới Thiệu", name: "bio", widget: "text" }

@@ -21,11 +21,22 @@ class TestDreamMotoWebsite(unittest.TestCase):
         style_path = os.path.join(PROJECT_DIR, "style.css")
         app_path = os.path.join(PROJECT_DIR, "app.js")
         config_path = os.path.join(PROJECT_DIR, "data-config.js")
+        admin_path = os.path.join(PROJECT_DIR, "admin", "index.html")
         
         self.assertTrue(os.path.exists(index_path), "index.html should exist")
         self.assertTrue(os.path.exists(style_path), "style.css should exist")
         self.assertTrue(os.path.exists(app_path), "app.js should exist")
         self.assertTrue(os.path.exists(config_path), "data-config.js should exist")
+        self.assertTrue(os.path.exists(admin_path), "admin/index.html should exist for Phase 3")
+
+    def test_admin_portal_content(self):
+        admin_path = os.path.join(PROJECT_DIR, "admin", "index.html")
+        with open(admin_path, "r", encoding="utf-8") as f:
+            content = f.read()
+
+        self.assertIn("DREAM MOTO ADMIN PORTAL", content)
+        self.assertIn("checkAdminPIN", content)
+        self.assertIn("saveAndExportConfig", content)
 
     def test_data_config_content(self):
         config_path = os.path.join(PROJECT_DIR, "data-config.js")
