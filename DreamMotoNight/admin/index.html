@@ -422,12 +422,20 @@
       const previewContainer = document.getElementById(previewContainerId);
 
       if (previewContainer) {
-        if (isImage) {
-          previewContainer.innerHTML = `<img src="${objectUrl}" class="media-preview-box" alt="Preview">`;
-        } else if (isVideo) {
-          previewContainer.innerHTML = `<video class="media-preview-box" autoplay loop muted playsinline controls><source src="${objectUrl}" type="${file.type || 'video/mp4'}"></video>`;
-          const vid = previewContainer.querySelector('video');
-          if (vid) vid.play().catch(()=>{});
+        const isAvatar = previewContainerId.includes('Avatar');
+        const idxMatch = previewContainerId.match(/_(\d+)$/);
+        const idx = idxMatch ? idxMatch[1] : 0;
+        
+        if (isAvatar) {
+          previewContainer.innerHTML = `<img id="bikerAvatarPreview_${idx}" class="media-preview-box" src="${objectUrl}" alt="Preview" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; object-position: center 50%;">`;
+        } else {
+          if (isImage) {
+            previewContainer.innerHTML = `<img id="bikerShowcasePreview_${idx}" class="media-preview-box" src="${objectUrl}" alt="Preview" style="max-height: 150px; object-fit: cover; object-position: center 50%;">`;
+          } else if (isVideo) {
+            previewContainer.innerHTML = `<video id="bikerShowcasePreview_${idx}" class="media-preview-box" autoplay loop muted playsinline controls style="object-fit: cover; object-position: center 50%;"><source src="${objectUrl}" type="${file.type || 'video/mp4'}"></video>`;
+            const vid = previewContainer.querySelector('video');
+            if (vid) vid.play().catch(()=>{});
+          }
         }
       }
 
@@ -571,7 +579,7 @@
               <p>Kéo & thả file Ảnh (PNG/JPG) làm Avatar</p>
               <input type="file" id="bikerAvatar_${idx}" accept="image/*" style="display:none" onchange="handleSelectedFile(this, 'bikerAvatarPreviewContainer_${idx}', (fn)=>{localBikers[${idx}].avatarUrl=fn; renderBikersUI();})">
             </div>
-            <div id="bikerAvatarPreviewContainer_${idx}" class="media-preview-container" style="margin-top: 10px;">
+            <div id="bikerAvatarPreviewContainer_${idx}" class="media-preview-container" style="margin-top: 10px; background: transparent; max-height: none; display: flex; justify-content: flex-start;">
               ${b.avatarUrl ? `<img id="bikerAvatarPreview_${idx}" class="media-preview-box" src="${b.avatarUrl}" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; object-position: center ${b.avatarY !== undefined ? b.avatarY : 50}%;">` : ''}
             </div>
           </div>
