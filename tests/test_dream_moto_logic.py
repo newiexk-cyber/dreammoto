@@ -33,15 +33,16 @@ class TestDreamMotoWebsite(unittest.TestCase):
         self.assertTrue(os.path.exists(webcake_path), "dream-moto-webcake.js should exist")
         self.assertTrue(os.path.exists(sheet_sync_path), "google-sheets-sync.js should exist")
 
-    def test_admin_drag_drop_video_uploader(self):
+    def test_admin_drag_drop_image_video_autoplay(self):
         admin_path = os.path.join(PROJECT_DIR, "admin", "index.html")
         with open(admin_path, "r", encoding="utf-8") as f:
             content = f.read()
 
-        self.assertIn("video-dropzone", content)
-        self.assertIn("handleDropVideo", content)
-        self.assertIn("processVideoFile", content)
-        self.assertIn("video-preview-box", content)
+        self.assertIn("media-dropzone", content)
+        self.assertIn("handleDropMedia", content)
+        self.assertIn("processMediaFile", content)
+        self.assertIn("autoplay", content)
+        self.assertIn("image/*, video/*", content)
 
     def test_admin_video_management_fields(self):
         admin_path = os.path.join(PROJECT_DIR, "admin", "index.html")
@@ -49,7 +50,6 @@ class TestDreamMotoWebsite(unittest.TestCase):
             content = f.read()
 
         self.assertIn("cfgHeroVideo", content)
-        self.assertIn("Video", content)
         self.assertIn("spotsTab", content)
 
     def test_data_config_video_urls(self):
