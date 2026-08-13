@@ -164,21 +164,6 @@ function initVideoModal() {
   });
 }
 
-function creditWebsite() {
-  const cfg = getShopConfig();
-  return cfg.websiteUrl || "https://dreammoto.vn";
-}
-
-// Helper function to select trend from card click
-function selectTrendInCalc(trendName) {
-  selectedService.name = `Gói TikTok: ${trendName}`;
-  const calcSec = document.getElementById('calculator');
-  if (calcSec) {
-    calcSec.scrollIntoView({ behavior: 'smooth' });
-  }
-  updatePrice();
-}
-
 // Dynamic UI Renderers for Realtime Sync
 function applyShopInfo() {
   if (typeof DREAM_MOTO_DATA === 'undefined' || !DREAM_MOTO_DATA.shopInfo) return;
