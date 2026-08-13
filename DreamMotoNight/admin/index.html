@@ -309,6 +309,14 @@
       <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Giúp cập nhật bảng giá và hình ảnh trực tuyến tức thì lên trang Webcake của bạn mà không cần xuất tải file hay push Git thủ công.</p>
       
       <div class="form-group">
+        <label class="form-label"><i class="fa-solid fa-server"></i> Chọn nhà cung cấp đám mây (Cloud Provider):</label>
+        <select id="cfgCloudProvider" class="form-control" onchange="toggleCloudFields()" style="background: var(--bg-card); color: #fff; border: 1px solid var(--border);">
+          <option value="kvdb">KVdb.io (Miễn phí, không tài khoản, cần email verify)</option>
+          <option value="jsonbin">JSONBin.io (Miễn phí, cực kỳ ổn định, đăng nhập 1 click qua GitHub)</option>
+        </select>
+      </div>
+
+      <div class="form-group" id="groupSyncUrl">
         <label class="form-label"><i class="fa-solid fa-lock" id="lockIcon"></i> Cloud Key-Value REST URL:</label>
         <div style="display: flex; gap: 10px;">
           <input type="text" id="cfgRealtimeSyncUrl" class="form-control" placeholder="Ví dụ: https://kvdb.io/YOUR_BUCKET_ID/dream_moto_config" readonly style="background: rgba(255,255,255,0.04); color: #888; cursor: not-allowed; flex: 1;">
@@ -317,9 +325,15 @@
         <small style="color: var(--text-muted); margin-top: 4px; display: block;">Mặc định đã khóa để tránh chỉnh sửa nhầm. Nhấn "Mở Khóa" để nhập Bucket của riêng bạn.</small>
       </div>
 
-      <div class="form-group">
-        <label class="form-label"><i class="fa-solid fa-lock" id="lockIcon2"></i> Bucket ID:</label>
-        <input type="text" id="cfgRealtimeBucketId" class="form-control" placeholder="Ví dụ: dream-moto-night-default-key" readonly style="background: rgba(255,255,255,0.04); color: #888; cursor: not-allowed;">
+      <div class="form-group" id="groupBucketId">
+        <label class="form-label"><i class="fa-solid fa-lock" id="lockIcon2"></i> Bucket ID / Bin ID:</label>
+        <input type="text" id="cfgRealtimeBucketId" class="form-control" placeholder="Ví dụ: TKZ6d1zo24Bcq8nQL77XuM" readonly style="background: rgba(255,255,255,0.04); color: #888; cursor: not-allowed;">
+      </div>
+
+      <div class="form-group" id="groupApiKey" style="display: none;">
+        <label class="form-label"><i class="fa-solid fa-key"></i> JSONBin.io Master Key (API Key):</label>
+        <input type="password" id="cfgRealtimeApiKey" class="form-control" placeholder="Ví dụ: $2a$10$YourMasterKeyHere...">
+        <small style="color: var(--neon-gold); margin-top: 4px; display: block;">🔑 Nhận API Key miễn phí khi đăng nhập bằng GitHub trên <a href="https://jsonbin.io" target="_blank" style="color:#00ffff;text-decoration:underline;">jsonbin.io</a>.</small>
       </div>
 
       <div style="display: flex; gap: 15px; margin-top: 25px;">
@@ -447,7 +461,11 @@
       try {
         const res = await fetch(syncUrl);
         if (!res.ok) throw new Error("Cloud load failed");
-        const remoteData = await res.json();
+        let remoteData = await res.json();
+        
+        if (remoteData && remoteData.record) {
+          remoteData = remoteData.record;
+        }
         
         if (remoteData && remoteData.shopInfo) {
           DREAM_MOTO_DATA.shopInfo = remoteData.shopInfo;
@@ -490,8 +508,11 @@
       document.getElementById("cfgTiktokId").value = info.tiktokId || "Dreammoto.vn";
       document.getElementById("cfgHotline").value = info.hotline || "0908 447 308";
       document.getElementById("cfgAddress").value = info.address || "214/19/21 Nguyễn Văn Nguyễn, P. Tân Định, Q. 1, TP.HCM";
+      document.getElementById("cfgCloudProvider").value = info.cloudProvider || "kvdb";
       document.getElementById("cfgRealtimeSyncUrl").value = info.realtimeSyncUrl || "https://kvdb.io/TKZ6d1zo24Bcq8nQL77XuM/dream_moto_config";
       document.getElementById("cfgRealtimeBucketId").value = info.realtimeBucketId || "TKZ6d1zo24Bcq8nQL77XuM";
+      document.getElementById("cfgRealtimeApiKey").value = info.realtimeApiKey || "";
+      toggleCloudFields();
 
       heroVideoVal = info.heroVideoUrl || "https://assets.mixkit.co/videos/preview/mixkit-top-view-of-motorcycles-driving-on-a-highway-41551-large.mp4";
 
@@ -507,9 +528,16 @@
       renderPricesUI();
 
       // Auto-trigger cloud fetch on first load
-      if (!hasAutoLoadedFromCloud && info.realtimeSyncUrl) {
+      let syncUrl = info.realtimeSyncUrl;
+      const provider = info.cloudProvider || "kvdb";
+      const bucketId = info.realtimeBucketId;
+      if (provider === "jsonbin" && bucketId) {
+        syncUrl = `https://api.jsonbin.io/v3/b/${bucketId}/latest`;
+      }
+
+      if (!hasAutoLoadedFromCloud && syncUrl) {
         hasAutoLoadedFromCloud = true;
-        autoLoadFromCloud(info.realtimeSyncUrl);
+        autoLoadFromCloud(syncUrl);
       }
     }
 
@@ -695,7 +723,9 @@
           defaultSlot: "21:30",
           heroVideoUrl: heroVideoVal,
           realtimeSyncUrl: document.getElementById("cfgRealtimeSyncUrl").value,
-          realtimeBucketId: document.getElementById("cfgRealtimeBucketId").value
+          realtimeBucketId: document.getElementById("cfgRealtimeBucketId").value,
+          cloudProvider: document.getElementById("cfgCloudProvider").value,
+          realtimeApiKey: document.getElementById("cfgRealtimeApiKey").value
         },
         servicesShowcase: localServicesShowcase,
         spots: localSpots,
@@ -729,39 +759,98 @@ if (typeof module !== 'undefined' && module.exports) {
       alert("🎉 Đã xuất file data-config.js lưu trữ toàn bộ file Kéo - Thả thành công! Hãy chép đè file này vào thư mục dự án nhé.");
     }
 
+    function toggleCloudFields() {
+      const provider = document.getElementById("cfgCloudProvider").value;
+      const groupSyncUrl = document.getElementById("groupSyncUrl");
+      const groupApiKey = document.getElementById("groupApiKey");
+      const bucketLabel = document.querySelector("#groupBucketId label");
+      const bucketInput = document.getElementById("cfgRealtimeBucketId");
+
+      if (provider === "jsonbin") {
+        if (groupSyncUrl) groupSyncUrl.style.display = "none";
+        if (groupApiKey) groupApiKey.style.display = "block";
+        if (bucketLabel) bucketLabel.innerHTML = `<i class="fa-solid fa-lock" id="lockIcon2"></i> JSONBin.io Bin ID:`;
+        if (bucketInput) bucketInput.placeholder = "Ví dụ: 64aebf... (Bin ID)";
+      } else {
+        if (groupSyncUrl) groupSyncUrl.style.display = "block";
+        if (groupApiKey) groupApiKey.style.display = "none";
+        if (bucketLabel) bucketLabel.innerHTML = `<i class="fa-solid fa-lock" id="lockIcon2"></i> Bucket ID:`;
+        if (bucketInput) bucketInput.placeholder = "Ví dụ: dream-moto-night-default-key";
+      }
+    }
+
     async function saveRealtimeDataCloud() {
       const data = gatherAllData();
-      const syncUrl = data.shopInfo.realtimeSyncUrl;
-      if (!syncUrl) {
-        alert("Vui lòng điền REST URL để thực hiện đồng bộ!");
-        return;
+      const provider = document.getElementById("cfgCloudProvider").value;
+      const bucketId = document.getElementById("cfgRealtimeBucketId").value;
+      
+      let url = "";
+      let headers = { 'Content-Type': 'application/json' };
+      let method = 'POST';
+
+      if (provider === "jsonbin") {
+        if (!bucketId) {
+          alert("Vui lòng điền JSONBin.io Bin ID!");
+          return;
+        }
+        url = `https://api.jsonbin.io/v3/b/${bucketId}`;
+        const apiKey = document.getElementById("cfgRealtimeApiKey").value;
+        if (!apiKey) {
+          alert("Vui lòng điền JSONBin.io Master Key (API Key)!");
+          return;
+        }
+        headers["X-Master-Key"] = apiKey;
+        method = 'PUT';
+      } else {
+        url = document.getElementById("cfgRealtimeSyncUrl").value;
+        if (!url) {
+          alert("Vui lòng điền REST URL để thực hiện đồng bộ!");
+          return;
+        }
+        method = 'POST';
       }
 
       try {
-        const res = await fetch(syncUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+        const res = await fetch(url, {
+          method: method,
+          headers: headers,
           body: JSON.stringify(data)
         });
         if (!res.ok) throw new Error("Cloud save failed");
         alert("🎉 ĐÃ LƯU DỮ LIỆU REALTIME LÊN MÂY THÀNH CÔNG!\nWebcake và trang chính của bạn đã tự động cập nhật ngay lập tức!");
       } catch (err) {
         console.error(err);
-        alert("❌ Lỗi đồng bộ: Không thể lưu lên mây. Vui lòng kiểm tra lại URL hoặc kết nối mạng!");
+        alert("❌ Lỗi đồng bộ: Không thể lưu lên mây. Vui lòng kiểm tra lại cấu hình hoặc kết nối mạng!");
       }
     }
 
     async function loadRealtimeDataCloud() {
-      const syncUrl = document.getElementById("cfgRealtimeSyncUrl").value;
-      if (!syncUrl) {
-        alert("Vui lòng điền REST URL để tải cấu hình!");
-        return;
+      const provider = document.getElementById("cfgCloudProvider").value;
+      const bucketId = document.getElementById("cfgRealtimeBucketId").value;
+      let syncUrl = "";
+      
+      if (provider === "jsonbin") {
+        if (!bucketId) {
+          alert("Vui lòng điền JSONBin.io Bin ID để tải cấu hình!");
+          return;
+        }
+        syncUrl = `https://api.jsonbin.io/v3/b/${bucketId}/latest`;
+      } else {
+        syncUrl = document.getElementById("cfgRealtimeSyncUrl").value;
+        if (!syncUrl) {
+          alert("Vui lòng điền REST URL để tải cấu hình!");
+          return;
+        }
       }
 
       try {
         const res = await fetch(syncUrl);
         if (!res.ok) throw new Error("Cloud load failed");
-        const remoteData = await res.json();
+        let remoteData = await res.json();
+        
+        if (remoteData && remoteData.record) {
+          remoteData = remoteData.record;
+        }
         
         if (remoteData && remoteData.shopInfo) {
           DREAM_MOTO_DATA.shopInfo = remoteData.shopInfo;
@@ -776,7 +865,7 @@ if (typeof module !== 'undefined' && module.exports) {
         }
       } catch (err) {
         console.error(err);
-        alert("❌ Không thể tải dữ liệu từ mây. Vui lòng kiểm tra lại REST URL!");
+        alert("❌ Không thể tải dữ liệu từ mây. Vui lòng kiểm tra lại cấu hình hoặc kết nối mạng!");
       }
     }
 
@@ -806,7 +895,7 @@ if (typeof module !== 'undefined' && module.exports) {
           lockIcon2.style.color = "var(--neon-green)";
         }
         
-        alert("🔓 Đã mở khóa cấu hình! Bạn có thể nhập REST URL và Bucket ID của riêng bạn vào đây.");
+        alert("🔓 Đã mở khóa cấu hình! Bạn có thể nhập REST URL và Bucket ID / Bin ID của riêng bạn vào đây.");
       }
     }
 

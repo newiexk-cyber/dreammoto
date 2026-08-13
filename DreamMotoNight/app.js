@@ -336,16 +336,27 @@ function renderServicesInCalc() {
     selectedService = { name: DREAM_MOTO_DATA.services[0].name, price: DREAM_MOTO_DATA.services[0].price };
   }
 }
-
 async function syncRealtimeData() {
   if (typeof DREAM_MOTO_DATA === 'undefined' || !DREAM_MOTO_DATA.shopInfo) return;
-  const syncUrl = DREAM_MOTO_DATA.shopInfo.realtimeSyncUrl;
+  
+  let syncUrl = DREAM_MOTO_DATA.shopInfo.realtimeSyncUrl;
+  const provider = DREAM_MOTO_DATA.shopInfo.cloudProvider || "kvdb";
+  const bucketId = DREAM_MOTO_DATA.shopInfo.realtimeBucketId;
+  
+  if (provider === "jsonbin" && bucketId) {
+    syncUrl = `https://api.jsonbin.io/v3/b/${bucketId}/latest`;
+  }
+  
   if (!syncUrl) return;
 
   try {
     const res = await fetch(syncUrl);
     if (!res.ok) throw new Error("Fetch failed");
-    const remoteData = await res.json();
+    let remoteData = await res.json();
+    
+    if (remoteData && remoteData.record) {
+      remoteData = remoteData.record;
+    }
 
     if (remoteData && remoteData.shopInfo) {
       DREAM_MOTO_DATA.shopInfo = remoteData.shopInfo;
