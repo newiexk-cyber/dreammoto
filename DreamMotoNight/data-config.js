@@ -7,13 +7,15 @@
  */
 
 const DREAM_MOTO_DATA = {
-  // 1. THÔNG TIN CHUNG & ZALO
+  // 1. THÔNG TIN CHUNG, ZALO & VIDEO HERO BACKGROUND
   shopInfo: {
     name: "Dream Moto Sài Gòn",
     zaloPhone: "0900000000",
     spotLocation: "Cầu Ba Son - Thủ Thiêm",
     announcementText: "⚡ <strong>HOT:</strong> Tối nay chỉ còn <span class=\"highlight-badge\">3 slot trống</span> tại Cầu Ba Son! Đặt lịch ngay để giữ giờ đẹp.",
-    defaultSlot: "21:30"
+    defaultSlot: "21:30",
+    // Video chạy nền Hero Banner (tự động lặp lại autoloop, giảm sáng 65% tôn chữ)
+    heroVideoUrl: "https://assets.mixkit.co/videos/preview/mixkit-top-view-of-motorcycles-driving-on-a-highway-41551-large.mp4"
   },
 
   // 2. DANH SÁCH 5 HOT TRENDS TIKTOK (Thêm/Sửa/Xóa video tại đây)

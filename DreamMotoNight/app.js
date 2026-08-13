@@ -103,6 +103,16 @@ function selectTrendInCalc(trendName) {
 // Initialize Event Listeners when DOM is ready
 document.addEventListener("DOMContentLoaded", () => {
 
+  // Dynamic Hero Video Background Autoloop Loader
+  if (typeof DREAM_MOTO_DATA !== 'undefined' && DREAM_MOTO_DATA.shopInfo && DREAM_MOTO_DATA.shopInfo.heroVideoUrl) {
+    const videoSource = document.getElementById("heroVideoSource");
+    const videoElem = document.getElementById("heroVideoBg");
+    if (videoSource && videoElem) {
+      videoSource.src = DREAM_MOTO_DATA.shopInfo.heroVideoUrl;
+      videoElem.load();
+    }
+  }
+
   // Option Cards Selection (Bike & Service)
   const bikeOptions = document.querySelectorAll('#bikeOptions .option-card');
   bikeOptions.forEach(card => {

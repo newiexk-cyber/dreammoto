@@ -248,20 +248,35 @@ button {
   position: relative;
   padding: 70px 0 90px;
   overflow: hidden;
+  background: #000;
+}
+
+.hero-video-bg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: cover;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  filter: brightness(0.35) contrast(1.15); /* Giảm sáng 65% để giữ tương phản tuyệt đối cho chữ */
+  pointer-events: none;
 }
 
 .hero-bg-overlay {
   position: absolute;
-  top: -20%;
-  right: -10%;
-  width: 650px;
-  height: 650px;
-  background: radial-gradient(circle, rgba(255, 184, 0, 0.15) 0%, rgba(0, 243, 255, 0.08) 40%, transparent 70%);
-  filter: blur(90px);
-  z-index: -1;
+  inset: 0;
+  background: radial-gradient(circle at 60% 40%, rgba(7, 10, 18, 0.55) 0%, rgba(7, 10, 18, 0.92) 80%),
+              linear-gradient(180deg, rgba(7, 10, 18, 0.6) 0%, #070A12 100%);
+  z-index: 1;
 }
 
 .hero-grid {
+  position: relative;
+  z-index: 2;
   display: grid;
   grid-template-columns: 1fr;
   gap: 40px;
