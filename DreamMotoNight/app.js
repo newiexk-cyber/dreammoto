@@ -113,6 +113,55 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // Render TikTok Trends (Chỉ phát 1 video active duy nhất khi bấm chọn, tránh nặng 4G & giật lag)
+  function renderTrends() {
+    const grid = document.getElementById("trendsGrid");
+    if (!grid || typeof DREAM_MOTO_DATA === 'undefined') return;
+
+    grid.innerHTML = DREAM_MOTO_DATA.trends.map((t, idx) => `
+      <div class="trend-card ${t.gradientClass} ${idx === 0 ? 'active' : ''}" id="card-${t.id}" onclick="selectTrendCard('${t.id}')">
+        <span class="trend-badge">${t.badge}</span>
+        
+        <!-- Background Media Preview -->
+        <div class="trend-video-wrapper">
+          ${t.videoUrl ? `
+            <video class="trend-video-elem" id="vid-${t.id}" ${idx === 0 ? 'autoplay' : ''} loop muted playsinline>
+              <source src="${t.videoUrl}" type="video/mp4">
+            </video>
+          ` : ''}
+          <div class="trend-video-overlay"></div>
+        </div>
+
+        <div class="trend-card-content">
+          <span class="trend-style">${t.style}</span>
+          <h3 class="trend-title">${t.title}</h3>
+          <p class="trend-desc">${t.desc}</p>
+          <div class="trend-card-footer">
+            <span class="trend-views"><i class="fa-solid fa-fire text-gold"></i> ${t.views}</span>
+            <button class="btn-select-trend">
+              <i class="fa-solid fa-play"></i> Xem Trend
+            </button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  window.selectTrendCard = function(trendId) {
+    document.querySelectorAll('.trend-card').forEach(c => c.classList.remove('active'));
+    document.querySelectorAll('.trend-video-elem').forEach(v => {
+      v.pause();
+    });
+
+    const activeCard = document.getElementById(`card-${trendId}`);
+    const activeVid = document.getElementById(`vid-${trendId}`);
+
+    if (activeCard) activeCard.classList.add('active');
+    if (activeVid) {
+      activeVid.play().catch(()=>{});
+    }
+  };
+
   // Option Cards Selection (Bike & Service)
   const bikeOptions = document.querySelectorAll('#bikeOptions .option-card');
   bikeOptions.forEach(card => {
