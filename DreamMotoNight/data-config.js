@@ -41,8 +41,10 @@ const DREAM_MOTO_DATA = {
 
     defaultSlot: "21:30",
     heroVideoUrl: "https://assets.mixkit.co/videos/preview/mixkit-top-view-of-motorcycles-driving-on-a-highway-41551-large.mp4",
-    realtimeBucketId: "TKZ6d1zo24Bcq8nQL77XuM",
-    realtimeSyncUrl: "https://kvdb.io/TKZ6d1zo24Bcq8nQL77XuM/dream_moto_config"
+    realtimeBucketId: "6a7d6d84f5f4af5e290fc5b9",
+    realtimeSyncUrl: "https://api.jsonbin.io/v3/b/6a7d6d84f5f4af5e290fc5b9/latest",
+    cloudProvider: "jsonbin",
+    realtimeApiKey: "$2a$10$Mmh6NI6dUk94/7tUva9OoOyXilXqCovJO3UBZx4KQYWk2r1YljDWe"
   },
 
 
