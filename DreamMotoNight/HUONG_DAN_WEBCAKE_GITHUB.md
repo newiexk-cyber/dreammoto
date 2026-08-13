@@ -1,50 +1,31 @@
-# Hướng Dẫn Kết Nối GitHub Vui Với Webcake (Dream Moto Night Ride)
+# Hướng Dẫn Quy Trình Cập Nhật Nội Dung (Dream Moto Night Ride)
 
-Tài liệu này hướng dẫn bạn cách đẩy file JavaScript lên **GitHub** và nhúng vào **Webcake Landing Page** tương tự dự án *Tiệm Ảnh Trái Thơm* trước đây của bạn.
+Tài liệu này giải thích rõ 2 cách cập nhật nội dung (Giá gói, Biker, Video TikTok) cho trang web chính và Webcake.
 
 ---
 
-## 📌 Quy Trình 3 Bước Tích Hợp Webcake + GitHub CDN
+## 🔄 CÁCH 1: Cập Nhật Qua Admin Local + Push GitHub (Mặc định)
 
-### Bước 1: Push Thư Mục `DreamMotoNight` Lên Repo GitHub
-1. Mở Terminal / Git Bash và push branch chứa code lên GitHub:
+1. **Chỉnh Sửa:** Bạn mở trang Admin [DreamMotoNight/admin/index.html](file:///c:/memay/DreamMotoNight/admin/index.html) trên máy tính (Nhập PIN: `123456`).
+2. **Xuất File:** Sửa xong bấm nút **"LƯU & XUẤT FILE DATA-CONFIG.JS"** để tải file `data-config.js` mới về.
+3. **Push GitHub:** Chép đè file `data-config.js` vào thư mục dự án và gõ lệnh:
    ```bash
-   git checkout main
-   git pull origin main
-   git merge feat/dream-moto-night-landingpage
+   git add DreamMotoNight/data-config.js
+   git commit -m "Cập nhật bảng giá & biker mới"
    git push origin main
    ```
-2. Bạn sẽ có các file công khai trên repo GitHub (Ví dụ: `https://github.com/TênUser/TênRepo/blob/main/DreamMotoNight/dream-moto-webcake.js`).
+4. **Kết quả:** Trang web chính (hoặc trang Webcake của bạn) sẽ **tự động nhảy dữ liệu mới** nhờ liên kết jsDelivr CDN mà **không cần đụng lại Webcake!**
 
 ---
 
-### Bước 2: Lấy Link CDN Tải Siêu Nhanh Qua jsDelivr
-Chuyển đổi URL GitHub thành CDN bằng dịch vụ miễn phí jsDelivr:
+## ⚡ CÁCH 2: Tự Động 100% KHÔNG CẦN GÕ LỆNH GIT PUSH (Dành Cho Nhân Viên)
 
-- **Link File JS Webcake:**
-  `https://cdn.jsdelivr.net/gh/TênUser/TênRepo@main/DreamMotoNight/dream-moto-webcake.js`
+Nếu bạn muốn nhân viên chỉ cần thao tác trên di động/máy tính mà **không cần biết gõ lệnh Git Push**:
 
-- **Link File Data Config:**
-  `https://cdn.jsdelivr.net/gh/TênUser/TênRepo@main/DreamMotoNight/data-config.js`
+### 🌟 2.1. Đăng Nhập Admin Online (Decap CMS / Netlify CMS)
+- Khi bạn đưa web lên host (Netlify / GitHub Pages), bạn truy cập link `domain-cua-ban.com/admin/`.
+- Nhân viên vào trang Admin này trên mạng, sửa giá -> Bấm **Save** -> **Hệ thống tự động commit & push lên GitHub giúp bạn 100%!**
 
----
-
-### Bước 3: Nhúng Vào Webcake Landing Page Editor
-Trong trình thiết kế Webcake:
-
-1. Kéo 1 phần tử **Mã HTML / Custom Code** vào vị trí muốn hiển thị ứng dụng và đặt ID:
-   ```html
-   <div id="dream-moto-root"></div>
-   ```
-
-2. Thêm thẻ nhúng Script trong phần **Mã Javascript Cuối Trang (Body Script)** của Webcake:
-   ```html
-   <script src="https://cdn.jsdelivr.net/gh/TênUser/TênRepo@main/DreamMotoNight/data-config.js"></script>
-   <script src="https://cdn.jsdelivr.net/gh/TênUser/TênRepo@main/DreamMotoNight/dream-moto-webcake.js"></script>
-   ```
-
----
-
-## 💡 Ưu Điểm Của Mô Hình Này Cho Webcake:
-- ⚡ **Siêu Nhanh & Nhẹ:** Toàn bộ giao diện TikTok Slider, Biker Team, Bảng Tính Giá & Link Zalo được nạp qua CDN jsDelivr với tốc độ 0.05s.
-- 🔄 **Cập Nhật Tự Động:** Mỗi khi bạn chỉnh sửa file `data-config.js` hay `app.js` và push lên GitHub, Webcake sẽ tự động nhận giao diện & thông tin mới nhất mà không cần mở lại trình chỉnh sửa Webcake!
+### 📊 2.2. Kết Nối Google Sheet (Google Trang Tính)
+- Cho phép nhân viên gõ giá tiền hoặc link video vào 1 file Google Sheet trên điện thoại.
+- Trang web tự nạp dữ liệu từ Google Sheet về hiển thị tức thì.
