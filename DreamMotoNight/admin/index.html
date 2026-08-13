@@ -346,8 +346,10 @@
 
   </div>
 
-  <!-- Load static data config -->
-  <script src="../data-config.js"></script>
+  <!-- Load static data config with cache buster -->
+  <script>
+    document.write('<script src="../data-config.js?t=' + Date.now() + '"><\/script>');
+  </script>
 
   <script>
     let heroVideoVal = "https://assets.mixkit.co/videos/preview/mixkit-top-view-of-motorcycles-driving-on-a-highway-41551-large.mp4";
