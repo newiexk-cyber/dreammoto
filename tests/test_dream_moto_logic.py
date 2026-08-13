@@ -22,12 +22,22 @@ class TestDreamMotoWebsite(unittest.TestCase):
         app_path = os.path.join(PROJECT_DIR, "app.js")
         config_path = os.path.join(PROJECT_DIR, "data-config.js")
         admin_path = os.path.join(PROJECT_DIR, "admin", "index.html")
+        webcake_path = os.path.join(PROJECT_DIR, "dream-moto-webcake.js")
         
         self.assertTrue(os.path.exists(index_path), "index.html should exist")
         self.assertTrue(os.path.exists(style_path), "style.css should exist")
         self.assertTrue(os.path.exists(app_path), "app.js should exist")
         self.assertTrue(os.path.exists(config_path), "data-config.js should exist")
-        self.assertTrue(os.path.exists(admin_path), "admin/index.html should exist for Phase 3")
+        self.assertTrue(os.path.exists(admin_path), "admin/index.html should exist")
+        self.assertTrue(os.path.exists(webcake_path), "dream-moto-webcake.js should exist for Webcake integration")
+
+    def test_webcake_script_content(self):
+        webcake_path = os.path.join(PROJECT_DIR, "dream-moto-webcake.js")
+        with open(webcake_path, "r", encoding="utf-8") as f:
+            content = f.read()
+
+        self.assertIn("DREAM_MOTO_CONFIG", content)
+        self.assertIn("dream-moto-root", content)
 
     def test_admin_portal_content(self):
         admin_path = os.path.join(PROJECT_DIR, "admin", "index.html")
