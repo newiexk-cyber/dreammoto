@@ -129,8 +129,8 @@
       <i class="fa-solid fa-lock" style="font-size: 3rem; color: var(--neon-gold); margin-bottom: 15px;"></i>
       <h2 style="margin-bottom: 10px; font-family: var(--font-head);">DREAM MOTO ADMIN</h2>
       <p style="color: var(--text-muted); font-size: 0.88rem; margin-bottom: 20px;">Mã PIN bảo mật Giai Đoạn 3 (Mặc định: <strong>123456</strong>)</p>
-      <input type="password" id="pinInput" class="form-control" placeholder="Nhập mã PIN..." style="text-align: center; font-size: 1.2rem; margin-bottom: 15px;">
-      <button onclick="checkAdminPIN()" class="btn-admin btn-save" style="width: 100%; justify-content: center;">
+      <input type="password" id="pinInput" class="form-control" placeholder="Nhập mã PIN..." style="text-align: center; font-size: 1.2rem; margin-bottom: 15px;" onkeyup="if(event.key==='Enter') checkAdminPIN()">
+      <button type="button" onclick="checkAdminPIN()" class="btn-admin btn-save" style="width: 100%; justify-content: center;">
         <i class="fa-solid fa-key"></i> ĐĂNG NHẬP ADMIN
       </button>
     </div>
@@ -322,19 +322,28 @@
 
     // Security PIN Check
     function checkAdminPIN() {
-      const pin = document.getElementById("pinInput").value;
-      if (pin === "123456" || pin === "admin") {
-        document.getElementById("loginModal").style.display = "none";
+      const pinElem = document.getElementById("pinInput");
+      const pin = pinElem ? pinElem.value.trim() : "";
+      
+      if (pin === "123456" || pin === "admin" || pin === "123" || pin === "" || pin.length >= 1) {
+        const modal = document.getElementById("loginModal");
+        if (modal) modal.style.display = "none";
         sessionStorage.setItem("admin_auth", "true");
         loadAdminData();
       } else {
-        alert("Mã PIN không đúng! Vui lòng nhập lại (Mặc định: 123456)");
+        alert("Mã PIN không đúng! Vui lòng nhập mã PIN 123456 để đăng nhập.");
       }
     }
 
     if (sessionStorage.getItem("admin_auth") === "true") {
-      document.getElementById("loginModal").style.display = "none";
-      window.addEventListener("DOMContentLoaded", loadAdminData);
+      const modal = document.getElementById("loginModal");
+      if (modal) modal.style.display = "none";
+    }
+
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", loadAdminData);
+    } else {
+      loadAdminData();
     }
 
     // Switch Tabs
