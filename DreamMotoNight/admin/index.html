@@ -436,6 +436,30 @@
     let localSpots = [];
     let localBikes = [];
     let localServices = [];
+    let hasAutoLoadedFromCloud = false;
+
+    async function autoLoadFromCloud(syncUrl) {
+      try {
+        const res = await fetch(syncUrl);
+        if (!res.ok) throw new Error("Cloud load failed");
+        const remoteData = await res.json();
+        
+        if (remoteData && remoteData.shopInfo) {
+          DREAM_MOTO_DATA.shopInfo = remoteData.shopInfo;
+          if (remoteData.servicesShowcase) DREAM_MOTO_DATA.servicesShowcase = remoteData.servicesShowcase;
+          if (remoteData.spots) DREAM_MOTO_DATA.spots = remoteData.spots;
+          if (remoteData.bikers) DREAM_MOTO_DATA.bikers = remoteData.bikers;
+          if (remoteData.bikes) DREAM_MOTO_DATA.bikes = remoteData.bikes;
+          if (remoteData.services) DREAM_MOTO_DATA.services = remoteData.services;
+
+          // Re-render
+          loadAdminData();
+          console.log("Auto-loaded latest data from Cloud successfully.");
+        }
+      } catch (err) {
+        console.warn("Failed to auto-load from Cloud, using static config instead:", err);
+      }
+    }
 
     function loadAdminData() {
       if (typeof DREAM_MOTO_DATA === 'undefined') return;
@@ -466,7 +490,6 @@
 
       heroVideoVal = info.heroVideoUrl || "https://assets.mixkit.co/videos/preview/mixkit-top-view-of-motorcycles-driving-on-a-highway-41551-large.mp4";
 
-
       localBikers = JSON.parse(JSON.stringify(DREAM_MOTO_DATA.bikers || []));
       localServicesShowcase = JSON.parse(JSON.stringify(DREAM_MOTO_DATA.servicesShowcase || []));
       localSpots = JSON.parse(JSON.stringify(DREAM_MOTO_DATA.spots || []));
@@ -477,6 +500,12 @@
       renderTrendsUI();
       renderSpotsUI();
       renderPricesUI();
+
+      // Auto-trigger cloud fetch on first load
+      if (!hasAutoLoadedFromCloud && info.realtimeSyncUrl) {
+        hasAutoLoadedFromCloud = true;
+        autoLoadFromCloud(info.realtimeSyncUrl);
+      }
     }
 
     function renderBikersUI() {

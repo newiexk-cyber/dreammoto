@@ -30,7 +30,7 @@ function calculatePrice(bikeExtra, servicePrice, addonsPrice) {
 function generateZaloBookingText(bikeName, serviceName, slotTime, totalPrice, bikerName) {
   const cfg = getShopConfig();
   const formattedPrice = totalPrice.toLocaleString('vi-VN') + "đ";
-  
+
   const helmetAddon = document.getElementById("addonHelmet");
   const jacketAddon = document.getElementById("addonJacket");
   const addons = [];
@@ -67,7 +67,7 @@ let selectedBiker = "Rider Tuấn Motor";
 function updatePrice() {
   const helmetAddon = document.getElementById("addonHelmet");
   const jacketAddon = document.getElementById("addonJacket");
-  
+
   let addonTotal = 0;
   if (helmetAddon && helmetAddon.checked) addonTotal += parseInt(helmetAddon.value, 10);
   if (jacketAddon && jacketAddon.checked) addonTotal += parseInt(jacketAddon.value, 10);
@@ -130,23 +130,23 @@ function openVideoModal(videoUrl, caption) {
   const modal = document.getElementById("videoModal");
   const player = document.getElementById("modalVideoPlayer");
   const captionElem = document.getElementById("modalVideoCaption");
-  
+
   if (!modal || !player) return;
-  
+
   player.src = videoUrl;
   if (captionElem) captionElem.innerText = caption || "Preview Clip Dream Moto";
-  
+
   modal.classList.add("active");
   modal.setAttribute("aria-hidden", "false");
-  player.play().catch(() => {});
+  player.play().catch(() => { });
 }
 
 function closeVideoModal() {
   const modal = document.getElementById("videoModal");
   const player = document.getElementById("modalVideoPlayer");
-  
+
   if (!modal || !player) return;
-  
+
   player.pause();
   player.src = "";
   modal.classList.remove("active");
@@ -156,7 +156,7 @@ function closeVideoModal() {
 function initVideoModal() {
   const modal = document.getElementById("videoModal");
   if (!modal) return;
-  
+
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && modal.classList.contains("active")) {
       closeVideoModal();
@@ -187,7 +187,7 @@ function applyShopInfo() {
   // Announcement Bar
   const announceText = document.querySelector(".announcement-text");
   if (announceText && info.announcementText) announceText.innerHTML = info.announcementText;
-  
+
   // Video Background
   if (info.heroVideoUrl) {
     const videoSource = document.getElementById("heroVideoSource");
@@ -361,7 +361,7 @@ async function syncRealtimeData() {
     const res = await fetch(syncUrl);
     if (!res.ok) throw new Error("Fetch failed");
     const remoteData = await res.json();
-    
+
     if (remoteData && remoteData.shopInfo) {
       DREAM_MOTO_DATA.shopInfo = remoteData.shopInfo;
       if (remoteData.servicesShowcase) DREAM_MOTO_DATA.servicesShowcase = remoteData.servicesShowcase;
@@ -371,7 +371,7 @@ async function syncRealtimeData() {
       if (remoteData.services) DREAM_MOTO_DATA.services = remoteData.services;
 
       console.log("⚡ Realtime Sync: Dynamic config loaded from cloud!");
-      
+
       applyShopInfo();
       renderBikers();
       renderBikesInCalc();
@@ -391,7 +391,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Dynamic Hero Video Background Autoloop Loader & Text Content Loader
   if (typeof DREAM_MOTO_DATA !== 'undefined' && DREAM_MOTO_DATA.shopInfo) {
     const info = DREAM_MOTO_DATA.shopInfo;
-    
+
     // Video Background
     if (info.heroVideoUrl) {
       const videoSource = document.getElementById("heroVideoSource");
@@ -461,16 +461,16 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-// Render CÁC DỊCH VỤ DREAM MOTO (Chuẩn theo website dreammoto.vn)
-function renderServicesShowcase() {
-  const container = document.getElementById("servicesShowcaseList");
-  if (!container) return;
+  // Render CÁC DỊCH VỤ DREAM MOTO (Chuẩn theo website dreammoto.vn)
+  function renderServicesShowcase() {
+    const container = document.getElementById("servicesShowcaseList");
+    if (!container) return;
 
-  const list = (typeof DREAM_MOTO_DATA !== 'undefined' && DREAM_MOTO_DATA.servicesShowcase) 
-               ? DREAM_MOTO_DATA.servicesShowcase 
-               : [];
+    const list = (typeof DREAM_MOTO_DATA !== 'undefined' && DREAM_MOTO_DATA.servicesShowcase)
+      ? DREAM_MOTO_DATA.servicesShowcase
+      : [];
 
-  container.innerHTML = list.map((srv, idx) => `
+    container.innerHTML = list.map((srv, idx) => `
     <div class="service-showcase-card">
       <div class="service-media-side">
         <video autoplay loop muted playsinline controls class="service-video-player">
@@ -492,40 +492,40 @@ function renderServicesShowcase() {
       </div>
     </div>
   `).join("");
-}
+  }
 
-// Initialize Event Listeners when DOM is ready
-document.addEventListener("DOMContentLoaded", () => {
-  // Render initial static content instantly
-  applyShopInfo();
-  renderBikers();
-  renderBikesInCalc();
-  renderServicesInCalc();
-  renderServicesShowcase();
+  // Initialize Event Listeners when DOM is ready
+  document.addEventListener("DOMContentLoaded", () => {
+    // Render initial static content instantly
+    applyShopInfo();
+    renderBikers();
+    renderBikesInCalc();
+    renderServicesInCalc();
+    renderServicesShowcase();
 
-  // Trigger async realtime sync from cloud
-  syncRealtimeData();
+    // Trigger async realtime sync from cloud
+    syncRealtimeData();
 
-  // FAQ Accordions
-  const faqQuestions = document.querySelectorAll('.faq-question');
-  faqQuestions.forEach(q => {
-    q.addEventListener('click', () => {
-      const parent = q.parentElement;
-      parent.classList.toggle('active');
+    // FAQ Accordions
+    const faqQuestions = document.querySelectorAll('.faq-question');
+    faqQuestions.forEach(q => {
+      q.addEventListener('click', () => {
+        const parent = q.parentElement;
+        parent.classList.toggle('active');
+      });
     });
+
+    // Initialize new interactive engines
+    initBikerQuickSelect();
+    initVideoModal();
+
+    // Initial calculation
+    updatePrice();
   });
 
-  // Initialize new interactive engines
-  initBikerQuickSelect();
-  initVideoModal();
-
-  // Initial calculation
-  updatePrice();
-});
 
 
-
-// Export functions for node/python testing if required
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { calculatePrice, generateZaloLink, getShopConfig };
-}
+  // Export functions for node/python testing if required
+  if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { calculatePrice, generateZaloLink, getShopConfig };
+  }
