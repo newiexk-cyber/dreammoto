@@ -1,8 +1,24 @@
 /**
- * DREAM MOTO NIGHT RIDE - DYNAMIC INTERACTIVE LOGIC
+ * DREAM MOTO NIGHT RIDE - PURE STATIC WEBSITE ENGINE
+ * 
+ * BẢNG CẤU HÌNH TRANG WEB TĨNH (STATIC CONFIGURATION):
+ * Bạn có thể chỉnh sửa giá, số điện thoại Zalo, danh sách xe, gói dịch vụ
+ * và danh sách Bikers ngay tại đây mà không cần can thiệp vào code HTML phức tạp.
  */
 
-// Core Calculation Logic Functions
+const DREAM_MOTO_CONFIG = {
+  zaloPhone: "0900000000",
+  shopName: "Dream Moto Sài Gòn",
+  spotLocation: "Cầu Ba Sơn - Thủ Thiêm",
+  defaultSlot: "21:30",
+  defaultBiker: "Rider Tuấn Motor",
+  
+  // Cấu hình bảng giá mặc định
+  defaultBike: { name: "Kawasaki Z1000", extraPrice: 0 },
+  defaultService: { name: "Gói 1: TikTok Basic", price: 299000 }
+};
+
+// Core Calculation Logic Functions (Pure Static Functions)
 function calculatePrice(bikeExtra, servicePrice, addonsPrice) {
   const bike = parseInt(bikeExtra, 10) || 0;
   const service = parseInt(servicePrice, 10) || 0;
@@ -11,11 +27,11 @@ function calculatePrice(bikeExtra, servicePrice, addonsPrice) {
 }
 
 function generateZaloLink(bikeName, serviceName, slotTime, totalPrice, bikerName) {
-  const phoneNumber = "0900000000"; // Dream Moto Hotline / Zalo
+  const phoneNumber = DREAM_MOTO_CONFIG.zaloPhone || "0900000000";
   const formattedPrice = totalPrice.toLocaleString('vi-VN') + "đ";
   const bikerText = bikerName ? `\n- Biker Yêu Thích: ${bikerName}` : '';
   
-  const message = `Chào Dream Moto! Tôi muốn đặt dịch vụ Quay Video Moto Đêm Cầu Ba Sơn:
+  const message = `Chào ${DREAM_MOTO_CONFIG.shopName}! Tôi muốn đặt dịch vụ Quay Video Moto Đêm ${DREAM_MOTO_CONFIG.spotLocation}:
 - Dòng Xe: ${bikeName}
 - Gói Dịch Vụ: ${serviceName}${bikerText}
 - Khung Giờ: ${slotTime} Tối Nay
@@ -27,10 +43,10 @@ Tư vấn và giữ slot giúp tôi nhé!`;
 }
 
 // Global State
-let selectedBike = { name: "Kawasaki Z1000", extraPrice: 0 };
-let selectedService = { name: "Gói 1: TikTok Basic", price: 299000 };
-let selectedSlot = "21:30";
-let selectedBiker = "Rider Tuấn Motor";
+let selectedBike = { ...DREAM_MOTO_CONFIG.defaultBike };
+let selectedService = { ...DREAM_MOTO_CONFIG.defaultService };
+let selectedSlot = DREAM_MOTO_CONFIG.defaultSlot;
+let selectedBiker = DREAM_MOTO_CONFIG.defaultBiker;
 
 function updatePrice() {
   const helmetAddon = document.getElementById("addonHelmet");
@@ -83,7 +99,7 @@ function selectTrendInCalc(trendName) {
   updatePrice();
 }
 
-// Initialize Event Listeners
+// Initialize Event Listeners when DOM is ready
 document.addEventListener("DOMContentLoaded", () => {
 
   // Option Cards Selection (Bike & Service)
@@ -155,5 +171,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Export functions for node/python testing if required
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { calculatePrice, generateZaloLink };
+  module.exports = { calculatePrice, generateZaloLink, DREAM_MOTO_CONFIG };
 }
