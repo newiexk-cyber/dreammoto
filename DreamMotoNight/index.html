@@ -117,113 +117,21 @@
     </div>
   </section>
 
-  <!-- 5 Hot Trends TikTok Showcase Section -->
-  <section id="trends" class="trends-section">
+  <!-- CÁC DỊCH VỤ DREAM MOTO SECTION -->
+  <section class="section services-showcase-section" id="trends">
     <div class="container">
       <div class="section-header text-center">
-        <span class="sub-title">MENU TRENDING TIKTOK</span>
-        <h2 class="section-title">5 Phong Cách Quay <span class="gold-text">Được Yêu Thích Nhất</span></h2>
-        <p class="section-desc">Chọn phong cách bạn muốn, chúng tôi sẽ biến bạn thành nhân vật chính trong clip viral!</p>
+        <h2 class="section-title">CÁC DỊCH VỤ <span class="highlight-gold">DREAM MOTO</span></h2>
+        <p class="section-subtitle">Dịch vụ rước cờ quảng bá, chở khách vi vu đêm & tổ chức diễu hành mô tô phân khối lớn hàng đầu Sài Gòn</p>
       </div>
 
-      <!-- Trend Filter Tabs -->
-      <div class="trend-tabs" id="trendTabs">
-        <button class="tab-btn active" data-trend="0">🔥 1. Cinematic Night</button>
-        <button class="tab-btn" data-trend="1">💕 2. Couple Night City</button>
-        <button class="tab-btn" data-trend="2">⚡ 3. Cyberpunk Trails</button>
-        <button class="tab-btn" data-trend="3">🏍️ 4. POV Rider</button>
-        <button class="tab-btn" data-trend="4">😎 5. Solo Badass</button>
+      <div class="services-showcase-container" id="servicesShowcaseList">
+        <!-- Rendered dynamically via app.js -->
       </div>
+    </div>
+  </section>
+  
 
-      <!-- 9:16 Video Cards Grid -->
-      <div class="trends-grid" id="trendsGrid">
-        
-        <!-- Card 1 -->
-        <div class="trend-card trend-card-active" data-index="0">
-          <div class="card-aspect-916">
-            <div class="card-bg-gradient gradient-1"></div>
-            <div class="card-badge">HOT 1</div>
-            <div class="card-content">
-              <span class="card-style">Cinematic Night Cruiser</span>
-              <h4>Slow-Motion Lướt Đêm Cầu Ba Son</h4>
-              <p>Góc quay máy chuyên nghiệp, hiệu ứng màu mờ ảo huyền bí chuẩn phim điện ảnh.</p>
-              <div class="card-footer">
-                <span class="view-count"><i class="fa-solid fa-eye"></i> 1.2M views</span>
-                <button class="btn-select-trend" onclick="selectTrendInCalc('Cinematic Night Cruiser')">Chọn Trend Này <i class="fa-solid fa-arrow-right"></i></button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Card 2 -->
-        <div class="trend-card" data-index="1">
-          <div class="card-aspect-916">
-            <div class="card-bg-gradient gradient-2"></div>
-            <div class="card-badge">POPULAR</div>
-            <div class="card-content">
-              <span class="card-style">Couple Night City</span>
-              <h4>Đồ Đôi Vi Vu Đêm Sài Gòn</h4>
-              <p>Trải nghiệm cùng người yêu/bạn thân, ngắm trọn ánh đèn Landmark 81 từ góc tựa vai ngầu đét.</p>
-              <div class="card-footer">
-                <span class="view-count"><i class="fa-solid fa-eye"></i> 890K views</span>
-                <button class="btn-select-trend" onclick="selectTrendInCalc('Couple Night City')">Chọn Trend Này <i class="fa-solid fa-arrow-right"></i></button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Card 3 -->
-        <div class="trend-card" data-index="2">
-          <div class="card-aspect-916">
-            <div class="card-bg-gradient gradient-3"></div>
-            <div class="card-badge">CYBER</div>
-            <div class="card-content">
-              <span class="card-style">Cyberpunk Speed & Flare</span>
-              <h4>Vệt Sáng Đèn Đêm & Ánh Đèn Neon</h4>
-              <p>Hiệu ứng ánh sáng futuristic, tốc độ và đường chuyền màu bão hòa huyền ảo.</p>
-              <div class="card-footer">
-                <span class="view-count"><i class="fa-solid fa-eye"></i> 650K views</span>
-                <button class="btn-select-trend" onclick="selectTrendInCalc('Cyberpunk Speed & Flare')">Chọn Trend Này <i class="fa-solid fa-arrow-right"></i></button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Card 4 -->
-        <div class="trend-card" data-index="3">
-          <div class="card-aspect-916">
-            <div class="card-bg-gradient gradient-4"></div>
-            <div class="card-badge">POV</div>
-            <div class="card-content">
-              <span class="card-style">POV Rider & Tracking</span>
-              <h4>Góc Chân Thực Như Chính Bạn Lái</h4>
-              <p>Góc máy tracking bám đuổi song song & góc nhìn từ vai người ngồi sau đầy phấn khích.</p>
-              <div class="card-footer">
-                <span class="view-count"><i class="fa-solid fa-eye"></i> 1.5M views</span>
-                <button class="btn-select-trend" onclick="selectTrendInCalc('POV Rider & Tracking')">Chọn Trend Này <i class="fa-solid fa-arrow-right"></i></button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Card 5 -->
-        <div class="trend-card" data-index="4">
-          <div class="card-aspect-916">
-            <div class="card-bg-gradient gradient-5"></div>
-            <div class="card-badge">COOL</div>
-            <div class="card-content">
-              <span class="card-style">Solo Badass & Cool Pose</span>
-              <h4>Thần Thái Chủ Xe & Siêu Xe</h4>
-              <p>Quay tĩnh & động khoe trọn outfit, nón bảo hiểm cao cấp và dáng xe phân khối lớn.</p>
-              <div class="card-footer">
-                <span class="view-count"><i class="fa-solid fa-eye"></i> 720K views</span>
-                <button class="btn-select-trend" onclick="selectTrendInCalc('Solo Badass & Cool Pose')">Chọn Trend Này <i class="fa-solid fa-arrow-right"></i></button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
     </div>
   </section>
 

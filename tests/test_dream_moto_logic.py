@@ -61,6 +61,8 @@ class TestDreamMotoWebsite(unittest.TestCase):
         self.assertIn("tiktokId", content)
         self.assertIn("hotline", content)
         self.assertIn("address", content)
+        self.assertIn("servicesShowcase", content)
+        self.assertIn("Dịch Vụ Rước Cờ Quảng Bá", content)
 
     def test_google_sheet_sync_script(self):
         sheet_sync_path = os.path.join(PROJECT_DIR, "google-sheets-sync.js")

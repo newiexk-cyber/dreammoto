@@ -2,8 +2,8 @@
  * DREAM MOTO NIGHT RIDE - CẤU HÌNH DỮ LIỆU TĨNH (DATA CONFIGURATION)
  * 
  * ĐÂY LÀ KHU VỰC QUẢN LÝ NỘI DUNG CỦA WEBSITE:
- * Bạn hoặc nhân viên có thể thay đổi Tiêu đề Hero, Mô tả, Thông tin Liên hệ, Hệ thống Chi nhánh, 
- * Hotline, Địa chỉ, link video, hình ảnh, thông tin biker & bảng giá dễ dàng.
+ * Bạn hoặc nhân viên có thể thay đổi Tiêu đề Hero, Mô tả, Các Dịch Vụ Dream Moto, 
+ * Thông tin Liên hệ, Hệ thống Chi nhánh, Hotline, Địa chỉ, link video, hình ảnh, thông tin biker & bảng giá dễ dàng.
  */
 
 const DREAM_MOTO_DATA = {
@@ -43,56 +43,48 @@ const DREAM_MOTO_DATA = {
     heroVideoUrl: "https://assets.mixkit.co/videos/preview/mixkit-top-view-of-motorcycles-driving-on-a-highway-41551-large.mp4"
   },
 
-  // 2. DANH SÁCH 5 HOT TRENDS TIKTOK
-  trends: [
+  // 2. CÁC DỊCH VỤ DREAM MOTO (CHUẨN THEO WEBSITE CHÍNH THỨC DREAMMOTO.VN)
+  servicesShowcase: [
     {
-      id: "trend-1",
-      title: "Slow-Motion Lướt Đêm Cầu Ba Son",
-      style: "Cinematic Night Cruiser",
-      badge: "HOT 1",
-      views: "1.2M views",
-      gradientClass: "gradient-1",
-      desc: "Góc quay máy chuyên nghiệp, hiệu ứng màu mờ ảo huyền bí chuẩn phim điện ảnh.",
+      id: "service-1",
+      num: "# 1",
+      title: "Dịch Vụ Rước Cờ Quảng Bá",
+      desc: "Biến lời chúc, hình ảnh hoặc thương hiệu của bạn thành tâm điểm giữa phố đêm Sài Gòn.",
+      features: [
+        "Thiết kế & in cờ theo yêu cầu",
+        "Moto rước cờ diễu hành trên đường phố",
+        "Phù hợp sinh nhật, cầu hôn & kỷ niệm",
+        "Nhận quảng bá thương hiệu & sự kiện",
+        "Có quay video hành trình làm kỷ niệm"
+      ],
       videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-top-view-of-motorcycles-driving-on-a-highway-41551-large.mp4"
     },
     {
-      id: "trend-2",
-      title: "Đồ Đôi Vi Vu Đêm Sài Gòn",
-      style: "Couple Night City",
-      badge: "POPULAR",
-      views: "890K views",
-      gradientClass: "gradient-2",
-      desc: "Trải nghiệm cùng người yêu/bạn thân, ngắm trọn ánh đèn Landmark 81 từ góc tựa vai ngầu đét.",
+      id: "service-2",
+      num: "# 2",
+      title: "Dịch Vụ Chở Khách & Quay Video 4K Mô Tô Đêm",
+      desc: "Trải nghiệm cảm giác vi vu mô tô phân khối lớn lướt qua ánh đèn lung linh Cầu Ba Son & Landmark 81.",
+      features: [
+        "Tài xế Biker chuyên nghiệp, lái xe an toàn",
+        "Góc quay tracking bám đuổi & slow-motion triệu views",
+        "Quay video 4K chất lượng phim điện ảnh",
+        "Nhận trọn bộ file gốc HD ngay sau buổi quay",
+        "Tặng 10 ảnh chỉnh sửa màu Cyberpunk sắc nét"
+      ],
       videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-cyclist-riding-a-bicycle-on-a-city-street-at-night-42867-large.mp4"
     },
     {
-      id: "trend-3",
-      title: "Vệt Sáng Đèn Đêm & Ánh Đèn Neon",
-      style: "Cyberpunk Speed & Flare",
-      badge: "CYBER",
-      views: "650K views",
-      gradientClass: "gradient-3",
-      desc: "Hiệu ứng ánh sáng futuristic, tốc độ và đường chuyền màu bão hòa huyền ảo.",
-      videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-car-driving-on-a-street-with-neon-lights-at-night-42871-large.mp4"
-    },
-    {
-      id: "trend-4",
-      title: "Góc Chân Thực Như Chính Bạn Lái",
-      style: "POV Rider & Tracking",
-      badge: "POV",
-      views: "1.5M views",
-      gradientClass: "gradient-4",
-      desc: "Góc máy tracking bám đuổi song song & góc nhìn từ vai người ngồi sau đầy phấn khích.",
-      videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-fast-driving-on-a-highway-at-night-42872-large.mp4"
-    },
-    {
-      id: "trend-5",
-      title: "Thần Thái Chủ Xe & Siêu Xe",
-      style: "Solo Badass & Cool Pose",
-      badge: "COOL",
-      views: "720K views",
-      gradientClass: "gradient-5",
-      desc: "Quay tĩnh & động khoe trọn outfit, nón bảo hiểm cao cấp và dáng xe phân khối lớn.",
+      id: "service-3",
+      num: "# 3",
+      title: "Hộ Tống & Diễu Hành Đoàn Mô Tô Sự Kiện",
+      desc: "Tổ chức rước đoàn mô tô phân khối lớn, hộ tống sự kiện, quay phim quảng cáo thương hiệu chuyên nghiệp.",
+      features: [
+        "Đội ngũ xe PKL đông đảo (Z1000, BMW S1000RR, Ducati)",
+        "Hộ tống & diễu hành theo lộ trình yêu cầu",
+        "Ekip quay phim góc cao Flycam / Drone",
+        "Phù hợp khai trương, ra mắt sản phẩm & Roadshow",
+        "Hỗ trợ xin phép & đảm bảo an toàn lộ trình"
+      ],
       videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-motorcycle-rider-driving-fast-on-the-highway-41552-large.mp4"
     }
   ],

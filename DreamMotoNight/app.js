@@ -169,12 +169,41 @@ document.addEventListener("DOMContentLoaded", () => {
     if (hotElem && info.hotline) hotElem.textContent = info.hotline;
     if (emailElem && info.email) emailElem.textContent = info.email;
 
-    if (info.branches && info.branches.length >= 1) {
-      if (cs1Elem && info.branches[0]) cs1Elem.textContent = info.branches[0].name;
-      if (cs2Elem) cs2Elem.style.display = info.branches[1] ? 'inline' : 'none';
-      if (cs3Elem) cs3Elem.style.display = info.branches[2] ? 'inline' : 'none';
-    }
+  // Render CÁC DỊCH VỤ DREAM MOTO (Chuẩn theo website dreammoto.vn)
+  function renderServicesShowcase() {
+    const container = document.getElementById("servicesShowcaseList");
+    if (!container) return;
+
+    const list = (typeof DREAM_MOTO_DATA !== 'undefined' && DREAM_MOTO_DATA.servicesShowcase) 
+                 ? DREAM_MOTO_DATA.servicesShowcase 
+                 : [];
+
+    container.innerHTML = list.map((srv, idx) => `
+      <div class="service-showcase-card">
+        <div class="service-media-side">
+          <video autoplay loop muted playsinline controls class="service-video-player">
+            <source src="${srv.videoUrl}" type="video/mp4">
+          </video>
+        </div>
+        <div class="service-text-side">
+          <div class="service-num">${srv.num || `# ${idx + 1}`}</div>
+          <h3 class="service-item-title">${srv.title}</h3>
+          <p class="service-item-desc">${srv.desc}</p>
+          <ul class="service-feature-checklist">
+            ${(srv.features || []).map(feat => `
+              <li><i class="fa-solid fa-check text-gold"></i> ${feat}</li>
+            `).join("")}
+          </ul>
+          <a href="#calculator" class="btn btn-primary btn-glow btn-service-action">
+            <i class="fa-solid fa-calendar-check"></i> TƯ VẤN & ĐẶT LỊCH
+          </a>
+        </div>
+      </div>
+    `).join("");
   }
+
+  // Gọi render khi nạp trang
+  renderServicesShowcase();
 
   // Render TikTok Trends (Chỉ phát 1 video active duy nhất khi bấm chọn, tránh nặng 4G & giật lag)
   function renderTrends() {

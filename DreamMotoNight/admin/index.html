@@ -421,13 +421,13 @@
 
       document.getElementById("cfgWebsiteUrl").value = info.websiteUrl || "https://dreammoto.vn";
       document.getElementById("cfgTiktokId").value = info.tiktokId || "Dreammoto.vn";
-      document.getElementById("cfgHotline").value = info.hotline || "090.7777.482";
-      document.getElementById("cfgAddress").value = info.address || "Nguyễn Văn Nguyễn, Tân Định, Quận 1, Tp.HCM";
+      document.getElementById("cfgHotline").value = info.hotline || "0908 447 308";
+      document.getElementById("cfgAddress").value = info.address || "214/19/21 Nguyễn Văn Nguyễn, P. Tân Định, Q. 1, TP.HCM";
 
       heroVideoVal = info.heroVideoUrl || "https://assets.mixkit.co/videos/preview/mixkit-top-view-of-motorcycles-driving-on-a-highway-41551-large.mp4";
 
       localBikers = JSON.parse(JSON.stringify(DREAM_MOTO_DATA.bikers || []));
-      localTrends = JSON.parse(JSON.stringify(DREAM_MOTO_DATA.trends || []));
+      localServicesShowcase = JSON.parse(JSON.stringify(DREAM_MOTO_DATA.servicesShowcase || []));
       localSpots = JSON.parse(JSON.stringify(DREAM_MOTO_DATA.spots || []));
       localBikes = JSON.parse(JSON.stringify(DREAM_MOTO_DATA.bikes || []));
       localServices = JSON.parse(JSON.stringify(DREAM_MOTO_DATA.services || []));
@@ -490,29 +490,6 @@
     }
 
     function renderTrendsUI() {
-      const container = document.getElementById("trendsList");
-      container.innerHTML = localTrends.map((t, idx) => `
-        <div class="item-card">
-          <div class="item-header">
-            <strong>🎬 Trend #${idx + 1}: ${t.title}</strong>
-            <button class="btn-danger" onclick="localTrends.splice(${idx},1); renderTrendsUI();"><i class="fa-solid fa-trash"></i> Xóa</button>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Tiêu Đề Trend:</label>
-            <input type="text" class="form-control" value="${t.title || ''}" onchange="localTrends[${idx}].title=this.value">
-          </div>
-          
-          <div class="form-group">
-            <label class="form-label"><i class="fa-solid fa-photo-film"></i> Upload File Ảnh/Video TikTok Trend (Kéo - Thả Direct):</label>
-            
-            <div class="media-dropzone" onclick="triggerFileInput('trendFile_${idx}')" ondragover="event.preventDefault(); this.classList.add('dragover');" ondragleave="this.classList.remove('dragover');" ondrop="handleDropMedia(event, 'trendPreviewContainer_${idx}', (fn)=>localTrends[${idx}].videoUrl=fn)">
-              <i class="fa-solid fa-cloud-arrow-up"></i>
-              <p>Kéo & thả file Ảnh (PNG/JPG) hoặc Video (MP4) vào đây</p>
-              <input type="file" id="trendFile_${idx}" accept="image/*, video/*" style="display:none" onchange="handleSelectedFile(this, 'trendPreviewContainer_${idx}', (fn)=>localTrends[${idx}].videoUrl=fn)">
-            </div>
-            <div id="trendPreviewContainer_${idx}" class="media-preview-container">
-              ${t.videoUrl ? `<video class="media-preview-box" autoplay loop muted playsinline controls><source src="${t.videoUrl}" type="video/mp4"></video>` : ''}
-            </div>
           </div>
 
           <div class="form-group">
@@ -620,7 +597,7 @@
           defaultSlot: "21:30",
           heroVideoUrl: heroVideoVal
         },
-        trends: localTrends,
+        servicesShowcase: localServicesShowcase,
         spots: localSpots,
         bikers: localBikers,
         bikes: localBikes,
