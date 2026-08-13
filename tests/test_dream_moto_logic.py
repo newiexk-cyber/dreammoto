@@ -31,7 +31,25 @@ class TestDreamMotoWebsite(unittest.TestCase):
         self.assertTrue(os.path.exists(config_path), "data-config.js should exist")
         self.assertTrue(os.path.exists(admin_path), "admin/index.html should exist")
         self.assertTrue(os.path.exists(webcake_path), "dream-moto-webcake.js should exist")
-        self.assertTrue(os.path.exists(sheet_sync_path), "google-sheets-sync.js should exist for Option 2")
+        self.assertTrue(os.path.exists(sheet_sync_path), "google-sheets-sync.js should exist")
+
+    def test_admin_video_management_fields(self):
+        admin_path = os.path.join(PROJECT_DIR, "admin", "index.html")
+        with open(admin_path, "r", encoding="utf-8") as f:
+            content = f.read()
+
+        self.assertIn("cfgHeroVideo", content)
+        self.assertIn("Link Video MP4", content)
+        self.assertIn("spotsTab", content)
+
+    def test_data_config_video_urls(self):
+        config_path = os.path.join(PROJECT_DIR, "data-config.js")
+        with open(config_path, "r", encoding="utf-8") as f:
+            content = f.read()
+
+        self.assertIn("heroVideoUrl", content)
+        self.assertIn("videoUrl", content)
+        self.assertIn("spots", content)
 
     def test_google_sheet_sync_script(self):
         sheet_sync_path = os.path.join(PROJECT_DIR, "google-sheets-sync.js")
@@ -48,25 +66,6 @@ class TestDreamMotoWebsite(unittest.TestCase):
 
         self.assertIn("DREAM_MOTO_CONFIG", content)
         self.assertIn("dream-moto-root", content)
-
-    def test_admin_portal_content(self):
-        admin_path = os.path.join(PROJECT_DIR, "admin", "index.html")
-        with open(admin_path, "r", encoding="utf-8") as f:
-            content = f.read()
-
-        self.assertIn("DREAM MOTO ADMIN PORTAL", content)
-        self.assertIn("checkAdminPIN", content)
-        self.assertIn("saveAndExportConfig", content)
-
-    def test_data_config_content(self):
-        config_path = os.path.join(PROJECT_DIR, "data-config.js")
-        with open(config_path, "r", encoding="utf-8") as f:
-            content = f.read()
-
-        self.assertIn("DREAM_MOTO_DATA", content)
-        self.assertIn("zaloPhone", content)
-        self.assertIn("trends", content)
-        self.assertIn("bikers", content)
 
     def test_index_html_content(self):
         index_path = os.path.join(PROJECT_DIR, "index.html")

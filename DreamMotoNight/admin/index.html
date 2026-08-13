@@ -42,10 +42,10 @@
     .admin-title { font-family: var(--font-head); font-size: 1.6rem; color: var(--neon-gold); }
     .badge-phase3 { background: var(--neon-magenta); color: #fff; padding: 4px 12px; border-radius: 20px; font-weight: 700; font-size: 0.8rem; }
     
-    .admin-tabs { display: flex; gap: 10px; margin-bottom: 25px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
+    .admin-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 25px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
     .admin-tab-btn {
       background: var(--bg-card); border: 1px solid var(--border); color: var(--text-muted);
-      padding: 10px 20px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.3s;
+      padding: 10px 18px; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.3s; font-size: 0.88rem;
     }
     .admin-tab-btn.active, .admin-tab-btn:hover { background: var(--neon-cyan); color: #000; border-color: var(--neon-cyan); }
     
@@ -70,10 +70,12 @@
     .btn-danger { background: #ff2e55; color: #fff; padding: 6px 12px; font-size: 0.8rem; border-radius: 6px; }
     
     .item-card {
-      background: rgba(0,0,0,0.25); border: 1px solid var(--border); padding: 15px;
-      border-radius: 10px; margin-bottom: 15px; display: flex; align-items: center; justify-content: space-between;
+      background: rgba(0,0,0,0.25); border: 1px solid var(--border); padding: 20px;
+      border-radius: 12px; margin-bottom: 20px; display: flex; flex-direction: column; gap: 12px;
     }
     
+    .item-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+
     /* Login Modal */
     .modal-overlay {
       position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(10px);
@@ -107,7 +109,7 @@
     <header class="admin-header">
       <div>
         <h1 class="admin-title"><i class="fa-solid fa-sliders"></i> DREAM MOTO ADMIN PORTAL</h1>
-        <p style="font-size: 0.85rem; color: var(--text-muted);">Quản trị hệ thống CMS Giai Đoạn 3 • 100% Tự động & Bảo mật</p>
+        <p style="font-size: 0.85rem; color: var(--text-muted);">Quản trị hệ thống CMS Giai Đoạn 3 • Quyền Thêm Video & Media Cho Tất Cả Các Mục</p>
       </div>
       <div>
         <span class="badge-phase3"><i class="fa-solid fa-rocket"></i> PHASE 3 HEADLESS CMS</span>
@@ -117,15 +119,16 @@
 
     <!-- Navigation Tabs -->
     <div class="admin-tabs">
-      <button class="admin-tab-btn active" onclick="switchTab('shopTab')"><i class="fa-solid fa-gear"></i> 1. Cấu Hình Zalo & Shop</button>
-      <button class="admin-tab-btn" onclick="switchTab('bikersTab')"><i class="fa-solid fa-motorcycle"></i> 2. Quản Lý Bikers</button>
-      <button class="admin-tab-btn" onclick="switchTab('trendsTab')"><i class="fa-solid fa-film"></i> 3. Quản Lý TikTok Trends</button>
-      <button class="admin-tab-btn" onclick="switchTab('pricesTab')"><i class="fa-solid fa-tag"></i> 4. Quản Lý Gói Giá & Xe</button>
+      <button class="admin-tab-btn active" onclick="switchTab('shopTab')"><i class="fa-solid fa-gear"></i> 1. Zalo & Hero Video</button>
+      <button class="admin-tab-btn" onclick="switchTab('bikersTab')"><i class="fa-solid fa-motorcycle"></i> 2. Quản Lý Bikers (+Video Demo)</button>
+      <button class="admin-tab-btn" onclick="switchTab('trendsTab')"><i class="fa-solid fa-film"></i> 3. Quản Lý TikTok Trends (+Video MP4)</button>
+      <button class="admin-tab-btn" onclick="switchTab('spotsTab')"><i class="fa-solid fa-location-dot"></i> 4. Quản Lý Góc Quay (+Video Spot)</button>
+      <button class="admin-tab-btn" onclick="switchTab('pricesTab')"><i class="fa-solid fa-tag"></i> 5. Quản Lý Gói Giá & Xe</button>
     </div>
 
     <!-- Tab 1: Shop & Zalo Config -->
     <div id="shopTab" class="admin-panel active">
-      <h3 style="margin-bottom: 20px; color: var(--neon-gold);"><i class="fa-solid fa-store"></i> Thông Tin Shop & Zalo Chốt Đơn</h3>
+      <h3 style="margin-bottom: 20px; color: var(--neon-gold);"><i class="fa-solid fa-store"></i> Thông Tin Shop & Video Hero Background</h3>
       <div class="form-group">
         <label class="form-label">Tên Thương Hiệu Shop:</label>
         <input type="text" id="cfgShopName" class="form-control" value="Dream Moto Sài Gòn">
@@ -152,7 +155,7 @@
     <!-- Tab 2: Bikers Management -->
     <div id="bikersTab" class="admin-panel">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-        <h3 style="color: var(--neon-gold);"><i class="fa-solid fa-user-ninja"></i> Danh Sách Đội Ngũ Bikers Đêm</h3>
+        <h3 style="color: var(--neon-gold);"><i class="fa-solid fa-user-ninja"></i> Quản Lý Đội Ngũ Bikers Đêm (+ Video Demo)</h3>
         <button class="btn-admin btn-add" onclick="addNewBiker()"><i class="fa-solid fa-plus"></i> Thêm Biker Mới</button>
       </div>
       <div id="bikersList">
@@ -163,7 +166,7 @@
     <!-- Tab 3: TikTok Trends Management -->
     <div id="trendsTab" class="admin-panel">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-        <h3 style="color: var(--neon-gold);"><i class="fa-solid fa-video"></i> Danh Sách 5 Hot Trends TikTok</h3>
+        <h3 style="color: var(--neon-gold);"><i class="fa-solid fa-video"></i> Quản Lý 5 Hot Trends TikTok (+ Link Video MP4/Embed)</h3>
         <button class="btn-admin btn-add" onclick="addNewTrend()"><i class="fa-solid fa-plus"></i> Thêm Trend Mới</button>
       </div>
       <div id="trendsList">
@@ -171,7 +174,18 @@
       </div>
     </div>
 
-    <!-- Tab 4: Package & Bike Prices -->
+    <!-- Tab 4: Spots Management (NEW) -->
+    <div id="spotsTab" class="admin-panel">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h3 style="color: var(--neon-gold);"><i class="fa-solid fa-location-dot"></i> Quản Lý Các Góc Quay Cầu Ba Son (+ Video Preview)</h3>
+        <button class="btn-admin btn-add" onclick="addNewSpot()"><i class="fa-solid fa-plus"></i> Thêm Góc Quay Mới</button>
+      </div>
+      <div id="spotsList">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+
+    <!-- Tab 5: Package & Bike Prices -->
     <div id="pricesTab" class="admin-panel">
       <h3 style="margin-bottom: 20px; color: var(--neon-gold);"><i class="fa-solid fa-coins"></i> Cấu Hình Gói Dịch Vụ & Xe Mô Tô</h3>
       <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Thay đổi giá gói cơ bản & phụ phí xe siêu dễ dàng.</p>
@@ -187,7 +201,7 @@
     <div style="background: var(--bg-card); border: 2px solid var(--neon-green); padding: 20px 30px; border-radius: 16px; display: flex; align-items: center; justify-content: space-between;">
       <div>
         <h4 style="color: var(--neon-green); font-family: var(--font-head);"><i class="fa-solid fa-floppy-disk"></i> XUẤT CẤU HÌNH TỰ ĐỘNG</h4>
-        <p style="font-size: 0.85rem; color: var(--text-muted);">Tự động tạo file config mới 100% chuẩn định dạng cho website tĩnh.</p>
+        <p style="font-size: 0.85rem; color: var(--text-muted);">Tự động tạo file data-config.js mới 100% chứa đầy đủ link video cho tất cả các mục.</p>
       </div>
       <button class="btn-admin btn-save" onclick="saveAndExportConfig()">
         <i class="fa-solid fa-download"></i> LƯU & XUẤT FILE DATA-CONFIG.JS
@@ -227,6 +241,7 @@
 
     let localBikers = [];
     let localTrends = [];
+    let localSpots = [];
     let localBikes = [];
     let localServices = [];
 
@@ -237,15 +252,17 @@
       document.getElementById("cfgShopName").value = info.name || "Dream Moto Sài Gòn";
       document.getElementById("cfgZaloPhone").value = info.zaloPhone || "0900000000";
       document.getElementById("cfgSpotLocation").value = info.spotLocation || "Cầu Ba Son - Thủ Thiêm";
-      document.getElementById("cfgHeroVideo").value = info.heroVideoUrl || "https://assets.mixkit.co/videos/preview/mixkit-top-view-of-motorcycles-driving-on-a-highway-41551-large.mp4";
+      document.getElementById("cfgHeroVideo").value = info.heroVideoUrl || "";
 
       localBikers = JSON.parse(JSON.stringify(DREAM_MOTO_DATA.bikers || []));
       localTrends = JSON.parse(JSON.stringify(DREAM_MOTO_DATA.trends || []));
+      localSpots = JSON.parse(JSON.stringify(DREAM_MOTO_DATA.spots || []));
       localBikes = JSON.parse(JSON.stringify(DREAM_MOTO_DATA.bikes || []));
       localServices = JSON.parse(JSON.stringify(DREAM_MOTO_DATA.services || []));
 
       renderBikersUI();
       renderTrendsUI();
+      renderSpotsUI();
       renderPricesUI();
     }
 
@@ -253,11 +270,26 @@
       const container = document.getElementById("bikersList");
       container.innerHTML = localBikers.map((b, idx) => `
         <div class="item-card">
-          <div style="flex:1; margin-right: 15px;">
-            <input type="text" class="form-control" value="${b.name}" onchange="localBikers[${idx}].name=this.value" style="font-weight:bold; margin-bottom:5px;">
-            <input type="text" class="form-control" value="${b.role}" onchange="localBikers[${idx}].role=this.value" style="font-size:0.85rem;">
+          <div class="item-header">
+            <strong>🏍️ Biker #${idx + 1}: ${b.name}</strong>
+            <button class="btn-danger" onclick="localBikers.splice(${idx},1); renderBikersUI();"><i class="fa-solid fa-trash"></i> Xóa</button>
           </div>
-          <button class="btn-danger" onclick="localBikers.splice(${idx},1); renderBikersUI();"><i class="fa-solid fa-trash"></i> Xóa</button>
+          <div class="form-group">
+            <label class="form-label">Tên Biker:</label>
+            <input type="text" class="form-control" value="${b.name || ''}" onchange="localBikers[${idx}].name=this.value">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Vai Trò & Danh Hiệu:</label>
+            <input type="text" class="form-control" value="${b.role || ''}" onchange="localBikers[${idx}].role=this.value">
+          </div>
+          <div class="form-group">
+            <label class="form-label"><i class="fa-solid fa-play"></i> Link Video Demo Biker (MP4):</label>
+            <input type="text" class="form-control" value="${b.videoUrl || ''}" placeholder="Dán link video mp4 chạy xe của Biker này..." onchange="localBikers[${idx}].videoUrl=this.value">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Mô Tả Tiểu Sử:</label>
+            <input type="text" class="form-control" value="${b.bio || ''}" onchange="localBikers[${idx}].bio=this.value">
+          </div>
         </div>
       `).join('');
     }
@@ -268,8 +300,9 @@
         name: "Rider Mới",
         role: "Tài Xế PKL Chuyên Nghiệp",
         expBadge: "5 Năm PKL",
-        bio: "Kinh nghiệm vi vu mô tô đêm.",
-        tags: [{ icon: "fa-motorcycle", text: "Kawasaki" }]
+        videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-top-view-of-motorcycles-driving-on-a-highway-41551-large.mp4",
+        bio: "Kinh nghiệm vi vu mô tô đêm Cầu Ba Son.",
+        tags: [{ icon: "fa-motorcycle", text: "Kawasaki Z1000" }]
       });
       renderBikersUI();
     }
@@ -278,11 +311,26 @@
       const container = document.getElementById("trendsList");
       container.innerHTML = localTrends.map((t, idx) => `
         <div class="item-card">
-          <div style="flex:1; margin-right: 15px;">
-            <input type="text" class="form-control" value="${t.title}" onchange="localTrends[${idx}].title=this.value" style="font-weight:bold; margin-bottom:5px;">
-            <input type="text" class="form-control" value="${t.style}" onchange="localTrends[${idx}].style=this.value" style="font-size:0.85rem;">
+          <div class="item-header">
+            <strong>🎬 Trend #${idx + 1}: ${t.title}</strong>
+            <button class="btn-danger" onclick="localTrends.splice(${idx},1); renderTrendsUI();"><i class="fa-solid fa-trash"></i> Xóa</button>
           </div>
-          <button class="btn-danger" onclick="localTrends.splice(${idx},1); renderTrendsUI();"><i class="fa-solid fa-trash"></i> Xóa</button>
+          <div class="form-group">
+            <label class="form-label">Tiêu Đề Trend:</label>
+            <input type="text" class="form-control" value="${t.title || ''}" onchange="localTrends[${idx}].title=this.value">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phong Cách (Style Tag):</label>
+            <input type="text" class="form-control" value="${t.style || ''}" onchange="localTrends[${idx}].style=this.value">
+          </div>
+          <div class="form-group">
+            <label class="form-label"><i class="fa-solid fa-play"></i> Link Video MP4 / TikTok Clip:</label>
+            <input type="text" class="form-control" value="${t.videoUrl || ''}" placeholder="Dán đường dẫn video .mp4 của trend này..." onchange="localTrends[${idx}].videoUrl=this.value">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Mô Tả Ngắn:</label>
+            <input type="text" class="form-control" value="${t.desc || ''}" onchange="localTrends[${idx}].desc=this.value">
+          </div>
         </div>
       `).join('');
     }
@@ -294,15 +342,51 @@
         style: "New Trend Vibe",
         badge: "NEW",
         views: "500K views",
+        videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-top-view-of-motorcycles-driving-on-a-highway-41551-large.mp4",
         desc: "Mô tả phong cách mới..."
       });
       renderTrendsUI();
     }
 
+    function renderSpotsUI() {
+      const container = document.getElementById("spotsList");
+      container.innerHTML = localSpots.map((s, idx) => `
+        <div class="item-card">
+          <div class="item-header">
+            <strong>📍 Góc Quay #${idx + 1}: ${s.title}</strong>
+            <button class="btn-danger" onclick="localSpots.splice(${idx},1); renderSpotsUI();"><i class="fa-solid fa-trash"></i> Xóa</button>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tên Góc Quay Check-in:</label>
+            <input type="text" class="form-control" value="${s.title || ''}" onchange="localSpots[${idx}].title=this.value">
+          </div>
+          <div class="form-group">
+            <label class="form-label"><i class="fa-solid fa-play"></i> Link Video Preview Góc Quay (MP4):</label>
+            <input type="text" class="form-control" value="${s.videoUrl || ''}" placeholder="Dán link video mp4 preview góc quay này..." onchange="localSpots[${idx}].videoUrl=this.value">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Mô Tả Góc Quay:</label>
+            <input type="text" class="form-control" value="${s.desc || ''}" onchange="localSpots[${idx}].desc=this.value">
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function addNewSpot() {
+      localSpots.push({
+        id: "spot-" + Date.now(),
+        title: "Góc Quay Check-in Mới",
+        desc: "Góc view siêu đẹp ngắm ánh đèn sông Sài Gòn đêm...",
+        icon: "fa-camera",
+        videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-top-view-of-motorcycles-driving-on-a-highway-41551-large.mp4"
+      });
+      renderSpotsUI();
+    }
+
     function renderPricesUI() {
       const bikesContainer = document.getElementById("bikesList");
       bikesContainer.innerHTML = localBikes.map((bk, idx) => `
-        <div class="item-card">
+        <div class="item-card" style="flex-direction:row; align-items:center;">
           <input type="text" class="form-control" value="${bk.name}" onchange="localBikes[${idx}].name=this.value" style="flex:2; margin-right:10px;">
           <input type="number" class="form-control" value="${bk.extraPrice}" onchange="localBikes[${idx}].extraPrice=parseInt(this.value)" style="flex:1; margin-right:10px;" placeholder="+ Phụ phí">
         </div>
@@ -310,7 +394,7 @@
 
       const servicesContainer = document.getElementById("servicesList");
       servicesContainer.innerHTML = localServices.map((s, idx) => `
-        <div class="item-card">
+        <div class="item-card" style="flex-direction:row; align-items:center;">
           <input type="text" class="form-control" value="${s.name}" onchange="localServices[${idx}].name=this.value" style="flex:2; margin-right:10px;">
           <input type="number" class="form-control" value="${s.price}" onchange="localServices[${idx}].price=parseInt(this.value)" style="flex:1; margin-right:10px;" placeholder="Giá VNĐ">
         </div>
@@ -328,6 +412,7 @@
           heroVideoUrl: document.getElementById("cfgHeroVideo").value
         },
         trends: localTrends,
+        spots: localSpots,
         bikers: localBikers,
         bikes: localBikes,
         services: localServices
@@ -351,7 +436,7 @@ if (typeof module !== 'undefined' && module.exports) {
       a.download = "data-config.js";
       a.click();
 
-      alert("🎉 Đã tạo file data-config.js mới thành công! Bạn hãy chép đè file này vào thư mục dự án để cập nhật ngay trang web nhé.");
+      alert("🎉 Đã xuất file data-config.js chứa đầy đủ link video cho tất cả các mục thành công! Hãy chép đè file này vào dự án nhé.");
     }
   </script>
 
