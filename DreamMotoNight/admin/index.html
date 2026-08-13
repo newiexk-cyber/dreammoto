@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dream Moto Admin Portal | Giai Đoạn 3 Headless CMS</title>
+  <title>Dream Moto Admin Portal | Kéo Thả File Video Giai Đoạn 3</title>
   
   <!-- Google Fonts & FontAwesome -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -60,6 +60,33 @@
     }
     .form-control:focus { outline: none; border-color: var(--neon-gold); }
     
+    /* Drag & Drop Video Zone */
+    .video-dropzone {
+      border: 2px dashed var(--neon-cyan);
+      border-radius: 12px;
+      padding: 22px 15px;
+      text-align: center;
+      background: rgba(0, 243, 255, 0.04);
+      cursor: pointer;
+      transition: 0.3s;
+      margin-top: 8px;
+    }
+    .video-dropzone:hover, .video-dropzone.dragover {
+      border-color: var(--neon-gold);
+      background: rgba(255, 184, 0, 0.12);
+      box-shadow: 0 0 20px rgba(255, 184, 0, 0.25);
+    }
+    .video-dropzone i { font-size: 2.2rem; color: var(--neon-gold); margin-bottom: 8px; }
+    
+    .video-preview-box {
+      width: 100%;
+      max-height: 200px;
+      border-radius: 10px;
+      margin-top: 12px;
+      background: #000;
+      object-fit: cover;
+    }
+    
     .btn-admin {
       display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px;
       border-radius: 8px; font-weight: 700; cursor: pointer; border: none; font-size: 0.95rem;
@@ -109,10 +136,10 @@
     <header class="admin-header">
       <div>
         <h1 class="admin-title"><i class="fa-solid fa-sliders"></i> DREAM MOTO ADMIN PORTAL</h1>
-        <p style="font-size: 0.85rem; color: var(--text-muted);">Quản trị hệ thống CMS Giai Đoạn 3 • Quyền Thêm Video & Media Cho Tất Cả Các Mục</p>
+        <p style="font-size: 0.85rem; color: var(--text-muted);">Quản trị hệ thống CMS Giai Đoạn 3 • Hỗ Trợ Kéo - Thả File Video Tải Lên Mọi Mục</p>
       </div>
       <div>
-        <span class="badge-phase3"><i class="fa-solid fa-rocket"></i> PHASE 3 HEADLESS CMS</span>
+        <span class="badge-phase3"><i class="fa-solid fa-cloud-arrow-up"></i> DRAG & DROP UPLOADER</span>
         <a href="../index.html" target="_blank" style="margin-left: 15px; color: var(--neon-cyan); text-decoration: underline; font-weight: 700;">Xem Web Live <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
       </div>
     </header>
@@ -120,9 +147,9 @@
     <!-- Navigation Tabs -->
     <div class="admin-tabs">
       <button class="admin-tab-btn active" onclick="switchTab('shopTab')"><i class="fa-solid fa-gear"></i> 1. Zalo & Hero Video</button>
-      <button class="admin-tab-btn" onclick="switchTab('bikersTab')"><i class="fa-solid fa-motorcycle"></i> 2. Quản Lý Bikers (+Video Demo)</button>
-      <button class="admin-tab-btn" onclick="switchTab('trendsTab')"><i class="fa-solid fa-film"></i> 3. Quản Lý TikTok Trends (+Video MP4)</button>
-      <button class="admin-tab-btn" onclick="switchTab('spotsTab')"><i class="fa-solid fa-location-dot"></i> 4. Quản Lý Góc Quay (+Video Spot)</button>
+      <button class="admin-tab-btn" onclick="switchTab('bikersTab')"><i class="fa-solid fa-motorcycle"></i> 2. Quản Lý Bikers (+Video)</button>
+      <button class="admin-tab-btn" onclick="switchTab('trendsTab')"><i class="fa-solid fa-film"></i> 3. Quản Lý TikTok Trends (+Video)</button>
+      <button class="admin-tab-btn" onclick="switchTab('spotsTab')"><i class="fa-solid fa-location-dot"></i> 4. Quản Lý Góc Quay (+Video)</button>
       <button class="admin-tab-btn" onclick="switchTab('pricesTab')"><i class="fa-solid fa-tag"></i> 5. Quản Lý Gói Giá & Xe</button>
     </div>
 
@@ -145,17 +172,27 @@
         <label class="form-label">Thông Báo Live Banner (Top Page):</label>
         <input type="text" id="cfgAnnouncement" class="form-control" value="⚡ HOT: Tối nay chỉ còn 3 slot trống tại Cầu Ba Son! Đặt lịch ngay để giữ giờ đẹp.">
       </div>
+      
+      <!-- Drag & Drop Hero Video -->
       <div class="form-group">
-        <label class="form-label"><i class="fa-solid fa-play"></i> Link Video Chạy Nền Hero Banner (MP4 Autoloop):</label>
-        <input type="text" id="cfgHeroVideo" class="form-control" value="https://assets.mixkit.co/videos/preview/mixkit-top-view-of-motorcycles-driving-on-a-highway-41551-large.mp4">
-        <p style="color: var(--text-muted); font-size: 0.8rem; margin-top: 5px;">Dán bất kỳ đường dẫn video .mp4 mô tô chạy đêm để làm nền tự động lặp lại (giảm sáng 65% giữ tương phản chữ).</p>
+        <label class="form-label"><i class="fa-solid fa-file-video"></i> Video Chạy Nền Hero Banner (MP4 Autoloop):</label>
+        <input type="text" id="cfgHeroVideo" class="form-control" placeholder="Đường dẫn link video .mp4..." value="https://assets.mixkit.co/videos/preview/mixkit-top-view-of-motorcycles-driving-on-a-highway-41551-large.mp4">
+        
+        <div class="video-dropzone" onclick="triggerFileInput('heroFile')" ondragover="event.preventDefault(); this.classList.add('dragover');" ondragleave="this.classList.remove('dragover');" ondrop="handleDropVideo(event, 'cfgHeroVideo', 'heroPreview')">
+          <i class="fa-solid fa-cloud-arrow-up"></i>
+          <p><strong>Kéo & thả file video MP4 vào đây</strong> hoặc nhấp để chọn file từ máy tính</p>
+          <input type="file" id="heroFile" accept="video/*" style="display:none" onchange="handleSelectedFile(this, 'cfgHeroVideo', 'heroPreview')">
+        </div>
+        <video id="heroPreview" class="video-preview-box" controls style="display: block; margin-top:10px;">
+          <source src="https://assets.mixkit.co/videos/preview/mixkit-top-view-of-motorcycles-driving-on-a-highway-41551-large.mp4" type="video/mp4">
+        </video>
       </div>
     </div>
 
     <!-- Tab 2: Bikers Management -->
     <div id="bikersTab" class="admin-panel">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-        <h3 style="color: var(--neon-gold);"><i class="fa-solid fa-user-ninja"></i> Quản Lý Đội Ngũ Bikers Đêm (+ Video Demo)</h3>
+        <h3 style="color: var(--neon-gold);"><i class="fa-solid fa-user-ninja"></i> Quản Lý Đội Ngũ Bikers Đêm (+ Kéo Thả File Video)</h3>
         <button class="btn-admin btn-add" onclick="addNewBiker()"><i class="fa-solid fa-plus"></i> Thêm Biker Mới</button>
       </div>
       <div id="bikersList">
@@ -166,7 +203,7 @@
     <!-- Tab 3: TikTok Trends Management -->
     <div id="trendsTab" class="admin-panel">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-        <h3 style="color: var(--neon-gold);"><i class="fa-solid fa-video"></i> Quản Lý 5 Hot Trends TikTok (+ Link Video MP4/Embed)</h3>
+        <h3 style="color: var(--neon-gold);"><i class="fa-solid fa-video"></i> Quản Lý 5 Hot Trends TikTok (+ Kéo Thả File Video)</h3>
         <button class="btn-admin btn-add" onclick="addNewTrend()"><i class="fa-solid fa-plus"></i> Thêm Trend Mới</button>
       </div>
       <div id="trendsList">
@@ -174,10 +211,10 @@
       </div>
     </div>
 
-    <!-- Tab 4: Spots Management (NEW) -->
+    <!-- Tab 4: Spots Management -->
     <div id="spotsTab" class="admin-panel">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-        <h3 style="color: var(--neon-gold);"><i class="fa-solid fa-location-dot"></i> Quản Lý Các Góc Quay Cầu Ba Son (+ Video Preview)</h3>
+        <h3 style="color: var(--neon-gold);"><i class="fa-solid fa-location-dot"></i> Quản Lý Các Góc Quay Cầu Ba Son (+ Kéo Thả File Video)</h3>
         <button class="btn-admin btn-add" onclick="addNewSpot()"><i class="fa-solid fa-plus"></i> Thêm Góc Quay Mới</button>
       </div>
       <div id="spotsList">
@@ -201,7 +238,7 @@
     <div style="background: var(--bg-card); border: 2px solid var(--neon-green); padding: 20px 30px; border-radius: 16px; display: flex; align-items: center; justify-content: space-between;">
       <div>
         <h4 style="color: var(--neon-green); font-family: var(--font-head);"><i class="fa-solid fa-floppy-disk"></i> XUẤT CẤU HÌNH TỰ ĐỘNG</h4>
-        <p style="font-size: 0.85rem; color: var(--text-muted);">Tự động tạo file data-config.js mới 100% chứa đầy đủ link video cho tất cả các mục.</p>
+        <p style="font-size: 0.85rem; color: var(--text-muted);">Tự động tạo file data-config.js mới 100% chứa đầy đủ link video kéo thả.</p>
       </div>
       <button class="btn-admin btn-save" onclick="saveAndExportConfig()">
         <i class="fa-solid fa-download"></i> LƯU & XUẤT FILE DATA-CONFIG.JS
@@ -237,6 +274,44 @@
       document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
       document.getElementById(tabId).classList.add('active');
       event.target.classList.add('active');
+    }
+
+    // File Drag & Drop Handlers
+    function triggerFileInput(fileInputId) {
+      document.getElementById(fileInputId).click();
+    }
+
+    function processVideoFile(file, inputId, previewId, callback) {
+      if (!file || !file.type.startsWith('video/')) {
+        alert("Vui lòng kéo thả hoặc chọn đúng file Video (.mp4, .webm, .mov)!");
+        return;
+      }
+      const objectUrl = URL.createObjectURL(file);
+      const inputElem = document.getElementById(inputId);
+      const previewElem = document.getElementById(previewId);
+
+      if (inputElem) inputElem.value = file.name;
+      if (previewElem) {
+        previewElem.src = objectUrl;
+        previewElem.style.display = "block";
+      }
+      if (typeof callback === 'function') callback(file.name, objectUrl);
+    }
+
+    function handleDropVideo(evt, inputId, previewId, callback) {
+      evt.preventDefault();
+      evt.target.classList.remove('dragover');
+      const files = evt.dataTransfer.files;
+      if (files && files.length > 0) {
+        processVideoFile(files[0], inputId, previewId, callback);
+      }
+    }
+
+    function handleSelectedFile(inputElem, inputId, previewId, callback) {
+      const files = inputElem.files;
+      if (files && files.length > 0) {
+        processVideoFile(files[0], inputId, previewId, callback);
+      }
     }
 
     let localBikers = [];
@@ -282,10 +357,21 @@
             <label class="form-label">Vai Trò & Danh Hiệu:</label>
             <input type="text" class="form-control" value="${b.role || ''}" onchange="localBikers[${idx}].role=this.value">
           </div>
+          
           <div class="form-group">
-            <label class="form-label"><i class="fa-solid fa-play"></i> Link Video Demo Biker (MP4):</label>
-            <input type="text" class="form-control" value="${b.videoUrl || ''}" placeholder="Dán link video mp4 chạy xe của Biker này..." onchange="localBikers[${idx}].videoUrl=this.value">
+            <label class="form-label"><i class="fa-solid fa-file-video"></i> Video Demo Biker (MP4):</label>
+            <input type="text" id="bikerVid_${idx}" class="form-control" value="${b.videoUrl || ''}" placeholder="Dán link hoặc kéo thả file video..." onchange="localBikers[${idx}].videoUrl=this.value">
+            
+            <div class="video-dropzone" onclick="triggerFileInput('bikerFile_${idx}')" ondragover="event.preventDefault(); this.classList.add('dragover');" ondragleave="this.classList.remove('dragover');" ondrop="handleDropVideo(event, 'bikerVid_${idx}', 'bikerPreview_${idx}', (fn)=>localBikers[${idx}].videoUrl=fn)">
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+              <p>Kéo & thả file video Biker vào đây hoặc bấm chọn file</p>
+              <input type="file" id="bikerFile_${idx}" accept="video/*" style="display:none" onchange="handleSelectedFile(this, 'bikerVid_${idx}', 'bikerPreview_${idx}', (fn)=>localBikers[${idx}].videoUrl=fn)">
+            </div>
+            <video id="bikerPreview_${idx}" class="video-preview-box" controls style="${b.videoUrl ? 'display:block' : 'display:none'}">
+              <source src="${b.videoUrl || ''}" type="video/mp4">
+            </video>
           </div>
+
           <div class="form-group">
             <label class="form-label">Mô Tả Tiểu Sử:</label>
             <input type="text" class="form-control" value="${b.bio || ''}" onchange="localBikers[${idx}].bio=this.value">
@@ -319,14 +405,21 @@
             <label class="form-label">Tiêu Đề Trend:</label>
             <input type="text" class="form-control" value="${t.title || ''}" onchange="localTrends[${idx}].title=this.value">
           </div>
+          
           <div class="form-group">
-            <label class="form-label">Phong Cách (Style Tag):</label>
-            <input type="text" class="form-control" value="${t.style || ''}" onchange="localTrends[${idx}].style=this.value">
+            <label class="form-label"><i class="fa-solid fa-file-video"></i> Video Clip Trend (MP4):</label>
+            <input type="text" id="trendVid_${idx}" class="form-control" value="${t.videoUrl || ''}" placeholder="Dán link hoặc kéo thả file video..." onchange="localTrends[${idx}].videoUrl=this.value">
+            
+            <div class="video-dropzone" onclick="triggerFileInput('trendFile_${idx}')" ondragover="event.preventDefault(); this.classList.add('dragover');" ondragleave="this.classList.remove('dragover');" ondrop="handleDropVideo(event, 'trendVid_${idx}', 'trendPreview_${idx}', (fn)=>localTrends[${idx}].videoUrl=fn)">
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+              <p>Kéo & thả file video Trend vào đây hoặc bấm chọn file</p>
+              <input type="file" id="trendFile_${idx}" accept="video/*" style="display:none" onchange="handleSelectedFile(this, 'trendVid_${idx}', 'trendPreview_${idx}', (fn)=>localTrends[${idx}].videoUrl=fn)">
+            </div>
+            <video id="trendPreview_${idx}" class="video-preview-box" controls style="${t.videoUrl ? 'display:block' : 'display:none'}">
+              <source src="${t.videoUrl || ''}" type="video/mp4">
+            </video>
           </div>
-          <div class="form-group">
-            <label class="form-label"><i class="fa-solid fa-play"></i> Link Video MP4 / TikTok Clip:</label>
-            <input type="text" class="form-control" value="${t.videoUrl || ''}" placeholder="Dán đường dẫn video .mp4 của trend này..." onchange="localTrends[${idx}].videoUrl=this.value">
-          </div>
+
           <div class="form-group">
             <label class="form-label">Mô Tả Ngắn:</label>
             <input type="text" class="form-control" value="${t.desc || ''}" onchange="localTrends[${idx}].desc=this.value">
@@ -360,10 +453,21 @@
             <label class="form-label">Tên Góc Quay Check-in:</label>
             <input type="text" class="form-control" value="${s.title || ''}" onchange="localSpots[${idx}].title=this.value">
           </div>
+          
           <div class="form-group">
-            <label class="form-label"><i class="fa-solid fa-play"></i> Link Video Preview Góc Quay (MP4):</label>
-            <input type="text" class="form-control" value="${s.videoUrl || ''}" placeholder="Dán link video mp4 preview góc quay này..." onchange="localSpots[${idx}].videoUrl=this.value">
+            <label class="form-label"><i class="fa-solid fa-file-video"></i> Video Preview Góc Quay (MP4):</label>
+            <input type="text" id="spotVid_${idx}" class="form-control" value="${s.videoUrl || ''}" placeholder="Dán link hoặc kéo thả file video..." onchange="localSpots[${idx}].videoUrl=this.value">
+            
+            <div class="video-dropzone" onclick="triggerFileInput('spotFile_${idx}')" ondragover="event.preventDefault(); this.classList.add('dragover');" ondragleave="this.classList.remove('dragover');" ondrop="handleDropVideo(event, 'spotVid_${idx}', 'spotPreview_${idx}', (fn)=>localSpots[${idx}].videoUrl=fn)">
+              <i class="fa-solid fa-cloud-arrow-up"></i>
+              <p>Kéo & thả file video Góc Quay vào đây hoặc bấm chọn file</p>
+              <input type="file" id="spotFile_${idx}" accept="video/*" style="display:none" onchange="handleSelectedFile(this, 'spotVid_${idx}', 'spotPreview_${idx}', (fn)=>localSpots[${idx}].videoUrl=fn)">
+            </div>
+            <video id="spotPreview_${idx}" class="video-preview-box" controls style="${s.videoUrl ? 'display:block' : 'display:none'}">
+              <source src="${s.videoUrl || ''}" type="video/mp4">
+            </video>
           </div>
+
           <div class="form-group">
             <label class="form-label">Mô Tả Góc Quay:</label>
             <input type="text" class="form-control" value="${s.desc || ''}" onchange="localSpots[${idx}].desc=this.value">
@@ -436,7 +540,7 @@ if (typeof module !== 'undefined' && module.exports) {
       a.download = "data-config.js";
       a.click();
 
-      alert("🎉 Đã xuất file data-config.js chứa đầy đủ link video cho tất cả các mục thành công! Hãy chép đè file này vào dự án nhé.");
+      alert("🎉 Đã xuất file data-config.js chứa đầy đủ video kéo thả thành công! Hãy chép đè file này vào thư mục dự án nhé.");
     }
   </script>
 
