@@ -788,6 +788,26 @@ button {
   border-radius: 50%;
 }
 
+.biker-video-box {
+  width: 100%;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  background: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.biker-card-video, .biker-card-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
+
 .cyan-bg { background: linear-gradient(135deg, #0088FF, var(--neon-cyan)); }
 .magenta-bg { background: linear-gradient(135deg, var(--neon-magenta), #FF5500); color: #fff; }
 

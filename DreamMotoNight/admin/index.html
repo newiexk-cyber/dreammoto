@@ -565,15 +565,30 @@
           </div>
           
           <div class="form-group">
-            <label class="form-label"><i class="fa-solid fa-photo-film"></i> Upload File Ảnh/Video Biker (Kéo - Thả Direct):</label>
-            
-            <div class="media-dropzone" onclick="triggerFileInput('bikerFile_${idx}')" ondragover="event.preventDefault(); this.classList.add('dragover');" ondragleave="this.classList.remove('dragover');" ondrop="handleDropMedia(event, 'bikerPreviewContainer_${idx}', (fn)=>localBikers[${idx}].videoUrl=fn)">
+            <label class="form-label"><i class="fa-solid fa-user-circle"></i> Ảnh Đại Diện Biker (Avatar tròn ở đầu thẻ):</label>
+            <div class="media-dropzone" onclick="triggerFileInput('bikerAvatar_${idx}')" ondragover="event.preventDefault(); this.classList.add('dragover');" ondragleave="this.classList.remove('dragover');" ondrop="handleDropMedia(event, 'bikerAvatarPreviewContainer_${idx}', (fn)=>{localBikers[${idx}].avatarUrl=fn;})">
+              <i class="fa-solid fa-image"></i>
+              <p>Kéo & thả file Ảnh (PNG/JPG) làm Avatar</p>
+              <input type="file" id="bikerAvatar_${idx}" accept="image/*" style="display:none" onchange="handleSelectedFile(this, 'bikerAvatarPreviewContainer_${idx}', (fn)=>{localBikers[${idx}].avatarUrl=fn;})">
+            </div>
+            <div id="bikerAvatarPreviewContainer_${idx}" class="media-preview-container" style="margin-top: 10px;">
+              ${b.avatarUrl ? `<img class="media-preview-box" src="${b.avatarUrl}" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover;">` : ''}
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label"><i class="fa-solid fa-photo-film"></i> Video/Ảnh Giới Thiệu Biker (Hiển thị ở dưới thẻ):</label>
+            <div class="media-dropzone" onclick="triggerFileInput('bikerFile_${idx}')" ondragover="event.preventDefault(); this.classList.add('dragover');" ondragleave="this.classList.remove('dragover');" ondrop="handleDropMedia(event, 'bikerPreviewContainer_${idx}', (fn)=>{localBikers[${idx}].videoUrl=fn;})">
               <i class="fa-solid fa-cloud-arrow-up"></i>
-              <p>Kéo & thả file Ảnh (PNG/JPG) hoặc Video (MP4) vào đây</p>
-              <input type="file" id="bikerFile_${idx}" accept="image/*, video/*" style="display:none" onchange="handleSelectedFile(this, 'bikerPreviewContainer_${idx}', (fn)=>localBikers[${idx}].videoUrl=fn)">
+              <p>Kéo & thả file Ảnh (PNG/JPG) hoặc Video (MP4) giới thiệu</p>
+              <input type="file" id="bikerFile_${idx}" accept="image/*, video/*" style="display:none" onchange="handleSelectedFile(this, 'bikerPreviewContainer_${idx}', (fn)=>{localBikers[${idx}].videoUrl=fn;})">
             </div>
             <div id="bikerPreviewContainer_${idx}" class="media-preview-container">
-              ${b.videoUrl ? `<video class="media-preview-box" autoplay loop muted playsinline controls><source src="${b.videoUrl}" type="video/mp4"></video>` : ''}
+              ${b.videoUrl ? (
+                /\.(mp4|webm|ogg|mov)(\?.*)?$/i.test(b.videoUrl) || b.videoUrl.includes("data:video/") ?
+                `<video class="media-preview-box" autoplay loop muted playsinline controls><source src="${b.videoUrl}" type="video/mp4"></video>` :
+                `<img class="media-preview-box" src="${b.videoUrl}" style="max-height: 150px; object-fit: cover;">`
+              ) : ''}
             </div>
           </div>
 
@@ -590,10 +605,9 @@
         id: "biker-" + Date.now(),
         name: "Rider Mới",
         role: "Tài Xế PKL Chuyên Nghiệp",
-        expBadge: "5 Năm PKL",
+        avatarUrl: "",
         videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-top-view-of-motorcycles-driving-on-a-highway-41551-large.mp4",
         bio: "Kinh nghiệm vi vu mô tô đêm Cầu Ba Son.",
-        tags: [{ icon: "fa-motorcycle", text: "Kawasaki Z1000" }]
       });
       renderBikersUI();
     }

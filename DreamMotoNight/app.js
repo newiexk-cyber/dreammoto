@@ -265,26 +265,45 @@ function renderBikers() {
   const container = document.getElementById("bikersGrid");
   if (!container || typeof DREAM_MOTO_DATA === 'undefined' || !DREAM_MOTO_DATA.bikers) return;
 
-  container.innerHTML = DREAM_MOTO_DATA.bikers.map(b => `
-    <div class="biker-card">
-      <div class="biker-header">
-        <div class="biker-avatar-box">
-          <div class="biker-avatar-ring ${b.ringColorClass || ''}"></div>
-          <div class="biker-avatar-icon ${b.iconClass || ''}">${getBikerAvatarHtml(b.videoUrl)}</div>
+  container.innerHTML = DREAM_MOTO_DATA.bikers.map(b => {
+    let showcaseMediaHtml = "";
+    if (b.videoUrl) {
+      const isVideo = /\.(mp4|webm|ogg|mov)(\?.*)?$/i.test(b.videoUrl) || b.videoUrl.includes("data:video/");
+      if (isVideo) {
+        showcaseMediaHtml = `
+          <div class="biker-video-box">
+            <video src="${b.videoUrl}" controls loop muted playsinline class="biker-card-video"></video>
+          </div>`;
+      } else {
+        showcaseMediaHtml = `
+          <div class="biker-video-box">
+            <img src="${b.videoUrl}" alt="Showcase" class="biker-card-image">
+          </div>`;
+      }
+    }
+
+    return `
+      <div class="biker-card">
+        <div class="biker-header">
+          <div class="biker-avatar-box">
+            <div class="biker-avatar-ring ${b.ringColorClass || ''}"></div>
+            <div class="biker-avatar-icon ${b.iconClass || ''}">${getBikerAvatarHtml(b.avatarUrl)}</div>
+          </div>
+        </div>
+        <div class="biker-body">
+          <h3>${b.name}</h3>
+          <span class="biker-role">${b.role}</span>
+          <p class="biker-bio">${b.bio}</p>
+          ${showcaseMediaHtml}
+        </div>
+        <div class="biker-footer">
+          <button class="btn-select-biker">
+            <i class="fa-solid fa-check"></i> Chọn Đồng Hành Với ${b.name.replace("Rider ", "")}
+          </button>
         </div>
       </div>
-      <div class="biker-body">
-        <h3>${b.name}</h3>
-        <span class="biker-role">${b.role}</span>
-        <p class="biker-bio">${b.bio}</p>
-      </div>
-      <div class="biker-footer">
-        <button class="btn-select-biker">
-          <i class="fa-solid fa-check"></i> Chọn Đồng Hành Với ${b.name.replace("Rider ", "")}
-        </button>
-      </div>
-    </div>
-  `).join('');
+    `;
+  }).join('');
 
   initBikerQuickSelect();
 }
