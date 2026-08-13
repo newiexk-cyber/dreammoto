@@ -309,14 +309,14 @@
       <p style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 20px;">Giúp cập nhật bảng giá và hình ảnh trực tuyến tức thì lên trang Webcake của bạn mà không cần xuất tải file hay push Git thủ công.</p>
       
       <div class="form-group">
-        <label class="form-label">Cloud Key-Value REST URL:</label>
-        <input type="text" id="cfgRealtimeSyncUrl" class="form-control" placeholder="Ví dụ: https://kvdb.io/9k8Kx4z8X3s7s6s9/dream_moto_config">
-        <small style="color: var(--text-muted); margin-top: 4px; display: block;">Mặc định hệ thống tự động sinh cấu hình mây bảo mật KVdb.io cho bạn.</small>
+        <label class="form-label"><i class="fa-solid fa-lock"></i> Cloud Key-Value REST URL (Đã khóa bảo mật):</label>
+        <input type="text" id="cfgRealtimeSyncUrl" class="form-control" placeholder="Ví dụ: https://kvdb.io/9k8Kx4z8X3s7s6s9/dream_moto_config" readonly style="background: rgba(255,255,255,0.04); color: #888; cursor: not-allowed;">
+        <small style="color: var(--text-muted); margin-top: 4px; display: block;">Thông số kết nối hệ thống đã được khóa tự động để tránh lỗi đường truyền.</small>
       </div>
 
       <div class="form-group">
-        <label class="form-label">Bucket ID:</label>
-        <input type="text" id="cfgRealtimeBucketId" class="form-control" placeholder="Ví dụ: dream-moto-night-default-key">
+        <label class="form-label"><i class="fa-solid fa-lock"></i> Bucket ID (Đã khóa bảo mật):</label>
+        <input type="text" id="cfgRealtimeBucketId" class="form-control" placeholder="Ví dụ: dream-moto-night-default-key" readonly style="background: rgba(255,255,255,0.04); color: #888; cursor: not-allowed;">
       </div>
 
       <div style="display: flex; gap: 15px; margin-top: 25px;">
