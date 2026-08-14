@@ -91,6 +91,32 @@ const DREAM_MOTO_DATA = {
         "Hỗ trợ xin phép & đảm bảo an toàn lộ trình"
       ],
       videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-motorcycle-rider-driving-fast-on-the-highway-41552-large.mp4"
+    },
+    {
+      id: "service-4",
+      num: "# 4",
+      title: "Cho Thuê Trang Phục & Nón Fullface Chụp Ảnh",
+      desc: "Trang bị đầy đủ mũ bảo hiểm fullface cao cấp (AGV, Shoei) và áo khoác da chất chơi để lên hình đẹp nhất.",
+      features: [
+        "Nón bảo hiểm fullface cao cấp nhiều mẫu mã",
+        "Áo khoác da Biker chuyên nghiệp hợp thời trang",
+        "Găng tay, bảo hộ đầy đủ đi kèm",
+        "Hỗ trợ chỉnh sửa trang phục chuẩn gu trước khi bấm máy"
+      ],
+      videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-hands-of-a-motorcyclist-putting-on-leather-gloves-41555-large.mp4"
+    },
+    {
+      id: "service-5",
+      num: "# 5",
+      title: "Thiết Kế Tour Đêm Sài Gòn Theo Yêu Cầu",
+      desc: "Lựa chọn các cung đường đẹp nhất như Cầu Ba Son, hầm Thủ Thiêm, bến Bạch Đằng hoặc Landmark 81.",
+      features: [
+        "Thiết kế lộ trình riêng theo sở thích cá nhân",
+        "Dừng chân chụp hình tại các điểm check-in nổi tiếng",
+        "Chủ động thời gian xuất phát và kết thúc",
+        "Có xe dẫn đoàn bảo đảm lộ trình thông suốt"
+      ],
+      videoUrl: "https://assets.mixkit.co/videos/preview/mixkit-car-driving-on-a-street-with-neon-lights-at-night-42871-large.mp4"
     }
   ],
 

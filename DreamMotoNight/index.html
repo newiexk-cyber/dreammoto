@@ -29,16 +29,16 @@
   <!-- Header / Navigation -->
   <header class="main-header">
     <div class="container header-container">
-      <a href="#" class="logo">
-        <span class="logo-icon"><i class="fa-solid fa-motorcycle"></i></span>
-        <span class="logo-text">DREAM<span class="gold-text">MOTO</span></span>
+      <a href="#" class="logo" style="display: flex; align-items: center; gap: 10px;">
+        <img src="logo.jpg" alt="Dream Moto Logo" style="height: 40px; width: auto; border-radius: 4px; border: 1px solid rgba(255,255,255,0.15);">
+        <span class="logo-text" style="font-family: var(--font-heading); font-weight: 900; letter-spacing: 1px; text-transform: uppercase;">DREAM MOTO</span>
       </a>
       <nav class="desktop-nav">
         <a href="#trends">Các Dịch Vụ</a>
-        <a href="#spots">Góc Quay</a>
         <a href="#bikers">Đội Ngũ Bikers</a>
-        <a href="#calculator">Bảng Giá & Gói</a>
+        <a href="#feedback">Đánh Giá</a>
         <a href="#faq">FAQ</a>
+        <a href="#calculator">Báo Giá</a>
       </nav>
       <div class="header-actions">
         <a href="https://zalo.me/0900000000" target="_blank" class="btn btn-primary btn-sm btn-glow">
@@ -134,34 +134,6 @@
     </div>
   </section>
 
-  <!-- Interactive Spot Map Cầu Ba Son Section -->
-  <section id="spots" class="spots-section">
-    <div class="container">
-      <div class="section-header text-center">
-        <span class="sub-title">LOCATIONS & SPOTS</span>
-        <h2 class="section-title">3 Góc Quay Huyền Thoại <span class="cyan-text">Tại Cầu Ba Son</span></h2>
-        <p class="section-desc">Chúng tôi đã nghiên cứu kỹ lưỡng những vị trí lên hình đẹp lung linh nhất đêm Sài Gòn.</p>
-      </div>
-
-      <div class="spots-grid">
-        <div class="spot-card">
-          <div class="spot-icon"><i class="fa-solid fa-bridge"></i></div>
-          <h3>1. Đỉnh Cầu Ba Son</h3>
-          <p>Góc view trực diện tháp Landmark 81 rực rỡ và tòa tháp Bitexco đằng xa. Nơi tạo nên các bản slow-motion triệu views.</p>
-        </div>
-        <div class="spot-card">
-          <div class="spot-icon"><i class="fa-solid fa-water"></i></div>
-          <h3>2. Chân Cầu Bến Bạch Đằng</h3>
-          <p>Ánh đèn phản chiếu mặt sông Sài Gòn cùng làn gió mát rượi. Lý tưởng cho phong cách Chill & Romantic.</p>
-        </div>
-        <div class="spot-card">
-          <div class="spot-icon"><i class="fa-solid fa-road"></i></div>
-          <h3>3. Đại Lộ Thủ Thiêm Đêm</h3>
-          <p>Đường rộng thoáng, ánh đèn đường chạy dài tắp tắp. Hoàn hảo để xe tăng tốc lướt gió và tạo hiệu ứng vệt sáng light trails.</p>
-        </div>
-      </div>
-    </div>
-  </section>
 
   <!-- Biker Team Profile Section -->
   <section id="bikers" class="bikers-section">
@@ -256,6 +228,151 @@
         </div>
 
       </div>
+    </div>
+  </section>
+
+  <!-- Feedback khách thật Section -->
+  <section id="feedback" class="section feedback-section" style="background: var(--bg-surface); padding: 80px 0; border-top: 1px solid var(--border-color);">
+    <div class="container">
+      <div class="section-header text-center" style="margin-bottom: 50px;">
+        <h2 class="section-title" style="font-family: var(--font-heading); font-size: 2.2rem; font-weight: 900; letter-spacing: 1px; text-transform: uppercase;">Ý Kiến Khách Hàng</h2>
+        <p class="section-desc" style="color: var(--text-muted); font-size: 1.1rem; max-width: 600px; margin: 15px auto 0;">Đánh giá chân thực từ những khách hàng đã trực tiếp đồng hành cùng Dream Moto.</p>
+      </div>
+
+      <div class="feedback-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+        <!-- Card 1 -->
+        <div class="feedback-card" style="background: var(--bg-card); padding: 30px; border-radius: var(--radius-md); border: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div class="feedback-stars" style="color: #ffffff; margin-bottom: 15px; font-size: 0.95rem;">
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+            </div>
+            <p style="font-size: 1rem; color: var(--text-main); line-height: 1.6; font-style: italic; margin-bottom: 20px;">"Video edit quá đẹp, nhạc chuẩn trend luôn! Đi mô tô ban đêm mát mẻ, anh biker chạy cẩn thận mà nhiệt tình lắm, chỉ cho mình tạo dáng đủ kiểu."</p>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 15px;">
+            <div style="width: 40px; height: 40px; border-radius: 50%; background: #222; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #fff;">MT</div>
+            <div>
+              <h4 style="font-size: 0.95rem; font-weight: 700; color: #fff;">Minh Thư</h4>
+              <span style="font-size: 0.8rem; color: var(--text-muted);">Khách đi gói 4K Cinematic VIP</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="feedback-card" style="background: var(--bg-card); padding: 30px; border-radius: var(--radius-md); border: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div class="feedback-stars" style="color: #ffffff; margin-bottom: 15px; font-size: 0.95rem;">
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+            </div>
+            <p style="font-size: 1rem; color: var(--text-main); line-height: 1.6; font-style: italic; margin-bottom: 20px;">"Ban đầu hơi ngại vì chưa chụp đêm bao giờ, nhưng ekip cực kỳ tâm lý. Vừa được vi vu cầu Ba Son ngắm cảnh vừa có ảnh mang về đăng bài."</p>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 15px;">
+            <div style="width: 40px; height: 40px; border-radius: 50%; background: #222; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #fff;">KH</div>
+            <div>
+              <h4 style="font-size: 0.95rem; font-weight: 700; color: #fff;">Khánh Huyền</h4>
+              <span style="font-size: 0.8rem; color: var(--text-muted);">Khách đi gói Couple Night</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="feedback-card" style="background: var(--bg-card); padding: 30px; border-radius: var(--radius-md); border: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div class="feedback-stars" style="color: #ffffff; margin-bottom: 15px; font-size: 0.95rem;">
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+            </div>
+            <p style="font-size: 1rem; color: var(--text-main); line-height: 1.6; font-style: italic; margin-bottom: 20px;">"Đặt lịch cực nhanh qua Zalo, nhân viên hỗ trợ nhiệt tình. Chất lượng hình ảnh sắc nét, nón bảo hiểm fullface xịn mịn rất an tâm."</p>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 15px;">
+            <div style="width: 40px; height: 40px; border-radius: 50%; background: #222; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #fff;">AH</div>
+            <div>
+              <h4 style="font-size: 0.95rem; font-weight: 700; color: #fff;">Anh Hoàng</h4>
+              <span style="font-size: 0.8rem; color: var(--text-muted);">Khách đi gói TikTok Basic</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Process & FAQ Section -->
+  <section id="faq" class="faq-section" style="background: var(--bg-dark); padding: 80px 0; border-top: 1px solid var(--border-color);">
+    <div class="container">
+      
+      <!-- 3 Steps -->
+      <div class="process-wrapper" style="margin-bottom: 70px;">
+        <div class="section-header text-center" style="margin-bottom: 50px;">
+          <h2 class="section-title" style="font-family: var(--font-heading); font-size: 2.2rem; font-weight: 900; letter-spacing: 1px; text-transform: uppercase;">Quy Trình 3 Bước Đơn Giản</h2>
+        </div>
+        <div class="process-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;">
+          <div class="process-card" style="background: var(--bg-card); padding: 30px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+            <div class="step-num" style="font-size: 2.5rem; font-weight: 900; color: rgba(255,255,255,0.1); margin-bottom: 15px;">01</div>
+            <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 10px;">Đặt Lịch Chọn Giờ</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">Chọn dòng xe, gói dịch vụ và khung giờ mong muốn trên web, bấm Đặt qua Zalo trong 30 giây.</p>
+          </div>
+          <div class="process-card" style="background: var(--bg-card); padding: 30px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+            <div class="step-num" style="font-size: 2.5rem; font-weight: 900; color: rgba(255,255,255,0.1); margin-bottom: 15px;">02</div>
+            <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 10px;">Tập Kết Cầu Ba Son</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">Đội ngũ đón bạn đúng giờ, chuẩn bị xe sạch đẹp & trang phục nón bảo hiểm an toàn ngầu đét.</p>
+          </div>
+          <div class="process-card" style="background: var(--bg-card); padding: 30px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+            <div class="step-num" style="font-size: 2.5rem; font-weight: 900; color: rgba(255,255,255,0.1); margin-bottom: 15px;">03</div>
+            <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 10px;">Vi Vu & Nhận Clip</h3>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">Tận hưởng cảm giác vi vu mô tô ngắm thành phố đêm, quay video 4K & nhận file gốc ngay lập tức.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ Accordion -->
+      <div class="faq-wrapper" style="max-width: 800px; margin: 0 auto;">
+        <div class="section-header text-center" style="margin-bottom: 40px;">
+          <h2 class="section-title" style="font-family: var(--font-heading); font-size: 2.2rem; font-weight: 900; letter-spacing: 1px; text-transform: uppercase;">Giải Đáp Thắc Mắc</h2>
+        </div>
+
+        <div class="faq-accordion">
+          <div class="faq-item" style="border-bottom: 1px solid var(--border-color); padding: 20px 0;">
+            <div class="faq-question" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+              <span style="font-weight: 600; font-size: 1.05rem;">Tôi không biết tạo dáng có được hướng dẫn không?</span>
+              <i class="fa-solid fa-chevron-down faq-icon"></i>
+            </div>
+            <div class="faq-answer">
+              <p style="color: var(--text-muted); padding-top: 10px;">Yên tâm 100%! Cameraman và tài xế của Dream Moto sẽ hướng dẫn bạn từng góc nhìn, cách tựa lưng, tạo dáng sao cho tự nhiên và thần thái nhất.</p>
+            </div>
+          </div>
+
+          <div class="faq-item" style="border-bottom: 1px solid var(--border-color); padding: 20px 0;">
+            <div class="faq-question" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+              <span style="font-weight: 600; font-size: 1.05rem;">Có an toàn không? Tốc độ chạy xe như thế nào?</span>
+              <i class="fa-solid fa-chevron-down faq-icon"></i>
+            </div>
+            <div class="faq-answer">
+              <p style="color: var(--text-muted); padding-top: 10px;">Rất an toàn. Đội ngũ tài xế của chúng tôi có nhiều năm kinh nghiệm lái PKL, chạy với tốc độ vừa phải (30-40km/h) tuân thủ luật giao thông để bạn vừa ngắm cảnh vừa quay video đẹp nhất.</p>
+            </div>
+          </div>
+
+          <div class="faq-item" style="border-bottom: 1px solid var(--border-color); padding: 20px 0;">
+            <div class="faq-question" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+              <span style="font-weight: 600; font-size: 1.05rem;">Bao lâu thì tôi nhận được video đã edit?</span>
+              <i class="fa-solid fa-chevron-down faq-icon"></i>
+            </div>
+            <div class="faq-answer">
+              <p style="color: var(--text-muted); padding-top: 10px;">File video gốc HD sẽ chuyển thẳng sang điện thoại của bạn ngay sau buổi quay. Video edit chuẩn trend TikTok 4K sẽ được gửi qua Zalo cho bạn trong vòng 24h!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -369,80 +486,20 @@
         </div>
       </div>
 
+      <!-- B&W Map Embed -->
+      <div style="margin-top: 50px; border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--border-color); background: #000; height: 350px;">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.4602287848604!2d106.70559797587747!3d10.776019359196397!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f40a1eb9775%3A0xe54e60bd25e4063!2zQ-G6p3UgQmEgU29u!5e0!3m2!1svi!2s!4v1700000000000!5m2!1svi!2s" 
+          width="100%" 
+          height="100%" 
+          style="border:0; filter: grayscale(1) invert(1) contrast(1.2) opacity(0.85);" 
+          allowfullscreen="" 
+          loading="lazy" 
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
     </div>
   </section>
 
-  <!-- Process & FAQ Section -->
-  <section id="faq" class="faq-section">
-    <div class="container">
-      
-      <!-- 3 Steps -->
-      <div class="process-wrapper">
-        <div class="section-header text-center">
-          <span class="sub-title">HOW IT WORKS</span>
-          <h2 class="section-title">Quy Trình 3 Bước <span class="gold-text">Đơn Giản</span></h2>
-        </div>
-        <div class="process-grid">
-          <div class="process-card">
-            <div class="step-num">01</div>
-            <h3>Đặt Lịch Chọn Giờ</h3>
-            <p>Chọn dòng xe, gói dịch vụ và khung giờ mong muốn trên web, bấm Đặt qua Zalo trong 30 giây.</p>
-          </div>
-          <div class="process-card">
-            <div class="step-num">02</div>
-            <h3>Tập Kết Cầu Ba Son</h3>
-            <p>Đội ngũ đón bạn đúng giờ, chuẩn bị xe sạch đẹp & trang phục nón bảo hiểm an toàn ngầu đét.</p>
-          </div>
-          <div class="process-card">
-            <div class="step-num">03</div>
-            <h3>Vi Vu & Nhận Clip</h3>
-            <p>Tận hưởng cảm giác vi vu mô tô ngắm thành phố đêm, quay video 4K & nhận file gốc ngay lập tức.</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- FAQ Accordion -->
-      <div class="faq-wrapper">
-        <div class="section-header text-center">
-          <span class="sub-title">CÂU HỎI THƯỜNG GẶP</span>
-          <h2 class="section-title">Giải Đáp <span class="magenta-text">Thắc Mắc</span></h2>
-        </div>
-
-        <div class="faq-accordion">
-          <div class="faq-item">
-            <div class="faq-question">
-              <span>Tôi không biết tạo dáng / tạo dáng gượng gạo có được hướng dẫn không?</span>
-              <i class="fa-solid fa-chevron-down faq-icon"></i>
-            </div>
-            <div class="faq-answer">
-              <p>Yên tâm 100%! Cameraman và tài xế của Dream Moto sẽ hướng dẫn bạn từng góc nhìn, cách tựa lưng, vuốt tóc, tạo dáng sao cho tự nhiên và thần thái nhất.</p>
-            </div>
-          </div>
-
-          <div class="faq-item">
-            <div class="faq-question">
-              <span>Có an toàn không? Tốc độ chạy xe như thế nào?</span>
-              <i class="fa-solid fa-chevron-down faq-icon"></i>
-            </div>
-            <div class="faq-answer">
-              <p>Rất an toàn. Đội ngũ tài xế của chúng tôi có nhiều năm kinh nghiệm lái PKL, chạy với tốc độ vừa phải (30-40km/h) tuân thủ luật giao thông để bạn vừa ngắm cảnh vừa quay video đẹp nhất.</p>
-            </div>
-          </div>
-
-          <div class="faq-item">
-            <div class="faq-question">
-              <span>Bao lâu thì tôi nhận được video đã edit hoàn chỉnh?</span>
-              <i class="fa-solid fa-chevron-down faq-icon"></i>
-            </div>
-            <div class="faq-answer">
-              <p>File video gốc HD sẽ chuyển thẳng sang điện thoại của bạn ngay sau buổi quay. Video edit chuẩn trend TikTok 4K sẽ được gửi qua Zalo cho bạn trong vòng 24h!</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </section>
 
   <!-- Premium 3-Column Footer Section (Tiệm Ảnh Trái Thơm Style) -->
   <footer class="footer-tiemanh-style">
@@ -450,9 +507,9 @@
       
       <!-- Col 1: Brand & Socials -->
       <div class="footer-col-brand">
-        <div class="footer-logo">
-          <i class="fa-solid fa-motorcycle text-gold"></i>
-          <span>Dream<span class="text-gold">Moto</span> Sài Gòn</span>
+        <div class="footer-logo" style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
+          <img src="logo.jpg" alt="Dream Moto Logo" style="height: 35px; width: auto; border-radius: 4px; border: 1px solid rgba(255,255,255,0.15);">
+          <span style="font-family: var(--font-heading); font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; color: #ffffff;">Dream Moto Sài Gòn</span>
         </div>
         <p class="footer-bio-text" id="footerBioText">
           Chụp lại ước mơ và lưu giữ từng khoảnh khắc vi vu đêm rực rỡ trọn vẹn của bạn. Dịch vụ quay video mô tô 4K nghệ thuật chỉn chu, tận tâm và chuyên nghiệp hàng đầu.
@@ -469,11 +526,11 @@
       <div class="footer-col-nav">
         <h4 class="footer-col-title">KHÁM PHÁ</h4>
         <ul class="footer-link-list">
-          <li><a href="#calculator">Bảng báo giá dịch vụ</a></li>
-          <li><a href="#process">Quy trình trải nghiệm</a></li>
-          <li><a href="#trends">5 Hot Trends TikTok</a></li>
-          <li><a href="#spots">3 Góc Quay Cầu Ba Son</a></li>
+          <li><a href="#trends">5 Dịch vụ có video mẫu</a></li>
           <li><a href="#bikers">Đội ngũ Biker Đêm</a></li>
+          <li><a href="#feedback">Ý kiến khách hàng</a></li>
+          <li><a href="#faq">Quy trình & Thắc mắc</a></li>
+          <li><a href="#calculator">Báo giá & Đặt lịch</a></li>
           <li><a href="https://zalo.me/0900000000" target="_blank" id="footerZaloQuick">Tư vấn nhanh qua Zalo</a></li>
         </ul>
       </div>

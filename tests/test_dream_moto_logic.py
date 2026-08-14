@@ -170,6 +170,19 @@ class TestDreamMotoWebsite(unittest.TestCase):
 
         self.assertIn("syncRealtimeData", content)
 
+    def test_minimalism_theme_and_sections(self):
+        style_path = os.path.join(PROJECT_DIR, "style.css")
+        with open(style_path, "r", encoding="utf-8") as f:
+            content = f.read()
+        self.assertIn("--bg-dark: #000000", content)
+        self.assertIn("--bg-surface: #0a0a0a", content)
+        
+        index_path = os.path.join(PROJECT_DIR, "index.html")
+        with open(index_path, "r", encoding="utf-8") as f:
+            html = f.read()
+        self.assertIn('id="feedback"', html)
+        self.assertIn('logo.jpg', html)
+
 if __name__ == "__main__":
     unittest.main()
 
