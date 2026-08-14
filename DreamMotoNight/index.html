@@ -461,27 +461,7 @@
           <div class="summary-details" id="summaryDetails">
             <p><strong>Xe:</strong> <span id="sumBike">Kawasaki Z1000</span></p>
             <p><strong>Gói:</strong> <span id="sumService">Gói 1: TikTok Basic</span></p>
-            <p><strong>Biker Đồng Hành:</strong> <span id="sumBiker" class="gold-text">Rider Tuấn Motor (Mặc Định)</span></p>
-            <p><strong>Quà Tặng:</strong> <span class="gold-text">🎁 Tặng File Video Gốc HD ngay trong đêm</span></p>
-          </div>
-
-          <!-- Realtime Slot Picker inside Calculator -->
-          <div id="slots" class="slot-picker-box">
-            <label class="calc-label"><i class="fa-regular fa-clock"></i> Chọn Khung Giờ Đêm nay:</label>
-            <div class="slot-chips" id="slotChips">
-              <button class="slot-chip active" data-slot="19:30">19:30</button>
-              <button class="slot-chip" data-slot="20:30">20:30</button>
-              <button class="slot-chip" data-slot="21:30">21:30 (Đẹp Nhất)</button>
-              <button class="slot-chip" data-slot="22:30">22:30</button>
-              <button class="slot-chip" data-slot="23:30">23:30 (Chill Về Đêm)</button>
-            </div>
-          </div>
-
-          <div class="summary-action">
-            <a href="#" id="zaloBookingBtn" class="btn btn-primary btn-block btn-lg btn-glow" target="_blank">
-              <i class="fa-brands fa-rocketchat"></i> ĐẶT LỊCH NGAY QUA ZALO
-            </a>
-            <span class="micro-note"><i class="fa-solid fa-shield-halved"></i> Không cần đặt cọc trước • Thanh toán sau khi quay xong</span>
+            <p><strong>Quà Tặng:</strong> <span class="gold-text">🎁 Nhận file video gốc HD ngay trong đêm</span></p>
           </div>
         </div>
       </div>
@@ -569,16 +549,10 @@
     </div>
   </footer>
 
-  <!-- Sticky Mobile Action Bar -->
-  <div class="mobile-sticky-bar">
-    <div class="mobile-sticky-info">
-      <span class="mobile-price-title">Giá từ:</span>
-      <span class="mobile-price" id="mobilePriceDisplay">299.000đ</span>
-    </div>
-    <a href="#calculator" class="btn btn-primary btn-sm btn-glow">
-      <i class="fa-solid fa-calendar-check"></i> Đặt Lịch Ngay
-    </a>
-  </div>
+  <!-- Floating Zalo Button -->
+  <a href="https://zalo.me/0900000000" id="floatingZalo" target="_blank" style="position: fixed; bottom: 30px; right: 30px; z-index: 9999; display: flex; align-items: center; justify-content: center; width: 60px; height: 60px; background: #000000; color: #ffffff; border-radius: 50%; box-shadow: 0 4px 15px rgba(255,255,255,0.25); transition: var(--transition); border: 2px solid #ffffff;">
+    <i class="fa-brands fa-rocketchat" style="font-size: 1.6rem;"></i>
+  </a>
 
   <!-- Video Lightbox Modal -->
   <div id="videoModal" class="video-modal" aria-hidden="true">

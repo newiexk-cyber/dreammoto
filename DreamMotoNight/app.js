@@ -235,6 +235,13 @@ function applyShopInfo() {
   if (hotElem && info.hotline) hotElem.textContent = info.hotline;
   if (emailElem && info.email) emailElem.textContent = info.email;
 
+  // Dynamic Floating Zalo deep link
+  const floatingZalo = document.getElementById("floatingZalo");
+  if (floatingZalo && (info.hotline || info.zaloPhone)) {
+    const cleanPhone = (info.hotline || info.zaloPhone || "0908447308").replace(/[^0-9]/g, '');
+    floatingZalo.href = `https://zalo.me/${cleanPhone}`;
+  }
+
   if (info.branches && info.branches.length >= 1) {
     if (cs1Elem && info.branches[0]) cs1Elem.textContent = info.branches[0].name;
     if (cs2Elem) cs2Elem.style.display = info.branches[1] ? 'inline' : 'none';
